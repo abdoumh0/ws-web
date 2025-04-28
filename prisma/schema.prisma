@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account_Items {
+  AccountID     String   @db.Uuid
+  ItemID        BigInt
+  Price         BigInt
+  PurchasePrice BigInt
+  Qty           BigInt
+  ImageLink     String
+  Accounts      Accounts @relation(fields: [AccountID], references: [AccountID], onDelete: NoAction, onUpdate: NoAction, map: "account_items_accountid_foreign")
+  Items         Items    @relation(fields: [ItemID], references: [ItemID], onDelete: NoAction, onUpdate: NoAction, map: "account_items_itemid_foreign")
+
+  @@id([AccountID, ItemID]) // Composite primary key
+  @@index([AccountID, ItemID], map: "account_items_accountid_itemid_index")
+}
+
+model Accounts {
+  AccountID     String          @id @db.Uuid
+  Email         String          @unique(map: "accounts_email_unique") @db.VarChar(255)
+  FirstName     String          @db.VarChar(64)
+  LastName      String          @db.VarChar(64)
+  Password      Bytes
+  Username      String?         @unique(map: "accounts_username_unique") @db.VarChar(255)
+  FacebookID    String?         @unique(map: "accounts_facebookid_unique") @db.VarChar(255)
+  GoogleID      String?         @unique(map: "accounts_googleid_unique") @db.VarChar(255)
+  Account_Items Account_Items[]
+}
+
+model Items {
+  ItemID           BigInt          @id
+  Name             String          @db.VarChar(64)
+  Code             BigInt
+  CategoryID       BigInt
+  Brand            String          @db.VarChar(64)
+  Type             String          @db.VarChar(32)
+  DefaultImageLink String
+  Account_Items    Account_Items[]
+
+  @@index([Code], map: "items_code_index")
+}
