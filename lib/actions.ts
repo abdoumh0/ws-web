@@ -4,9 +4,86 @@ import { hash, compare } from "bcrypt";
 import { JWTPayload, SignJWT, jwtVerify } from "jose";
 import { randomUUID } from "crypto";
 import prisma from "./prisma";
-
+import { v2 as cloudinary } from "cloudinary";
+import streamifier from "streamifier";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { AccountInfo } from "./types";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+export async function uploadToCloudinary(formData: FormData) {
+  const file = formData.get("image") as File;
+
+  if (!file) throw new Error("No file provided");
+
+  const buffer = Buffer.from(await file.arrayBuffer());
+
+  const uploadPromise = () =>
+    new Promise<string>((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "ws-web" },
+        (error, result) => {
+          if (error || !result) return reject(error);
+          resolve(result.secure_url);
+        }
+      );
+      streamifier.createReadStream(buffer).pipe(stream);
+    });
+
+  const url = await uploadPromise();
+  return url;
+}
+
+export const handleItemSubmit = async (formData: FormData) => {
+  const { name, code, price, image } = {
+    name: formData.get("name") as string,
+    code: formData.get("code") as string,
+    price: formData.get("price") as string,
+    image: formData.get("image") as File,
+  };
+  if (!name || !code || !price || !image) {
+    return { ok: false, message: "Please fill in all fields" };
+  }
+  if (isNaN(Number(price))) {
+    return { ok: false, message: "Price must be a number" };
+  }
+  const session = (await cookies()).get("session")?.value;
+  if (!session) return { ok: false, message: "Session expired" };
+  const userInfo = (await decrypt(session)) as { user: AccountInfo };
+  const { user } = userInfo;
+  const { AccountID } = user;
+  const imageUrl = await uploadToCloudinary(formData);
+  const itemData = await prisma.items.upsert({
+    where: { Code: Number(code) },
+    update: {},
+    create: {
+      Name: name,
+      Code: Number(code),
+      DefaultImageLink: imageUrl,
+      CategoryID: 1, // Replace with appropriate CategoryID
+      Brand: "DefaultBrand", // Replace with actual brand
+      Type: "DefaultType", // Replace with actual type
+    },
+  });
+  if (!itemData) return { ok: false, message: "Failed to find or create item" };
+  const accountItemData = await prisma.account_Items.create({
+    data: {
+      AccountID,
+      ItemID: itemData.ItemID,
+      Price: Number(price),
+      PurchasePrice: Number(price), // Replace with actual purchase price if different
+      Qty: 1, // Replace with the actual quantity
+      ImageLink: imageUrl, // Replace with the actual image link if different
+    },
+  });
+  if (!accountItemData) return { ok: false, message: "Failed to add item" };
+  return { ok: true, message: `Item added successfully: img url ${imageUrl}` };
+};
 
 const secretKey = process.env.JWT_SECRET;
 const key = new TextEncoder().encode(secretKey);
@@ -93,9 +170,20 @@ export async function loginUser(
   );
   if (!match) return { ok: false, message: "Invalid credentials" };
 
+  const AccountInfo: AccountInfo = {
+    AccountID: userData.AccountID,
+    Email: userData.Email,
+    FirstName: userData.FirstName,
+    LastName: userData.LastName,
+    Username: userData.Username,
+    FacebookID: userData.FacebookID,
+    GoogleID: userData.GoogleID,
+  };
+  console.log(AccountInfo);
+
   // Create the session
   const expires = new Date(Date.now() + 60 * 1000 * 60 * 24); // 1 day
-  const session = await encrypt({ user: userData, expires });
+  const session = await encrypt({ user: AccountInfo, expires });
 
   // Save the session in a cookie
   const cookieStore = await cookies();
@@ -113,5 +201,6 @@ export async function logoutUser() {
 export async function getSession() {
   const session = (await cookies()).get("session")?.value;
   if (!session) return null;
-  return await decrypt(session);
+  const userInfo = (await decrypt(session)) as { user: AccountInfo };
+  return userInfo;
 }

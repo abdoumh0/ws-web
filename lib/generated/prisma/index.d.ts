@@ -4802,17 +4802,17 @@ export namespace Prisma {
 
   export type ItemsWhereUniqueInput = Prisma.AtLeast<{
     ItemID?: bigint | number
+    Code?: bigint | number
     AND?: ItemsWhereInput | ItemsWhereInput[]
     OR?: ItemsWhereInput[]
     NOT?: ItemsWhereInput | ItemsWhereInput[]
     Name?: StringFilter<"Items"> | string
-    Code?: BigIntFilter<"Items"> | bigint | number
     CategoryID?: BigIntFilter<"Items"> | bigint | number
     Brand?: StringFilter<"Items"> | string
     Type?: StringFilter<"Items"> | string
     DefaultImageLink?: StringFilter<"Items"> | string
     Account_Items?: Account_ItemsListRelationFilter
-  }, "ItemID">
+  }, "ItemID" | "Code">
 
   export type ItemsOrderByWithAggregationInput = {
     ItemID?: SortOrder
@@ -4985,7 +4985,7 @@ export namespace Prisma {
   }
 
   export type ItemsCreateInput = {
-    ItemID: bigint | number
+    ItemID?: bigint | number
     Name: string
     Code: bigint | number
     CategoryID: bigint | number
@@ -4996,7 +4996,7 @@ export namespace Prisma {
   }
 
   export type ItemsUncheckedCreateInput = {
-    ItemID: bigint | number
+    ItemID?: bigint | number
     Name: string
     Code: bigint | number
     CategoryID: bigint | number
@@ -5029,7 +5029,7 @@ export namespace Prisma {
   }
 
   export type ItemsCreateManyInput = {
-    ItemID: bigint | number
+    ItemID?: bigint | number
     Name: string
     Code: bigint | number
     CategoryID: bigint | number
@@ -5665,7 +5665,7 @@ export namespace Prisma {
   }
 
   export type ItemsCreateWithoutAccount_ItemsInput = {
-    ItemID: bigint | number
+    ItemID?: bigint | number
     Name: string
     Code: bigint | number
     CategoryID: bigint | number
@@ -5675,7 +5675,7 @@ export namespace Prisma {
   }
 
   export type ItemsUncheckedCreateWithoutAccount_ItemsInput = {
-    ItemID: bigint | number
+    ItemID?: bigint | number
     Name: string
     Code: bigint | number
     CategoryID: bigint | number

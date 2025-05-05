@@ -1,18 +1,19 @@
 import { getSession, logoutUser } from "@/lib/actions";
+import { AccountInfo } from "@/lib/types";
 import React from "react";
 
 type Props = {};
 
 export default async function page({}: Props) {
-  const session = (await getSession()) as { user: { Email: string } } | null;
+  const session = await getSession();
   return (
-    <div>
+    <div className="h-full">
       page
       {session && (
         <>
           <div>
             <h1 className="text-2xl font-bold text-center">
-              Welcome {session.user.Email}
+              Welcome {session.user.Email} {session.user.AccountID}
             </h1>
             <p className="text-center text-gray-500">
               <a href="/profile" className="text-blue-500 underline">
@@ -20,11 +21,6 @@ export default async function page({}: Props) {
               </a>
             </p>
           </div>
-          <form action={logoutUser}>
-            <button className="bg-blue-500 text-white p-2 rounded">
-              logout
-            </button>
-          </form>
         </>
       )}
     </div>

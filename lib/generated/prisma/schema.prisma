@@ -35,9 +35,9 @@ model Accounts {
 }
 
 model Items {
-  ItemID           BigInt          @id
+  ItemID           BigInt          @id @default(autoincrement()) @db.BigInt
   Name             String          @db.VarChar(64)
-  Code             BigInt
+  Code             BigInt          @unique(map: "items_code_unique") @db.BigInt
   CategoryID       BigInt
   Brand            String          @db.VarChar(64)
   Type             String          @db.VarChar(32)
