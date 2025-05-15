@@ -303,15 +303,16 @@ export async function decrypt(input: string): Promise<JWTPayload> {
 export async function registerUser(
   formData: FormData
 ): Promise<{ ok: boolean; message?: string }> {
-  const { email, password, confirmPassword, firstName, lastName } = {
+  const { email, password, confirmPassword, firstName, lastName, username } = {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
     confirmPassword: formData.get("confirmPassword") as string,
     firstName: formData.get("firstName") as string,
     lastName: formData.get("lastName") as string,
+    username: formData.get("username") as string,
   };
 
-  if (!email || !password || !confirmPassword) {
+  if (!email || !password || !confirmPassword || !username) {
     return { ok: false, message: "Please fill in the required fields" };
   }
 
@@ -330,6 +331,17 @@ export async function registerUser(
         message: "An account with this email already exists",
       };
 
+    // Check if username is already taken
+    const existingUsername = await prisma.accounts.findFirst({
+      where: { Username: username },
+    });
+
+    if (existingUsername)
+      return {
+        ok: false,
+        message: "This username is already taken",
+      };
+
     const hashedPassword = await hash(password, 10);
 
     let userData = await prisma.accounts.create({
@@ -339,6 +351,7 @@ export async function registerUser(
         AccountID: randomUUID(),
         FirstName: firstName || "User",
         LastName: lastName || "",
+        Username: username,
       },
     });
 

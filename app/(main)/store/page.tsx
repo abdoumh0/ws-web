@@ -1,5 +1,4 @@
 import ItemForm from "@/components/ItemForm";
-import Item from "@/components/Item";
 import ItemTable from "@/components/ItemTable";
 import { getSession } from "@/lib/actions";
 import prisma from "@/lib/prisma";
@@ -9,7 +8,7 @@ import React from "react";
 export default async function StorePage() {
   const session = await getSession();
   if (!session) {
-    redirect("/login");
+    redirect("/auth?tab=login");
   }
 
   const items = await prisma.account_Items.findMany({

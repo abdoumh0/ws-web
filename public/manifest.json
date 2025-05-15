@@ -1,0 +1,22 @@
+{
+  "name": "WareWise",
+  "short_name": "WareWise",
+  "description": "Complete inventory management system for wholesale distributors",
+  "icons": [
+    {
+      "src": "/ww-logo.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ],
+  "theme_color": "#1D4ED8",
+  "background_color": "#ffffff",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}

@@ -26,27 +26,42 @@ function mwHelper(...args: NextMiddleware[]) {
 }
 
 // if logged in, redirect to home page
-// if not logged in, allow access to login and register pages
-const loginMW: NextMiddleware = async (request: NextRequest) => {
+// if not logged in, allow access to auth pages
+const authMiddleware: NextMiddleware = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
-  const isLoginPage = pathname.startsWith("/login");
-  const isRegisterPage = pathname.startsWith("/register");
+  const isAuthPage = pathname.startsWith("/auth");
   const sessionCookie = request.cookies.get("session");
-  if (sessionCookie && (isLoginPage || isRegisterPage)) {
+
+  // Redirect authenticated users away from auth pages
+  if (sessionCookie && isAuthPage) {
     try {
       const { payload, protectedHeader } = await jwtVerify(
         sessionCookie.value,
         new TextEncoder().encode(process.env.JWT_SECRET)
       );
-      console.log(payload, protectedHeader);
       return NextResponse.redirect(new URL("/", request.url));
     } catch (error) {
+      // Invalid token, allow access to auth pages
       return NextResponse.next();
     }
   }
+
+  // Handle redirects for old routes
+  if (pathname.startsWith("/login")) {
+    return NextResponse.redirect(new URL("/auth?tab=login", request.url));
+  }
+
+  if (pathname.startsWith("/register")) {
+    return NextResponse.redirect(new URL("/auth?tab=register", request.url));
+  }
+
   return NextResponse.next();
 };
 
 export function middleware(request: NextRequest, event: NextFetchEvent) {
-  return mwHelper(loginMW)(request, event);
+  return mwHelper(authMiddleware)(request, event);
 }
+
+export const config = {
+  matcher: ["/login/:path*", "/register/:path*", "/auth/:path*"],
+};
