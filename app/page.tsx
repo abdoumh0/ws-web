@@ -1,5 +1,4 @@
 import { getSession, logoutUser } from "@/lib/actions";
-import { AccountInfo } from "@/lib/types";
 import React from "react";
 
 type Props = {};

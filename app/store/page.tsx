@@ -1,16 +1,17 @@
-import AddItem from "@/components/AddItem";
+import ItemForm from "@/components/ItemForm";
+import Item from "@/components/Item";
+import ItemTable from "@/components/ItemTable";
 import { getSession } from "@/lib/actions";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import React from "react";
 
-type Props = {};
-
-export default async function page({}: Props) {
+export default async function StorePage() {
   const session = await getSession();
   if (!session) {
     redirect("/login");
   }
+
   const items = await prisma.account_Items.findMany({
     where: { AccountID: session.user.AccountID },
     include: {
@@ -19,28 +20,26 @@ export default async function page({}: Props) {
   });
 
   return (
-    <>
-      {items.length == 0 && (
-        <>
-          <div>No items</div>
-          <div>some add item component</div>
-          <AddItem />
-        </>
-      )}
-      {items.map((item, index) => {
-        return (
-          <div
-            key={index}
-            className="flex flex-col items-center justify-center h-full"
-          >
-            <h1 className="text-2xl font-bold text-center">
-              {item.Items.Name}
-            </h1>
-            <p className="text-center text-gray-500">{item.Items.Code}</p>
-            <p className="text-center text-gray-500">{item.Price}</p>
+    <main className="min-h-screen bg-gray-50">
+      <div className="max-w-screen-xl mx-auto pb-10">
+        <div className="px-4 py-8">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                Your Store
+              </h1>
+              <p className="text-gray-600">Manage and browse your inventory</p>
+            </div>
+            <ItemForm variant="button" />
           </div>
-        );
-      })}
-    </>
+
+          <ItemTable
+            total={items.length}
+            filteredCount={items.length}
+            initialItems={items}
+          />
+        </div>
+      </div>
+    </main>
   );
 }

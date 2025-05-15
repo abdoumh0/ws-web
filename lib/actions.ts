@@ -16,73 +16,270 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// Debug Cloudinary configuration
+console.log("[DEBUG] Cloudinary Environment Variables:", {
+  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME
+    ? "Set (length: " + process.env.CLOUDINARY_CLOUD_NAME.length + ")"
+    : "Not set",
+  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY
+    ? "Set (length: " + process.env.CLOUDINARY_API_KEY.length + ")"
+    : "Not set",
+  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET
+    ? "Set (length: " + process.env.CLOUDINARY_API_SECRET.length + ")"
+    : "Not set",
+});
+
 export async function uploadToCloudinary(formData: FormData) {
-  const file = formData.get("image") as File;
+  try {
+    console.log("[Upload Debug] Starting upload to Cloudinary");
+    const file = formData.get("image") as File;
 
-  if (!file) throw new Error("No file provided");
+    if (!file) {
+      console.log("[Upload Debug] No file provided in formData");
+      throw new Error("No file provided");
+    }
 
-  const buffer = Buffer.from(await file.arrayBuffer());
-
-  const uploadPromise = () =>
-    new Promise<string>((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        { folder: "ws-web" },
-        (error, result) => {
-          if (error || !result) return reject(error);
-          resolve(result.secure_url);
-        }
-      );
-      streamifier.createReadStream(buffer).pipe(stream);
+    console.log("[Upload Debug] File object:", {
+      name: file.name,
+      type: file.type,
+      size: file.size,
     });
 
-  const url = await uploadPromise();
-  return url;
+    // Check if Cloudinary config is valid
+    if (
+      !process.env.CLOUDINARY_CLOUD_NAME ||
+      !process.env.CLOUDINARY_API_KEY ||
+      !process.env.CLOUDINARY_API_SECRET
+    ) {
+      console.error("[Upload Debug] Missing Cloudinary environment variables");
+      throw new Error(
+        "Cloudinary configuration is incomplete. Please check your environment variables."
+      );
+    }
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+    console.log("[Upload Debug] Buffer created, size:", buffer.length);
+
+    console.log("[Upload Debug] Cloudinary config:", {
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME ? "Set" : "Not set",
+      api_key: process.env.CLOUDINARY_API_KEY ? "Set" : "Not set",
+      api_secret: process.env.CLOUDINARY_API_SECRET ? "Set" : "Not set",
+    });
+
+    // Set a timeout to detect hanging uploads
+    const uploadPromise = () =>
+      new Promise<string>((resolve, reject) => {
+        console.log("[Upload Debug] Creating upload stream");
+        let isResolved = false;
+
+        // Set timeout for upload (30 seconds)
+        const timeout = setTimeout(() => {
+          if (!isResolved) {
+            console.error("[Upload Debug] Upload timed out after 30 seconds");
+            reject(
+              new Error(
+                "Upload timed out. Please try again with a smaller image."
+              )
+            );
+          }
+        }, 30000);
+
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            folder: "ws-web",
+            resource_type: "image",
+            timeout: 60000, // 60 second timeout on Cloudinary's end
+          },
+          (error, result) => {
+            clearTimeout(timeout);
+            isResolved = true;
+
+            if (error || !result) {
+              console.log("[Upload Debug] Upload error:", error);
+              return reject(error || new Error("Unknown upload error"));
+            }
+            console.log(
+              "[Upload Debug] Upload successful, URL:",
+              result.secure_url
+            );
+            resolve(result.secure_url);
+          }
+        );
+
+        try {
+          streamifier.createReadStream(buffer).pipe(stream);
+        } catch (pipeError) {
+          clearTimeout(timeout);
+          console.error("[Upload Debug] Error in pipe operation:", pipeError);
+          reject(pipeError);
+        }
+      });
+
+    const url = await uploadPromise();
+    console.log("[Upload Debug] Final URL returned:", url);
+    return url;
+  } catch (error) {
+    console.error("[Upload Debug] Exception in uploadToCloudinary:", error);
+    throw error;
+  }
 }
 
 export const handleItemSubmit = async (formData: FormData) => {
-  const { name, code, price, image } = {
-    name: formData.get("name") as string,
-    code: formData.get("code") as string,
-    price: formData.get("price") as string,
-    image: formData.get("image") as File,
-  };
-  if (!name || !code || !price || !image) {
-    return { ok: false, message: "Please fill in all fields" };
+  console.log("[Item Debug] Starting handleItemSubmit");
+  try {
+    const {
+      name,
+      code,
+      price,
+      purchasePrice,
+      qty,
+      brand,
+      type,
+      categoryId,
+      image,
+    } = {
+      name: formData.get("name") as string,
+      code: formData.get("code") as string,
+      price: formData.get("price") as string,
+      purchasePrice: formData.get("purchasePrice") as string,
+      qty: formData.get("qty") as string,
+      brand: formData.get("brand") as string,
+      type: formData.get("type") as string,
+      categoryId: formData.get("categoryId") as string,
+      image: formData.get("image") as File,
+    };
+
+    console.log("[Item Debug] Form data extracted:", {
+      name,
+      code,
+      price,
+      hasImage: !!image,
+      imageType: image ? image.type : null,
+      imageSize: image ? image.size : null,
+    });
+
+    // Validate required fields
+    if (!name || !code || !price || !image || !categoryId) {
+      console.log("[Item Debug] Validation failed - missing required fields:", {
+        name: !!name,
+        code: !!code,
+        price: !!price,
+        image: !!image,
+        categoryId: !!categoryId,
+      });
+      return { ok: false, message: "Please fill in all required fields" };
+    }
+
+    // Validate numeric fields
+    if (
+      isNaN(Number(price)) ||
+      isNaN(Number(purchasePrice)) ||
+      isNaN(Number(code)) ||
+      isNaN(Number(categoryId)) ||
+      isNaN(Number(qty))
+    ) {
+      console.log("[Item Debug] Validation failed - invalid numeric fields:", {
+        price: isNaN(Number(price)),
+        purchasePrice: isNaN(Number(purchasePrice)),
+        code: isNaN(Number(code)),
+        categoryId: isNaN(Number(categoryId)),
+        qty: isNaN(Number(qty)),
+      });
+      return {
+        ok: false,
+        message: "Numeric fields must contain valid numbers",
+      };
+    }
+
+    // Get user session
+    console.log("[Item Debug] Getting user session");
+    const session = (await cookies()).get("session")?.value;
+    if (!session) {
+      console.log("[Item Debug] No session found");
+      return {
+        ok: false,
+        message: "Your session has expired. Please log in again.",
+      };
+    }
+
+    const userInfo = (await decrypt(session)) as { user: AccountInfo };
+    const { user } = userInfo;
+    const { AccountID } = user;
+    console.log("[Item Debug] User authenticated, AccountID:", AccountID);
+
+    // Upload image to Cloudinary
+    console.log("[Item Debug] Starting image upload to Cloudinary");
+    try {
+      const imageUrl = await uploadToCloudinary(formData);
+      console.log("[Item Debug] Image uploaded successfully:", imageUrl);
+
+      // Create or update item in database
+      console.log("[Item Debug] Creating/updating item in database");
+      const itemData = await prisma.items.upsert({
+        where: { Code: Number(code) },
+        update: {
+          Name: name,
+          Brand: brand,
+          Type: type,
+          CategoryID: Number(categoryId),
+          DefaultImageLink: imageUrl,
+        },
+        create: {
+          Name: name,
+          Code: Number(code),
+          DefaultImageLink: imageUrl,
+          CategoryID: Number(categoryId),
+          Brand: brand,
+          Type: type,
+        },
+      });
+
+      if (!itemData) {
+        console.log("[Item Debug] Failed to create/update item");
+        return { ok: false, message: "Failed to create or update item" };
+      }
+      console.log("[Item Debug] Item created/updated:", itemData.ItemID);
+
+      // Link item to user account
+      console.log("[Item Debug] Linking item to user account");
+      const accountItemData = await prisma.account_Items.create({
+        data: {
+          AccountID,
+          ItemID: itemData.ItemID,
+          Price: Number(price),
+          PurchasePrice: Number(purchasePrice || price),
+          Qty: Number(qty || 1),
+          ImageLink: imageUrl,
+        },
+      });
+
+      if (!accountItemData) {
+        console.log("[Item Debug] Failed to link item to account");
+        return { ok: false, message: "Failed to add item to your inventory" };
+      }
+      console.log("[Item Debug] Item linked to account successfully");
+
+      return { ok: true, message: "Item added successfully" };
+    } catch (uploadError) {
+      console.error(
+        "[Item Debug] Error during upload or database operations:",
+        uploadError
+      );
+      if (uploadError instanceof Error) {
+        return { ok: false, message: `Error: ${uploadError.message}` };
+      }
+      return {
+        ok: false,
+        message: "An error occurred during file upload or database operation",
+      };
+    }
+  } catch (error) {
+    console.error("[Item Debug] Unexpected error in handleItemSubmit:", error);
+    if (error instanceof Error) {
+      return { ok: false, message: `Error: ${error.message}` };
+    }
+    return { ok: false, message: "An unexpected error occurred" };
   }
-  if (isNaN(Number(price))) {
-    return { ok: false, message: "Price must be a number" };
-  }
-  const session = (await cookies()).get("session")?.value;
-  if (!session) return { ok: false, message: "Session expired" };
-  const userInfo = (await decrypt(session)) as { user: AccountInfo };
-  const { user } = userInfo;
-  const { AccountID } = user;
-  const imageUrl = await uploadToCloudinary(formData);
-  const itemData = await prisma.items.upsert({
-    where: { Code: Number(code) },
-    update: {},
-    create: {
-      Name: name,
-      Code: Number(code),
-      DefaultImageLink: imageUrl,
-      CategoryID: 1, // Replace with appropriate CategoryID
-      Brand: "DefaultBrand", // Replace with actual brand
-      Type: "DefaultType", // Replace with actual type
-    },
-  });
-  if (!itemData) return { ok: false, message: "Failed to find or create item" };
-  const accountItemData = await prisma.account_Items.create({
-    data: {
-      AccountID,
-      ItemID: itemData.ItemID,
-      Price: Number(price),
-      PurchasePrice: Number(price), // Replace with actual purchase price if different
-      Qty: 1, // Replace with the actual quantity
-      ImageLink: imageUrl, // Replace with the actual image link if different
-    },
-  });
-  if (!accountItemData) return { ok: false, message: "Failed to add item" };
-  return { ok: true, message: `Item added successfully: img url ${imageUrl}` };
 };
 
 const secretKey = process.env.JWT_SECRET;
@@ -106,46 +303,62 @@ export async function decrypt(input: string): Promise<JWTPayload> {
 export async function registerUser(
   formData: FormData
 ): Promise<{ ok: boolean; message?: string }> {
-  const { email, password, confirmPassword } = {
+  const { email, password, confirmPassword, firstName, lastName } = {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
     confirmPassword: formData.get("confirmPassword") as string,
+    firstName: formData.get("firstName") as string,
+    lastName: formData.get("lastName") as string,
   };
-  if (!email || !password || !confirmPassword)
+
+  if (!email || !password || !confirmPassword) {
     return { ok: false, message: "Please fill in the required fields" };
+  }
 
   if (password !== confirmPassword) {
     return { ok: false, message: "Passwords do not match" };
   }
 
-  const user = await prisma.accounts.findFirst({
-    where: { Email: email },
-  });
+  try {
+    const user = await prisma.accounts.findFirst({
+      where: { Email: email },
+    });
 
-  if (user) return { ok: false, message: "Account already exists" };
+    if (user)
+      return {
+        ok: false,
+        message: "An account with this email already exists",
+      };
 
-  const hashedPassword = await hash(password, 10);
+    const hashedPassword = await hash(password, 10);
 
-  let userData = await prisma.accounts.create({
-    data: {
-      Email: email,
-      Password: Buffer.from(hashedPassword),
-      AccountID: randomUUID(),
-      FirstName: "DefaultFirstName", // Replace with actual first name
-      LastName: "DefaultLastName", // Replace with actual last name
-    },
-  });
+    let userData = await prisma.accounts.create({
+      data: {
+        Email: email,
+        Password: Buffer.from(hashedPassword),
+        AccountID: randomUUID(),
+        FirstName: firstName || "User",
+        LastName: lastName || "",
+      },
+    });
 
-  if (!userData) return { ok: false, message: "Failed to create account" };
+    if (!userData) return { ok: false, message: "Failed to create account" };
 
-  const { Password, FacebookID, GoogleID, ...userWithoutPassword } = userData;
+    const { Password, FacebookID, GoogleID, ...userWithoutPassword } = userData;
 
-  const session = await encrypt({ user: userWithoutPassword });
+    const session = await encrypt({ user: userWithoutPassword });
 
-  const cookieStore = await cookies();
-  const expires = new Date(Date.now() + 60 * 1000 * 60 * 24); // 1 day
-  cookieStore.set("session", session, { httpOnly: true, expires });
-  redirect("/");
+    const cookieStore = await cookies();
+    const expires = new Date(Date.now() + 60 * 1000 * 60 * 24); // 1 day
+    cookieStore.set("session", session, { httpOnly: true, expires });
+
+    redirect("/");
+  } catch (error) {
+    if (error instanceof Error) {
+      return { ok: false, message: `Error: ${error.message}` };
+    }
+    return { ok: false, message: "An unexpected error occurred" };
+  }
 }
 
 export async function loginUser(
@@ -155,41 +368,50 @@ export async function loginUser(
     email: formData.get("email") as string,
     password: formData.get("password") as string,
   };
-  if (!email || !password)
+
+  if (!email || !password) {
     return { ok: false, message: "Email and password are required" };
+  }
 
-  const userData = await prisma.accounts.findFirst({
-    where: { Email: email },
-  });
+  try {
+    const userData = await prisma.accounts.findFirst({
+      where: { Email: email },
+    });
 
-  if (!userData) return { ok: false, message: "Account not found" };
+    if (!userData) return { ok: false, message: "Account not found" };
 
-  const match = await compare(
-    password,
-    Buffer.from(userData.Password).toString()
-  );
-  if (!match) return { ok: false, message: "Invalid credentials" };
+    const match = await compare(
+      password,
+      Buffer.from(userData.Password).toString()
+    );
 
-  const AccountInfo: AccountInfo = {
-    AccountID: userData.AccountID,
-    Email: userData.Email,
-    FirstName: userData.FirstName,
-    LastName: userData.LastName,
-    Username: userData.Username,
-    FacebookID: userData.FacebookID,
-    GoogleID: userData.GoogleID,
-  };
-  console.log(AccountInfo);
+    if (!match) return { ok: false, message: "Invalid password" };
 
-  // Create the session
-  const expires = new Date(Date.now() + 60 * 1000 * 60 * 24); // 1 day
-  const session = await encrypt({ user: AccountInfo, expires });
+    const AccountInfo: AccountInfo = {
+      AccountID: userData.AccountID,
+      Email: userData.Email,
+      FirstName: userData.FirstName,
+      LastName: userData.LastName,
+      Username: userData.Username,
+      FacebookID: userData.FacebookID,
+      GoogleID: userData.GoogleID,
+    };
 
-  // Save the session in a cookie
-  const cookieStore = await cookies();
-  cookieStore.set("session", session, { expires, httpOnly: true });
+    // Create the session
+    const expires = new Date(Date.now() + 60 * 1000 * 60 * 24); // 1 day
+    const session = await encrypt({ user: AccountInfo, expires });
 
-  redirect("/");
+    // Save the session in a cookie
+    const cookieStore = await cookies();
+    cookieStore.set("session", session, { expires, httpOnly: true });
+
+    redirect("/");
+  } catch (error) {
+    if (error instanceof Error) {
+      return { ok: false, message: `Error: ${error.message}` };
+    }
+    return { ok: false, message: "An unexpected error occurred" };
+  }
 }
 
 export async function logoutUser() {
@@ -203,4 +425,390 @@ export async function getSession() {
   if (!session) return null;
   const userInfo = (await decrypt(session)) as { user: AccountInfo };
   return userInfo;
+}
+
+export async function deleteItem(itemId: string, accountId: string) {
+  try {
+    console.log("[Delete Debug] Starting deleteItem action", {
+      itemId,
+      accountId,
+    });
+
+    // Get user session
+    const session = await getSession();
+    if (!session) {
+      console.log("[Delete Debug] No session found");
+      return {
+        success: false,
+        message: "Your session has expired. Please log in again.",
+      };
+    }
+
+    // Ensure the user owns this item
+    if (session.user.AccountID !== accountId) {
+      console.log("[Delete Debug] Unauthorized - AccountID mismatch", {
+        sessionAccountId: session.user.AccountID,
+        requestAccountId: accountId,
+      });
+      return {
+        success: false,
+        message: "You don't have permission to delete this item",
+      };
+    }
+
+    // Delete the item from the account_items table
+    await prisma.account_Items.delete({
+      where: {
+        AccountID_ItemID: {
+          AccountID: accountId,
+          ItemID: BigInt(itemId),
+        },
+      },
+    });
+
+    console.log("[Delete Debug] Item deleted successfully");
+    return { success: true, message: "Item deleted successfully" };
+  } catch (error) {
+    console.error("[Delete Debug] Error deleting item:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to delete item",
+    };
+  }
+}
+
+export async function updateItem(formData: FormData) {
+  try {
+    console.log("[Update Debug] Starting updateItem action");
+
+    // Get user session
+    const session = await getSession();
+    if (!session) {
+      console.log("[Update Debug] No session found");
+      return {
+        success: false,
+        message: "Your session has expired. Please log in again.",
+      };
+    }
+
+    // Extract form values
+    const itemId = formData.get("itemId") as string;
+    const name = formData.get("name") as string;
+    const price = formData.get("price") as string;
+    const purchasePrice = formData.get("purchasePrice") as string;
+    const qty = formData.get("qty") as string;
+    const brand = formData.get("brand") as string;
+    const type = formData.get("type") as string;
+    const categoryId = formData.get("categoryId") as string;
+    const imageFile = formData.get("image") as File | null;
+    const imageLink = formData.get("imageLink") as string;
+
+    console.log("[Update Debug] Form data extracted", {
+      itemId,
+      name,
+      price,
+      qty,
+      brand,
+      type,
+      categoryId,
+      hasImageFile: !!imageFile,
+      imageLink: imageLink ? "Provided" : "Not provided",
+    });
+
+    // Validate required fields
+    if (!itemId || !name || !price || !brand || !type || !categoryId || !qty) {
+      console.log("[Update Debug] Missing required fields");
+      return {
+        success: false,
+        message: "Please fill in all required fields",
+      };
+    }
+
+    // Validate numeric fields
+    if (
+      isNaN(Number(itemId)) ||
+      isNaN(Number(price)) ||
+      isNaN(Number(purchasePrice)) ||
+      isNaN(Number(qty)) ||
+      isNaN(Number(categoryId))
+    ) {
+      console.log("[Update Debug] Invalid numeric values");
+      return {
+        success: false,
+        message: "Invalid numeric values provided",
+      };
+    }
+
+    // Ensure the user owns this item
+    const existingItem = await prisma.account_Items.findUnique({
+      where: {
+        AccountID_ItemID: {
+          AccountID: session.user.AccountID,
+          ItemID: BigInt(itemId),
+        },
+      },
+    });
+
+    if (!existingItem) {
+      console.log("[Update Debug] Item not found or permission denied");
+      return {
+        success: false,
+        message: "Item not found or you don't have permission to edit it",
+      };
+    }
+
+    // Convert price values to cents for storage
+    const priceInCents = Math.round(parseFloat(price) * 100);
+    const purchasePriceInCents = Math.round(parseFloat(purchasePrice) * 100);
+
+    // Handle image upload if a new image is provided
+    let finalImageUrl = imageLink;
+    if (imageFile) {
+      console.log("[Update Debug] New image provided, uploading to Cloudinary");
+      const newFormData = new FormData();
+      newFormData.append("image", imageFile);
+      finalImageUrl = await uploadToCloudinary(newFormData);
+      console.log("[Update Debug] Image uploaded successfully:", finalImageUrl);
+    }
+
+    // Update the item in the database
+    // First, update the Items table
+    await prisma.items.update({
+      where: { ItemID: BigInt(itemId) },
+      data: {
+        Name: name,
+        Brand: brand,
+        Type: type,
+        CategoryID: Number(categoryId),
+        DefaultImageLink: finalImageUrl,
+      },
+    });
+
+    console.log("[Update Debug] Items table updated");
+
+    // Then, update the Account_Items table
+    await prisma.account_Items.update({
+      where: {
+        AccountID_ItemID: {
+          AccountID: session.user.AccountID,
+          ItemID: BigInt(itemId),
+        },
+      },
+      data: {
+        Price: priceInCents,
+        PurchasePrice: purchasePriceInCents,
+        Qty: Number(qty),
+        ImageLink: finalImageUrl,
+      },
+    });
+
+    console.log("[Update Debug] Account_Items table updated");
+    return { success: true, message: "Item updated successfully" };
+  } catch (error) {
+    console.error("[Update Debug] Error updating item:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to update item",
+    };
+  }
+}
+
+export async function searchItems(
+  searchQuery: string = "",
+  categoryId?: string,
+  brandFilter?: string,
+  priceRange?: string,
+  sortBy: string = "newest"
+) {
+  try {
+    // Normalize search query
+    const normalizedSearchQuery = (searchQuery || "").trim();
+
+    console.log(
+      "[Search Debug] Starting searchItems action with normalized params:",
+      {
+        searchQuery: normalizedSearchQuery,
+        searchQueryLength: normalizedSearchQuery.length,
+        categoryId,
+        brandFilter,
+        priceRange,
+        sortBy,
+      }
+    );
+
+    // Get user session
+    const session = await getSession();
+    if (!session) {
+      console.log("[Search Debug] No session found");
+      return {
+        success: false,
+        message: "Your session has expired. Please log in again.",
+        items: [],
+        count: 0,
+      };
+    }
+
+    // Build the main query using Prisma's query API
+    let query: any = {
+      where: {
+        AccountID: session.user.AccountID,
+      },
+      include: {
+        Items: true,
+      },
+    };
+
+    // Add name search - this is the most important part
+    if (normalizedSearchQuery !== "") {
+      console.log(
+        "[Search Debug] Adding name search filter:",
+        normalizedSearchQuery
+      );
+      query.where = {
+        AND: [
+          { AccountID: session.user.AccountID },
+          {
+            Items: {
+              Name: {
+                contains: normalizedSearchQuery,
+                mode: "insensitive", // Case-insensitive search
+              },
+            },
+          },
+        ],
+      };
+    } else {
+      console.log("[Search Debug] No search query provided, showing all items");
+    }
+
+    // Add category filter
+    if (categoryId && categoryId.trim() !== "") {
+      if (query.where.AND) {
+        // If we already have AND conditions from the search query
+        query.where.AND.push({
+          Items: {
+            CategoryID: Number(categoryId),
+          },
+        });
+      } else {
+        // Otherwise, just add the category filter directly
+        query.where.Items = {
+          ...(query.where.Items || {}),
+          CategoryID: Number(categoryId),
+        };
+      }
+    }
+
+    // Add brand filter
+    if (brandFilter && brandFilter.trim() !== "") {
+      if (query.where.AND) {
+        // If we already have AND conditions
+        query.where.AND.push({
+          Items: {
+            Brand: {
+              equals: brandFilter,
+              mode: "insensitive",
+            },
+          },
+        });
+      } else {
+        // Otherwise, just add the brand filter directly
+        query.where.Items = {
+          ...(query.where.Items || {}),
+          Brand: {
+            equals: brandFilter,
+            mode: "insensitive",
+          },
+        };
+      }
+    }
+
+    // Add price range filter
+    if (priceRange) {
+      // Handle both formats: "min-max" or just "min"
+      const [minPrice, maxPrice] = priceRange.includes("-")
+        ? priceRange.split("-").map(Number)
+        : [Number(priceRange), null];
+
+      let priceFilter: any = {};
+
+      if (!isNaN(minPrice) && maxPrice !== null && !isNaN(maxPrice)) {
+        // Both min and max are specified
+        priceFilter = {
+          Price: {
+            gte: minPrice * 100, // Convert to cents
+            lte: maxPrice * 100,
+          },
+        };
+      } else if (!isNaN(minPrice)) {
+        // Only min price is specified
+        priceFilter = {
+          Price: {
+            gte: minPrice * 100,
+          },
+        };
+      }
+
+      if (Object.keys(priceFilter).length > 0) {
+        if (query.where.AND) {
+          query.where.AND.push(priceFilter);
+        } else {
+          Object.assign(query.where, priceFilter);
+        }
+      }
+    }
+
+    // Add sorting
+    let orderBy: any = {};
+    switch (sortBy) {
+      case "price-asc":
+        orderBy = { Price: "asc" };
+        break;
+      case "price-desc":
+        orderBy = { Price: "desc" };
+        break;
+      case "name":
+        orderBy = { Items: { Name: "asc" } };
+        break;
+      case "oldest":
+        orderBy = { ItemID: "asc" };
+        break;
+      case "newest":
+      default:
+        orderBy = { ItemID: "desc" };
+        break;
+    }
+
+    query.orderBy = orderBy;
+
+    console.log(
+      "[Search Debug] Final query with conditions:",
+      JSON.stringify(query, null, 2)
+    );
+
+    // Execute the query
+    const items = await prisma.account_Items.findMany(query);
+
+    console.log(
+      "[Search Debug] Found",
+      items.length,
+      "items. First item name:",
+      items.length > 0 ? (items[0] as any).Items?.Name : "none"
+    );
+
+    return {
+      success: true,
+      items,
+      count: items.length,
+    };
+  } catch (error) {
+    console.error("[Search Debug] Error searching items:", error);
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : "Failed to search items",
+      items: [],
+      count: 0,
+    };
+  }
 }
