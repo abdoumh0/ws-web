@@ -1,7 +1,7 @@
 "use client";
 
 import { loginUser, registerUser } from "@/lib/actions";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useToast } from "@/components/ui/toast";
 import { LoaderCircle } from "lucide-react";
@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function AuthPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const initialTab =
     searchParams.get("tab") === "register" ? "register" : "login";
 
@@ -24,7 +25,7 @@ export default function AuthPage() {
     const formData = new FormData(e.currentTarget as HTMLFormElement);
 
     try {
-      const { ok, message } = await loginUser(formData);
+      const { ok, message, redirect } = await loginUser(formData);
       if (!ok) {
         showToast({
           variant: "error",
@@ -32,6 +33,8 @@ export default function AuthPage() {
           description: message || "Invalid credentials. Please try again.",
         });
         setIsLoading(false);
+      } else if (redirect) {
+        router.push(redirect);
       }
     } catch (error) {
       showToast({
@@ -62,7 +65,7 @@ export default function AuthPage() {
     }
 
     try {
-      const { ok, message } = await registerUser(formData);
+      const { ok, message, redirect } = await registerUser(formData);
       if (ok) {
         showToast({
           variant: "success",
@@ -260,13 +263,13 @@ export default function AuthPage() {
             </div>
             <div>
               <label
-                htmlFor="confirmPassword"
+                htmlFor="confirm-password"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
                 Confirm Password
               </label>
               <input
-                id="confirmPassword"
+                id="confirm-password"
                 type="password"
                 name="confirmPassword"
                 placeholder="••••••••"
@@ -282,10 +285,10 @@ export default function AuthPage() {
               {isLoading ? (
                 <>
                   <LoaderCircle className="animate-spin mr-2" size={18} />
-                  Creating Account...
+                  Creating account...
                 </>
               ) : (
-                "Create Account"
+                "Register"
               )}
             </button>
           </form>

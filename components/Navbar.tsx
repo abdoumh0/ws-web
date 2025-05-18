@@ -1,13 +1,22 @@
+"use client";
+
 import { getSession, logoutUser } from "@/lib/actions";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { LogOut } from "lucide-react";
 
-type Props = {};
+export default function Navbar() {
+  const [session, setSession] = useState<any>(null);
 
-export default async function Navbar({}: Props) {
-  const session = await getSession();
+  useEffect(() => {
+    const loadSession = async () => {
+      const sessionData = await getSession();
+      setSession(sessionData);
+    };
+    loadSession();
+  }, []);
+
   return (
     <nav className="sticky top-0 left-0 bg-white border-b border-gray-100 shadow-sm z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -57,7 +66,7 @@ export default async function Navbar({}: Props) {
             </div>
           </div>
           <div className="hidden sm:flex sm:items-center sm:ml-6">
-            {session ? (
+            {session && (
               <div className="flex items-center space-x-4">
                 <Link
                   href="/store"
@@ -79,21 +88,6 @@ export default async function Navbar({}: Props) {
                 <div className="text-sm text-gray-700 ml-2">
                   {session.user.Email?.split("@")[0]}
                 </div>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-4">
-                <Link
-                  href="/login"
-                  className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
-                >
-                  Log In
-                </Link>
-                <Link
-                  href="/register"
-                  className="bg-blue-700 text-white hover:bg-blue-800 px-4 py-2 rounded-md text-sm font-medium"
-                >
-                  Register
-                </Link>
               </div>
             )}
           </div>

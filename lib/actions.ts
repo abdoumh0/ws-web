@@ -302,7 +302,7 @@ export async function decrypt(input: string): Promise<JWTPayload> {
 
 export async function registerUser(
   formData: FormData
-): Promise<{ ok: boolean; message?: string }> {
+): Promise<{ ok: boolean; message?: string; redirect?: string }> {
   const { email, password, confirmPassword, firstName, lastName, username } = {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
@@ -365,7 +365,7 @@ export async function registerUser(
     const expires = new Date(Date.now() + 60 * 1000 * 60 * 24); // 1 day
     cookieStore.set("session", session, { httpOnly: true, expires });
 
-    redirect("/");
+    return { ok: true, redirect: "/" };
   } catch (error) {
     if (error instanceof Error) {
       return { ok: false, message: `Error: ${error.message}` };
@@ -376,7 +376,7 @@ export async function registerUser(
 
 export async function loginUser(
   formData: FormData
-): Promise<{ ok: boolean; message?: string }> {
+): Promise<{ ok: boolean; message?: string; redirect?: string }> {
   const { email, password } = {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
@@ -418,7 +418,7 @@ export async function loginUser(
     const cookieStore = await cookies();
     cookieStore.set("session", session, { expires, httpOnly: true });
 
-    redirect("/");
+    return { ok: true, redirect: "/" };
   } catch (error) {
     if (error instanceof Error) {
       return { ok: false, message: `Error: ${error.message}` };
@@ -631,149 +631,73 @@ export async function searchItems(
   categoryId?: string,
   brandFilter?: string,
   priceRange?: string,
-  sortBy: string = "newest"
+  sortBy: string = "newest",
+  page: number = 1,
+  itemsPerPage: number = 24
 ) {
   try {
-    // Normalize search query
-    const normalizedSearchQuery = (searchQuery || "").trim();
-
-    console.log(
-      "[Search Debug] Starting searchItems action with normalized params:",
-      {
-        searchQuery: normalizedSearchQuery,
-        searchQueryLength: normalizedSearchQuery.length,
-        categoryId,
-        brandFilter,
-        priceRange,
-        sortBy,
-      }
-    );
-
-    // Get user session
-    const session = await getSession();
+    const session = (await cookies()).get("session")?.value;
     if (!session) {
-      console.log("[Search Debug] No session found");
-      return {
-        success: false,
-        message: "Your session has expired. Please log in again.",
-        items: [],
-        count: 0,
-      };
+      return { success: false, message: "Not authenticated" };
     }
 
-    // Build the main query using Prisma's query API
-    let query: any = {
-      where: {
-        AccountID: session.user.AccountID,
-      },
-      include: {
-        Items: true,
-      },
+    const userInfo = (await decrypt(session)) as { user: AccountInfo };
+    const { user } = userInfo;
+    const { AccountID } = user;
+
+    // Calculate skip value for pagination
+    const skip = (page - 1) * itemsPerPage;
+
+    // Build the where clause
+    const where: any = {
+      AccountID,
     };
 
-    // Add name search - this is the most important part
-    if (normalizedSearchQuery !== "") {
-      console.log(
-        "[Search Debug] Adding name search filter:",
-        normalizedSearchQuery
-      );
-      query.where = {
-        AND: [
-          { AccountID: session.user.AccountID },
-          {
-            Items: {
-              Name: {
-                contains: normalizedSearchQuery,
-                mode: "insensitive", // Case-insensitive search
-              },
-            },
-          },
-        ],
+    if (searchQuery) {
+      where.Items = {
+        Name: {
+          contains: searchQuery,
+          mode: "insensitive",
+        },
       };
-    } else {
-      console.log("[Search Debug] No search query provided, showing all items");
     }
 
-    // Add category filter
-    if (categoryId && categoryId.trim() !== "") {
-      if (query.where.AND) {
-        // If we already have AND conditions from the search query
-        query.where.AND.push({
-          Items: {
-            CategoryID: Number(categoryId),
-          },
-        });
-      } else {
-        // Otherwise, just add the category filter directly
-        query.where.Items = {
-          ...(query.where.Items || {}),
-          CategoryID: Number(categoryId),
-        };
-      }
+    if (categoryId) {
+      where.Items = {
+        ...where.Items,
+        CategoryID: Number(categoryId),
+      };
     }
 
-    // Add brand filter
-    if (brandFilter && brandFilter.trim() !== "") {
-      if (query.where.AND) {
-        // If we already have AND conditions
-        query.where.AND.push({
-          Items: {
-            Brand: {
-              equals: brandFilter,
-              mode: "insensitive",
-            },
-          },
-        });
-      } else {
-        // Otherwise, just add the brand filter directly
-        query.where.Items = {
-          ...(query.where.Items || {}),
-          Brand: {
-            equals: brandFilter,
-            mode: "insensitive",
-          },
-        };
-      }
+    if (brandFilter) {
+      where.Items = {
+        ...where.Items,
+        Brand: brandFilter,
+      };
     }
 
-    // Add price range filter
     if (priceRange) {
-      // Handle both formats: "min-max" or just "min"
-      const [minPrice, maxPrice] = priceRange.includes("-")
-        ? priceRange.split("-").map(Number)
-        : [Number(priceRange), null];
-
-      let priceFilter: any = {};
-
-      if (!isNaN(minPrice) && maxPrice !== null && !isNaN(maxPrice)) {
-        // Both min and max are specified
-        priceFilter = {
-          Price: {
-            gte: minPrice * 100, // Convert to cents
-            lte: maxPrice * 100,
-          },
-        };
-      } else if (!isNaN(minPrice)) {
-        // Only min price is specified
-        priceFilter = {
-          Price: {
-            gte: minPrice * 100,
-          },
+      const [minPrice, maxPrice] = priceRange.split("-").map(Number);
+      if (minPrice) {
+        where.Price = {
+          ...where.Price,
+          gte: minPrice * 100, // Convert to cents
         };
       }
-
-      if (Object.keys(priceFilter).length > 0) {
-        if (query.where.AND) {
-          query.where.AND.push(priceFilter);
-        } else {
-          Object.assign(query.where, priceFilter);
-        }
+      if (maxPrice) {
+        where.Price = {
+          ...where.Price,
+          lte: maxPrice * 100, // Convert to cents
+        };
       }
     }
 
-    // Add sorting
+    // Build the orderBy clause
     let orderBy: any = {};
     switch (sortBy) {
+      case "oldest":
+        orderBy = { CreatedAt: "asc" };
+        break;
       case "price-asc":
         orderBy = { Price: "asc" };
         break;
@@ -783,45 +707,35 @@ export async function searchItems(
       case "name":
         orderBy = { Items: { Name: "asc" } };
         break;
-      case "oldest":
-        orderBy = { ItemID: "asc" };
-        break;
-      case "newest":
-      default:
-        orderBy = { ItemID: "desc" };
-        break;
+      default: // newest
+        orderBy = { CreatedAt: "desc" };
     }
 
-    query.orderBy = orderBy;
+    // Get total count for pagination
+    const totalCount = await prisma.account_Items.count({ where });
 
-    console.log(
-      "[Search Debug] Final query with conditions:",
-      JSON.stringify(query, null, 2)
-    );
-
-    // Execute the query
-    const items = await prisma.account_Items.findMany(query);
-
-    console.log(
-      "[Search Debug] Found",
-      items.length,
-      "items. First item name:",
-      items.length > 0 ? (items[0] as any).Items?.Name : "none"
-    );
+    // Get paginated items
+    const items = await prisma.account_Items.findMany({
+      where,
+      orderBy,
+      skip,
+      take: itemsPerPage,
+      include: {
+        Items: true,
+      },
+    });
 
     return {
       success: true,
       items,
-      count: items.length,
+      count: totalCount,
     };
   } catch (error) {
-    console.error("[Search Debug] Error searching items:", error);
+    console.error("Search error:", error);
     return {
       success: false,
       message:
         error instanceof Error ? error.message : "Failed to search items",
-      items: [],
-      count: 0,
     };
   }
 }

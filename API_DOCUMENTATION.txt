@@ -1,0 +1,106 @@
+WareWise API Documentation
+=======================
+
+This document describes the available API endpoints and their usage.
+
+Base URL: https://your-domain.com/api
+
+Users API (/users)
+-----------------
+Lists all users with pagination and search capabilities.
+
+Query Parameters:
+- username: Search for a specific username (exact match)
+- firstName: Search by first name (case-insensitive partial match)
+- lastName: Search by last name (case-insensitive partial match)
+- page: Page number (default: 1)
+- limit: Items per page (default: 24, max: 100)
+
+Example Response:
+{
+  "users": [
+    {
+      "username": "johndoe",
+      "firstName": "John",
+      "lastName": "Doe",
+      "itemCount": 42
+    }
+  ],
+  "pagination": {
+    "total": 100,
+    "page": 1,
+    "limit": 24,
+    "totalPages": 5,
+    "prevPage": null,
+    "nextPage": "https://your-domain.com/api/users?page=2&limit=24"
+  }
+}
+
+Example Usage:
+- Get all users: GET /api/users
+- Get specific user: GET /api/users?username=johndoe
+- Search by first name: GET /api/users?firstName=john
+- Search by last name: GET /api/users?lastName=doe
+- Search by both names: GET /api/users?firstName=john&lastName=doe
+- Get specific page: GET /api/users?page=2&limit=12
+
+Items API (/items)
+-----------------
+Lists all items with filtering, sorting, and pagination capabilities.
+
+Query Parameters:
+- search: Search items by name
+- category: Filter by category ID
+- brand: Filter by brand name
+- minPrice: Filter by minimum price
+- maxPrice: Filter by maximum price
+- sortBy: Sort items (options: newest, oldest, price-asc, price-desc, name)
+- page: Page number (default: 1)
+- limit: Items per page (default: 24, max: 100)
+- username: Filter items by username
+
+Example Response:
+{
+  "items": [
+    {
+      "id": "123",
+      "name": "Laptop",
+      "price": 999.99,
+      "purchasePrice": 800.00,
+      "quantity": 10,
+      "brand": "Apple",
+      "category": "1",
+      "imageUrl": "https://...",
+      "user": {
+        "username": "johndoe",
+        "firstName": "John",
+        "lastName": "Doe"
+      }
+    }
+  ],
+  "pagination": {
+    "total": 100,
+    "page": 1,
+    "limit": 24,
+    "totalPages": 5,
+    "prevPage": null,
+    "nextPage": "https://your-domain.com/api/items?page=2&limit=24"
+  }
+}
+
+Example Usage:
+- Get all items: GET /api/items
+- Search items: GET /api/items?search=laptop
+- Filter by category: GET /api/items?category=1
+- Filter by brand: GET /api/items?brand=Apple
+- Filter by price range: GET /api/items?minPrice=500&maxPrice=1000
+- Sort items: GET /api/items?sortBy=price-asc
+- Get items by user: GET /api/items?username=johndoe
+- Combine filters: GET /api/items?search=laptop&category=1&brand=Apple&minPrice=500&maxPrice=1000&sortBy=price-desc&page=1&limit=24
+
+Notes:
+1. The API supports CORS and can be used from any origin
+2. Pagination URLs (prevPage and nextPage) maintain all query parameters
+3. Maximum items per page is 100
+4. Search is case-insensitive
+5. All endpoints return proper error responses with status codes 

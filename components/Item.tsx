@@ -111,53 +111,53 @@ export default function Item({
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200 w-full max-w-[280px] group relative">
-        {/* Action buttons - shown on hover */}
-        <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+      <div className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200 w-full max-w-[240px] group relative">
+        {/* Action buttons */}
+        <div className="absolute top-1.5 right-1.5 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
           <button
             onClick={handleEdit}
-            className="p-1.5 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-full transition-colors"
+            className="p-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-full transition-colors"
             title="Edit item"
           >
-            <Edit size={16} />
+            <Edit size={14} />
           </button>
           <button
             onClick={handleDelete}
-            className="p-1.5 bg-red-100 hover:bg-red-200 text-red-700 rounded-full transition-colors"
+            className="p-1 bg-red-100 hover:bg-red-200 text-red-700 rounded-full transition-colors"
             title="Remove item"
             disabled={isDeleting}
           >
-            <Trash2 size={16} />
+            <Trash2 size={14} />
           </button>
         </div>
 
         {/* Overlay when deleting */}
         {isDeleting && (
           <div className="absolute inset-0 bg-white/75 flex items-center justify-center z-20">
-            <div className="animate-pulse text-gray-500 font-medium">
+            <div className="animate-pulse text-sm text-gray-500">
               Removing...
             </div>
           </div>
         )}
 
-        <div className="w-full h-64 relative rounded-t-lg overflow-hidden">
+        <div className="w-full h-48 relative rounded-t-lg overflow-hidden">
           {/* Skeleton loading */}
           {isImageLoading && (
             <div className="absolute inset-0 bg-gray-200 animate-pulse">
               <div className="h-full w-full flex items-center justify-center">
-                <div className="w-16 h-16 rounded-full border-4 border-gray-300 border-t-gray-400 animate-spin"></div>
+                <div className="w-12 h-12 rounded-full border-3 border-gray-300 border-t-gray-400 animate-spin"></div>
               </div>
             </div>
           )}
 
           {/* Error fallback */}
           {imageError && (
-            <div className="absolute inset-0 bg-gray-100 flex flex-col items-center justify-center text-center p-4">
-              <div className="text-red-500 mb-2">
+            <div className="absolute inset-0 bg-gray-100 flex flex-col items-center justify-center text-center p-3">
+              <div className="text-red-500 mb-1">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="40"
-                  height="40"
+                  width="32"
+                  height="32"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -170,7 +170,7 @@ export default function Item({
                   <line x1="9" y1="9" x2="15" y2="15"></line>
                 </svg>
               </div>
-              <p className="text-sm text-gray-600">Failed to load image</p>
+              <p className="text-xs text-gray-600">Failed to load image</p>
             </div>
           )}
 
@@ -188,14 +188,16 @@ export default function Item({
             onError={handleImageError}
           />
         </div>
-        <div className="p-4">
-          <div className="flex justify-between items-start gap-2 mb-2">
-            <h3 className="font-medium text-gray-900 line-clamp-2">{Name}</h3>
-            <div className="text-blue-600 font-semibold whitespace-nowrap">
+        <div className="p-3">
+          <div className="flex justify-between items-start gap-1.5 mb-1.5">
+            <h3 className="text-sm font-medium text-gray-900 line-clamp-2">
+              {Name}
+            </h3>
+            <div className="text-sm text-blue-600 font-semibold whitespace-nowrap">
               {formattedPrice}
             </div>
           </div>
-          <div className="flex items-center justify-between text-sm text-gray-500">
+          <div className="flex items-center justify-between text-xs text-gray-500">
             <div className="flex items-center gap-1">
               <span className="font-medium">{Brand}</span>
             </div>
