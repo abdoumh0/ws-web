@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/toast";
 import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useSession } from "@/lib/SessionContext";
 
 export default function AuthPage() {
   const searchParams = useSearchParams();
@@ -17,6 +18,7 @@ export default function AuthPage() {
   const [activeTab, setActiveTab] = useState(initialTab);
   const { showToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const { refreshSession } = useSession();
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,8 +35,11 @@ export default function AuthPage() {
           description: message || "Invalid credentials. Please try again.",
         });
         setIsLoading(false);
-      } else if (redirect) {
-        router.push(redirect);
+      } else {
+        await refreshSession();
+        if (redirect) {
+          router.push(redirect);
+        }
       }
     } catch (error) {
       showToast({

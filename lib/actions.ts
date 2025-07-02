@@ -433,11 +433,19 @@ export async function logoutUser() {
   redirect("/");
 }
 
-export async function getSession() {
+export async function getSession(): Promise<AccountInfo | null> {
   const session = (await cookies()).get("session")?.value;
   if (!session) return null;
   const userInfo = (await decrypt(session)) as { user: AccountInfo };
-  return userInfo;
+  return {
+    AccountID: userInfo.user.AccountID,
+    Email: userInfo.user.Email,
+    FirstName: userInfo.user.FirstName,
+    LastName: userInfo.user.LastName,
+    Username: userInfo.user.Username,
+    FacebookID: userInfo.user.FacebookID,
+    GoogleID: userInfo.user.GoogleID,
+  };
 }
 
 export async function deleteItem(itemId: string, accountId: string) {
@@ -458,9 +466,9 @@ export async function deleteItem(itemId: string, accountId: string) {
     }
 
     // Ensure the user owns this item
-    if (session.user.AccountID !== accountId) {
+    if (session.AccountID !== accountId) {
       console.log("[Delete Debug] Unauthorized - AccountID mismatch", {
-        sessionAccountId: session.user.AccountID,
+        sessionAccountId: session.AccountID,
         requestAccountId: accountId,
       });
       return {
@@ -556,7 +564,7 @@ export async function updateItem(formData: FormData) {
     const existingItem = await prisma.account_Items.findUnique({
       where: {
         AccountID_ItemID: {
-          AccountID: session.user.AccountID,
+          AccountID: session.AccountID,
           ItemID: BigInt(itemId),
         },
       },
@@ -603,7 +611,7 @@ export async function updateItem(formData: FormData) {
     await prisma.account_Items.update({
       where: {
         AccountID_ItemID: {
-          AccountID: session.user.AccountID,
+          AccountID: session.AccountID,
           ItemID: BigInt(itemId),
         },
       },

@@ -1,21 +1,16 @@
 "use client";
 
 import { getSession, logoutUser } from "@/lib/actions";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { LogOut } from "lucide-react";
+import { AccountInfo } from "@/lib/types";
+import { useSession } from "@/lib/SessionContext";
+import Controls from "@/components/Controls";
 
 export default function Navbar() {
-  const [session, setSession] = useState<any>(null);
-
-  useEffect(() => {
-    const loadSession = async () => {
-      const sessionData = await getSession();
-      setSession(sessionData);
-    };
-    loadSession();
-  }, []);
+  const { session } = useSession();
 
   return (
     <nav className="sticky top-0 left-0 bg-white border-b border-gray-100 shadow-sm z-50">
@@ -66,30 +61,7 @@ export default function Navbar() {
             </div>
           </div>
           <div className="hidden sm:flex sm:items-center sm:ml-6">
-            {session && (
-              <div className="flex items-center space-x-4">
-                <Link
-                  href="/store"
-                  className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
-                >
-                  My Store
-                </Link>
-                <Link
-                  href="/profile"
-                  className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
-                >
-                  Profile
-                </Link>
-                <form action={logoutUser}>
-                  <button className="flex items-center bg-blue-700 text-white hover:bg-blue-800 px-4 py-2 rounded-md text-sm font-medium ml-2">
-                    <LogOut className="h-4 w-4 mr-1" /> Logout
-                  </button>
-                </form>
-                <div className="text-sm text-gray-700 ml-2">
-                  {session.user.Email?.split("@")[0]}
-                </div>
-              </div>
-            )}
+            {session && <Controls />}
           </div>
           <div className="flex items-center sm:hidden">
             <button className="text-gray-500 hover:text-gray-700 focus:outline-none">

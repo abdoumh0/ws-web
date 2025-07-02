@@ -12,7 +12,7 @@ export default async function StorePage() {
   }
 
   const items = await prisma.account_Items.findMany({
-    where: { AccountID: session.user.AccountID },
+    where: { AccountID: session.AccountID },
     include: {
       Items: true,
     },
@@ -34,7 +34,6 @@ export default async function StorePage() {
 
           <ItemTable
             total={items.length}
-            filteredCount={items.length}
             initialItems={items}
           />
         </div>
