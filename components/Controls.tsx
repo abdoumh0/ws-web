@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { InboxIcon, BellIcon, MenuIcon } from "lucide-react";
 import { logoutUser } from "@/lib/actions";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 const messages = [
   {
     id: 1,
@@ -49,10 +50,13 @@ function formatTimestamp(ts: string) {
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
-function ControlButton({ icon, isOpen, onClick }: { icon: React.ReactNode, isOpen: boolean, onClick: () => void }) {
+function ControlButton({ className,icon, onClick }: React.ComponentProps<"button"> &
+    {
+    asChild?: boolean
+    icon: React.ReactNode, onClick: () => void }) {
   return (
     <div className="relative">
-      <Button variant="outline" className="rounded-full w-10 h-10" onClick={onClick}>
+      <Button variant="outline" className={cn("rounded-full w-10 h-10 hover:bg-gray-100 hover:text-indigo-500 cursor-pointer", className)} onClick={onClick}>
         {icon}
       </Button>
     </div>
@@ -122,17 +126,17 @@ export default function Controls() {
       <div className="flex items-center gap-2">
         <ControlButton
           icon={<InboxIcon className="w-4 h-4" />}
-          isOpen={open === "messages"}
+          className={open === "messages" ? "bg-blue-100 text-indigo-500" : ""}
           onClick={() => setOpen(open === "messages" ? null : "messages")}
         />
         <ControlButton
           icon={<BellIcon className="w-4 h-4" />}
-          isOpen={open === "notifications"}
+          className={open === "notifications" ? "bg-blue-100 text-indigo-500" : ""}
           onClick={() => setOpen(open === "notifications" ? null : "notifications")}
         />
         <ControlButton
           icon={<MenuIcon className="w-4 h-4" />}
-          isOpen={open === "menu"}
+          className={open === "menu" ? "bg-blue-100 text-indigo-500" : ""}
           onClick={() => setOpen(open === "menu" ? null : "menu")}
         />
       </div>

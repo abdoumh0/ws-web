@@ -72,12 +72,13 @@ export default function AuthPage() {
     try {
       const { ok, message, redirect } = await registerUser(formData);
       if (ok) {
+        await refreshSession();
         showToast({
           variant: "success",
           title: "Registration Successful",
-          description: "Your account has been created! You can now log in.",
+          description: "Your account has been created!",
         });
-        setActiveTab("login");
+          router.push(redirect ?? "/");
         setIsLoading(false);
       } else {
         showToast({

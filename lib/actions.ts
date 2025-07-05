@@ -1,7 +1,7 @@
 "use server";
 
 import { hash, compare } from "bcrypt";
-import { JWTPayload, SignJWT, jwtVerify } from "jose";
+import { JWTPayload, SignJWT, jwtVerify, importPKCS8, importSPKI } from "jose";
 import { randomUUID } from "crypto";
 import prisma from "./prisma";
 import { v2 as cloudinary } from "cloudinary";
@@ -202,7 +202,7 @@ export const handleItemSubmit = async (formData: FormData) => {
       };
     }
 
-    const userInfo = (await decrypt(session)) as { user: AccountInfo };
+    const userInfo = (await verify(session)) as { user: AccountInfo };
     const { user } = userInfo;
     const { AccountID } = user;
     console.log("[Item Debug] User authenticated, AccountID:", AccountID);
@@ -282,22 +282,73 @@ export const handleItemSubmit = async (formData: FormData) => {
   }
 };
 
-const secretKey = process.env.JWT_SECRET;
-const key = new TextEncoder().encode(secretKey);
+// RSA Key setup
+const getPrivateKey = async () => {
+  const privateKeyPem = process.env.JWT_PRIVATE_KEY;
+  if (!privateKeyPem) {
+    throw new Error('JWT_PRIVATE_KEY environment variable is not set');
+  }
+  
+  // If the key is base64 encoded, decode it
+  const key = privateKeyPem.includes('-----BEGIN') 
+    ? privateKeyPem 
+    : Buffer.from(privateKeyPem, 'base64').toString();
+    
+  return await importPKCS8(key, 'RS256');
+};
 
-export async function encrypt(payload: any) {
+const getPublicKey = async () => {
+  const publicKeyPem = process.env.JWT_PUBLIC_KEY;
+  if (!publicKeyPem) {
+    throw new Error('JWT_PUBLIC_KEY environment variable is not set');
+  }
+  
+  // If the key is base64 encoded, decode it
+  const key = publicKeyPem.includes('-----BEGIN') 
+    ? publicKeyPem 
+    : Buffer.from(publicKeyPem, 'base64').toString();
+    
+  return await importSPKI(key, 'RS256');
+};
+
+export async function sign(payload: any) {
+  const privateKey = await getPrivateKey();
   return await new SignJWT(payload)
-    .setProtectedHeader({ alg: "HS256" })
+    .setProtectedHeader({ alg: "RS256" })
     .setIssuedAt()
     .setExpirationTime("1 day")
-    .sign(key);
+    .sign(privateKey);
 }
 
-export async function decrypt(input: string): Promise<JWTPayload> {
-  const { payload } = await jwtVerify(input, key, {
-    algorithms: ["HS256"],
+export async function verify(input: string): Promise<JWTPayload> {
+  const publicKey = await getPublicKey();
+  const { payload } = await jwtVerify(input, publicKey, {
+    algorithms: ["RS256"],
   });
   return payload;
+}
+
+// Helper function to extract user data without sensitive fields
+function extractUserData(userData: any) {
+  const { Password, FacebookID, GoogleID, ...userWithoutPassword } = userData;
+  return userWithoutPassword;
+}
+
+// Helper function to create session and set cookie
+async function createUserSession(userData: any, expires?: Date) {
+  const userWithoutPassword = extractUserData(userData);
+  const sessionExpires = expires || new Date(Date.now() + 60 * 1000 * 60 * 24); // 1 day default
+  
+  const session = await sign({ user: userWithoutPassword, expires: sessionExpires });
+  
+  const cookieStore = await cookies();
+  cookieStore.set("session", session, {
+    httpOnly: true,
+    expires: sessionExpires,
+    domain: "localhost" //TODO: change to env var
+  });
+  
+  return session;
 }
 
 export async function registerUser(
@@ -357,13 +408,7 @@ export async function registerUser(
 
     if (!userData) return { ok: false, message: "Failed to create account" };
 
-    const { Password, FacebookID, GoogleID, ...userWithoutPassword } = userData;
-
-    const session = await encrypt({ user: userWithoutPassword });
-
-    const cookieStore = await cookies();
-    const expires = new Date(Date.now() + 60 * 1000 * 60 * 24); // 1 day
-    cookieStore.set("session", session, { httpOnly: true, expires });
+    await createUserSession(userData);
 
     return { ok: true, redirect: "/" };
   } catch (error) {
@@ -400,23 +445,7 @@ export async function loginUser(
 
     if (!match) return { ok: false, message: "Invalid password" };
 
-    const AccountInfo: AccountInfo = {
-      AccountID: userData.AccountID,
-      Email: userData.Email,
-      FirstName: userData.FirstName,
-      LastName: userData.LastName,
-      Username: userData.Username,
-      FacebookID: userData.FacebookID,
-      GoogleID: userData.GoogleID,
-    };
-
-    // Create the session
-    const expires = new Date(Date.now() + 60 * 1000 * 60 * 24); // 1 day
-    const session = await encrypt({ user: AccountInfo, expires });
-
-    // Save the session in a cookie
-    const cookieStore = await cookies();
-    cookieStore.set("session", session, { expires, httpOnly: true });
+    await createUserSession(userData);
 
     return { ok: true, redirect: "/" };
   } catch (error) {
@@ -436,7 +465,7 @@ export async function logoutUser() {
 export async function getSession(): Promise<AccountInfo | null> {
   const session = (await cookies()).get("session")?.value;
   if (!session) return null;
-  const userInfo = (await decrypt(session)) as { user: AccountInfo };
+  const userInfo = (await verify(session)) as { user: AccountInfo };
   return {
     AccountID: userInfo.user.AccountID,
     Email: userInfo.user.Email,
@@ -649,7 +678,7 @@ export async function searchItems(
       return { success: false, message: "Not authenticated" };
     }
 
-    const userInfo = (await decrypt(session)) as { user: AccountInfo };
+    const userInfo = (await verify(session)) as { user: AccountInfo };
     const { user } = userInfo;
     const { AccountID } = user;
 

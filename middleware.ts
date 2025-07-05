@@ -4,8 +4,23 @@ import {
   NextMiddleware,
   NextFetchEvent,
 } from "next/server";
-import { jwtVerify } from "jose";
+import { jwtVerify, importSPKI } from "jose";
 import { redirect } from "next/navigation";
+
+// RSA Key setup for middleware
+const getPublicKey = async () => {
+  const publicKeyPem = process.env.JWT_PUBLIC_KEY;
+  if (!publicKeyPem) {
+    throw new Error('JWT_PUBLIC_KEY environment variable is not set');
+  }
+  
+  // If the key is base64 encoded, decode it
+  const key = publicKeyPem.includes('-----BEGIN') 
+    ? publicKeyPem 
+    : Buffer.from(publicKeyPem, 'base64').toString();
+    
+  return await importSPKI(key, 'RS256');
+};
 
 function mwHelper(...args: NextMiddleware[]) {
   return async (request: NextRequest, event: NextFetchEvent) => {
@@ -35,9 +50,11 @@ const authMiddleware: NextMiddleware = async (request: NextRequest) => {
   // Redirect authenticated users away from auth pages
   if (sessionCookie && isAuthPage) {
     try {
+      const publicKey = await getPublicKey();
       const { payload, protectedHeader } = await jwtVerify(
         sessionCookie.value,
-        new TextEncoder().encode(process.env.JWT_SECRET)
+        publicKey,
+        { algorithms: ["RS256"] }
       );
       return NextResponse.redirect(new URL("/", request.url));
     } catch (error) {
