@@ -5,6 +5,8 @@ import { InboxIcon, BellIcon, MenuIcon } from "lucide-react";
 import { logoutUser } from "@/lib/actions";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useSession } from "@/lib/SessionContext";
+
 const messages = [
   {
     id: 1,
@@ -66,6 +68,12 @@ function ControlButton({ className,icon, onClick }: React.ComponentProps<"button
 export default function Controls() {
   const [open, setOpen] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { refreshSession } = useSession();
+
+  const handleLogout = async () => {
+    await logoutUser(); // Then delete cookie and redirect
+    await refreshSession(); // Clear the session context first
+  };
 
   let content: React.ReactNode = null;
   if (open === "messages") {
@@ -114,9 +122,12 @@ export default function Controls() {
           <Link href="/settings" className="text-sm px-2 py-1 rounded hover:bg-gray-100 transition-colors">
             Settings
           </Link>
-        <form action={logoutUser}>
-          <button type="submit" className="text-sm px-2 py-1 rounded hover:bg-gray-100 transition-colors w-full text-left text-red-600 font-medium">Logout</button>
-        </form>
+        <button 
+          onClick={handleLogout}
+          className="text-sm px-2 py-1 rounded hover:bg-gray-100 transition-colors w-full text-left text-red-600 font-medium"
+        >
+          Logout
+        </button>
       </div>
     );
   }

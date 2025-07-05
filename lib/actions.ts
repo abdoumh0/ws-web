@@ -459,7 +459,13 @@ export async function loginUser(
 export async function logoutUser() {
   const cookieStore = await cookies();
   cookieStore.delete("session");
-  redirect("/");
+}
+
+
+
+export async function getSessionToken(): Promise<string | null> {
+  const session = (await cookies()).get("session")?.value;
+  return session || null;
 }
 
 export async function getSession(): Promise<AccountInfo | null> {
