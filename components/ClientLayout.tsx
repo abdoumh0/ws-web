@@ -12,10 +12,10 @@ export default function ClientLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { token } = useSession(); // Get token from context
+  const { session } = useSession(); // Get token from context
 
   return (
-    <WebSocketProvider session={token}>
+    <WebSocketProvider session={session}>
       <Navbar />
       <ToastContainer>
         <NProgressProvider />

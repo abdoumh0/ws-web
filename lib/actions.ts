@@ -7,7 +7,6 @@ import prisma from "./prisma";
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { AccountInfo } from "./types";
 
 cloudinary.config({
@@ -337,7 +336,7 @@ function extractUserData(userData: any) {
 // Helper function to create session and set cookie
 async function createUserSession(userData: any, expires?: Date) {
   const userWithoutPassword = extractUserData(userData);
-  const sessionExpires = expires || new Date(Date.now() + 60 * 1000 * 60 * 24); // 1 day default
+  const sessionExpires = expires || new Date(Date.now() + 60 * 1000 * 60 * 24 * 7);
   
   const session = await sign({ user: userWithoutPassword, expires: sessionExpires });
   
@@ -461,12 +460,6 @@ export async function logoutUser() {
   cookieStore.delete("session");
 }
 
-
-
-export async function getSessionToken(): Promise<string | null> {
-  const session = (await cookies()).get("session")?.value;
-  return session || null;
-}
 
 export async function getSession(): Promise<AccountInfo | null> {
   const session = (await cookies()).get("session")?.value;
