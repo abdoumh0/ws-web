@@ -320,11 +320,16 @@ export async function sign(payload: any) {
 }
 
 export async function verify(input: string): Promise<JWTPayload> {
-  const publicKey = await getPublicKey();
-  const { payload } = await jwtVerify(input, publicKey, {
-    algorithms: ["RS256"],
-  });
-  return payload;
+  try {
+    const publicKey = await getPublicKey();
+    const { payload } = await jwtVerify(input, publicKey, {
+      algorithms: ["RS256"],
+    });
+    return payload;
+  } catch (error) {
+    console.error("[Auth] JWT verification failed:", error);
+    throw new Error("Invalid or expired session");
+  }
 }
 
 // Helper function to extract user data without sensitive fields
@@ -464,16 +469,21 @@ export async function logoutUser() {
 export async function getSession(): Promise<AccountInfo | null> {
   const session = (await cookies()).get("session")?.value;
   if (!session) return null;
-  const userInfo = (await verify(session)) as { user: AccountInfo };
-  return {
-    AccountID: userInfo.user.AccountID,
-    Email: userInfo.user.Email,
-    FirstName: userInfo.user.FirstName,
-    LastName: userInfo.user.LastName,
-    Username: userInfo.user.Username,
-    FacebookID: userInfo.user.FacebookID,
-    GoogleID: userInfo.user.GoogleID,
-  };
+  try {
+    const userInfo = (await verify(session)) as { user: AccountInfo };
+    return {
+      AccountID: userInfo.user.AccountID,
+      Email: userInfo.user.Email,
+      FirstName: userInfo.user.FirstName,
+      LastName: userInfo.user.LastName,
+      Username: userInfo.user.Username,
+      FacebookID: userInfo.user.FacebookID,
+      GoogleID: userInfo.user.GoogleID,
+    };
+  } catch (error) {
+    // If verify fails, return null (invalid/expired session)
+    return null;
+  }
 }
 
 export async function deleteItem(itemId: string, accountId: string) {

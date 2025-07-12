@@ -28,6 +28,26 @@ export type Accounts = $Result.DefaultSelection<Prisma.$AccountsPayload>
  * 
  */
 export type Items = $Result.DefaultSelection<Prisma.$ItemsPayload>
+/**
+ * Model Chat
+ * 
+ */
+export type Chat = $Result.DefaultSelection<Prisma.$ChatPayload>
+/**
+ * Model ChatMember
+ * 
+ */
+export type ChatMember = $Result.DefaultSelection<Prisma.$ChatMemberPayload>
+/**
+ * Model Message
+ * 
+ */
+export type Message = $Result.DefaultSelection<Prisma.$MessagePayload>
+/**
+ * Model MessageContent
+ * 
+ */
+export type MessageContent = $Result.DefaultSelection<Prisma.$MessageContentPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -183,6 +203,46 @@ export class PrismaClient<
     * ```
     */
   get items(): Prisma.ItemsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.chat`: Exposes CRUD operations for the **Chat** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Chats
+    * const chats = await prisma.chat.findMany()
+    * ```
+    */
+  get chat(): Prisma.ChatDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.chatMember`: Exposes CRUD operations for the **ChatMember** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ChatMembers
+    * const chatMembers = await prisma.chatMember.findMany()
+    * ```
+    */
+  get chatMember(): Prisma.ChatMemberDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.message`: Exposes CRUD operations for the **Message** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Messages
+    * const messages = await prisma.message.findMany()
+    * ```
+    */
+  get message(): Prisma.MessageDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.messageContent`: Exposes CRUD operations for the **MessageContent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MessageContents
+    * const messageContents = await prisma.messageContent.findMany()
+    * ```
+    */
+  get messageContent(): Prisma.MessageContentDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -625,7 +685,11 @@ export namespace Prisma {
   export const ModelName: {
     Account_Items: 'Account_Items',
     Accounts: 'Accounts',
-    Items: 'Items'
+    Items: 'Items',
+    Chat: 'Chat',
+    ChatMember: 'ChatMember',
+    Message: 'Message',
+    MessageContent: 'MessageContent'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -644,7 +708,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account_Items" | "accounts" | "items"
+      modelProps: "account_Items" | "accounts" | "items" | "chat" | "chatMember" | "message" | "messageContent"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -870,6 +934,302 @@ export namespace Prisma {
           }
         }
       }
+      Chat: {
+        payload: Prisma.$ChatPayload<ExtArgs>
+        fields: Prisma.ChatFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ChatFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ChatFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatPayload>
+          }
+          findFirst: {
+            args: Prisma.ChatFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ChatFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatPayload>
+          }
+          findMany: {
+            args: Prisma.ChatFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatPayload>[]
+          }
+          create: {
+            args: Prisma.ChatCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatPayload>
+          }
+          createMany: {
+            args: Prisma.ChatCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ChatCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatPayload>[]
+          }
+          delete: {
+            args: Prisma.ChatDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatPayload>
+          }
+          update: {
+            args: Prisma.ChatUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatPayload>
+          }
+          deleteMany: {
+            args: Prisma.ChatDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ChatUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ChatUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatPayload>[]
+          }
+          upsert: {
+            args: Prisma.ChatUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatPayload>
+          }
+          aggregate: {
+            args: Prisma.ChatAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateChat>
+          }
+          groupBy: {
+            args: Prisma.ChatGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ChatGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ChatCountArgs<ExtArgs>
+            result: $Utils.Optional<ChatCountAggregateOutputType> | number
+          }
+        }
+      }
+      ChatMember: {
+        payload: Prisma.$ChatMemberPayload<ExtArgs>
+        fields: Prisma.ChatMemberFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ChatMemberFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMemberPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ChatMemberFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMemberPayload>
+          }
+          findFirst: {
+            args: Prisma.ChatMemberFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMemberPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ChatMemberFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMemberPayload>
+          }
+          findMany: {
+            args: Prisma.ChatMemberFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMemberPayload>[]
+          }
+          create: {
+            args: Prisma.ChatMemberCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMemberPayload>
+          }
+          createMany: {
+            args: Prisma.ChatMemberCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ChatMemberCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMemberPayload>[]
+          }
+          delete: {
+            args: Prisma.ChatMemberDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMemberPayload>
+          }
+          update: {
+            args: Prisma.ChatMemberUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMemberPayload>
+          }
+          deleteMany: {
+            args: Prisma.ChatMemberDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ChatMemberUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ChatMemberUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMemberPayload>[]
+          }
+          upsert: {
+            args: Prisma.ChatMemberUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMemberPayload>
+          }
+          aggregate: {
+            args: Prisma.ChatMemberAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateChatMember>
+          }
+          groupBy: {
+            args: Prisma.ChatMemberGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ChatMemberGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ChatMemberCountArgs<ExtArgs>
+            result: $Utils.Optional<ChatMemberCountAggregateOutputType> | number
+          }
+        }
+      }
+      Message: {
+        payload: Prisma.$MessagePayload<ExtArgs>
+        fields: Prisma.MessageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MessageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MessageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessagePayload>
+          }
+          findFirst: {
+            args: Prisma.MessageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MessageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessagePayload>
+          }
+          findMany: {
+            args: Prisma.MessageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessagePayload>[]
+          }
+          create: {
+            args: Prisma.MessageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessagePayload>
+          }
+          createMany: {
+            args: Prisma.MessageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MessageCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessagePayload>[]
+          }
+          delete: {
+            args: Prisma.MessageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessagePayload>
+          }
+          update: {
+            args: Prisma.MessageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessagePayload>
+          }
+          deleteMany: {
+            args: Prisma.MessageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MessageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MessageUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessagePayload>[]
+          }
+          upsert: {
+            args: Prisma.MessageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessagePayload>
+          }
+          aggregate: {
+            args: Prisma.MessageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMessage>
+          }
+          groupBy: {
+            args: Prisma.MessageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MessageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MessageCountArgs<ExtArgs>
+            result: $Utils.Optional<MessageCountAggregateOutputType> | number
+          }
+        }
+      }
+      MessageContent: {
+        payload: Prisma.$MessageContentPayload<ExtArgs>
+        fields: Prisma.MessageContentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MessageContentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessageContentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MessageContentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessageContentPayload>
+          }
+          findFirst: {
+            args: Prisma.MessageContentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessageContentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MessageContentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessageContentPayload>
+          }
+          findMany: {
+            args: Prisma.MessageContentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessageContentPayload>[]
+          }
+          create: {
+            args: Prisma.MessageContentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessageContentPayload>
+          }
+          createMany: {
+            args: Prisma.MessageContentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MessageContentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessageContentPayload>[]
+          }
+          delete: {
+            args: Prisma.MessageContentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessageContentPayload>
+          }
+          update: {
+            args: Prisma.MessageContentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessageContentPayload>
+          }
+          deleteMany: {
+            args: Prisma.MessageContentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MessageContentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MessageContentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessageContentPayload>[]
+          }
+          upsert: {
+            args: Prisma.MessageContentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MessageContentPayload>
+          }
+          aggregate: {
+            args: Prisma.MessageContentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMessageContent>
+          }
+          groupBy: {
+            args: Prisma.MessageContentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MessageContentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MessageContentCountArgs<ExtArgs>
+            result: $Utils.Optional<MessageContentCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -957,6 +1317,10 @@ export namespace Prisma {
     account_Items?: Account_ItemsOmit
     accounts?: AccountsOmit
     items?: ItemsOmit
+    chat?: ChatOmit
+    chatMember?: ChatMemberOmit
+    message?: MessageOmit
+    messageContent?: MessageContentOmit
   }
 
   /* Types for Logging */
@@ -1052,10 +1416,14 @@ export namespace Prisma {
 
   export type AccountsCountOutputType = {
     Account_Items: number
+    ChatMember: number
+    Message: number
   }
 
   export type AccountsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Account_Items?: boolean | AccountsCountOutputTypeCountAccount_ItemsArgs
+    ChatMember?: boolean | AccountsCountOutputTypeCountChatMemberArgs
+    Message?: boolean | AccountsCountOutputTypeCountMessageArgs
   }
 
   // Custom InputTypes
@@ -1074,6 +1442,20 @@ export namespace Prisma {
    */
   export type AccountsCountOutputTypeCountAccount_ItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: Account_ItemsWhereInput
+  }
+
+  /**
+   * AccountsCountOutputType without action
+   */
+  export type AccountsCountOutputTypeCountChatMemberArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatMemberWhereInput
+  }
+
+  /**
+   * AccountsCountOutputType without action
+   */
+  export type AccountsCountOutputTypeCountMessageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MessageWhereInput
   }
 
 
@@ -1105,6 +1487,77 @@ export namespace Prisma {
    */
   export type ItemsCountOutputTypeCountAccount_ItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: Account_ItemsWhereInput
+  }
+
+
+  /**
+   * Count Type ChatCountOutputType
+   */
+
+  export type ChatCountOutputType = {
+    Messages: number
+    Members: number
+  }
+
+  export type ChatCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Messages?: boolean | ChatCountOutputTypeCountMessagesArgs
+    Members?: boolean | ChatCountOutputTypeCountMembersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ChatCountOutputType without action
+   */
+  export type ChatCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatCountOutputType
+     */
+    select?: ChatCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ChatCountOutputType without action
+   */
+  export type ChatCountOutputTypeCountMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MessageWhereInput
+  }
+
+  /**
+   * ChatCountOutputType without action
+   */
+  export type ChatCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatMemberWhereInput
+  }
+
+
+  /**
+   * Count Type MessageCountOutputType
+   */
+
+  export type MessageCountOutputType = {
+    MessageContent: number
+  }
+
+  export type MessageCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    MessageContent?: boolean | MessageCountOutputTypeCountMessageContentArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MessageCountOutputType without action
+   */
+  export type MessageCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageCountOutputType
+     */
+    select?: MessageCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MessageCountOutputType without action
+   */
+  export type MessageCountOutputTypeCountMessageContentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MessageContentWhereInput
   }
 
 
@@ -2426,6 +2879,8 @@ export namespace Prisma {
     FacebookID?: boolean
     GoogleID?: boolean
     Account_Items?: boolean | Accounts$Account_ItemsArgs<ExtArgs>
+    ChatMember?: boolean | Accounts$ChatMemberArgs<ExtArgs>
+    Message?: boolean | Accounts$MessageArgs<ExtArgs>
     _count?: boolean | AccountsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["accounts"]>
 
@@ -2465,6 +2920,8 @@ export namespace Prisma {
   export type AccountsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"AccountID" | "Email" | "FirstName" | "LastName" | "Password" | "Username" | "FacebookID" | "GoogleID", ExtArgs["result"]["accounts"]>
   export type AccountsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Account_Items?: boolean | Accounts$Account_ItemsArgs<ExtArgs>
+    ChatMember?: boolean | Accounts$ChatMemberArgs<ExtArgs>
+    Message?: boolean | Accounts$MessageArgs<ExtArgs>
     _count?: boolean | AccountsCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AccountsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2474,6 +2931,8 @@ export namespace Prisma {
     name: "Accounts"
     objects: {
       Account_Items: Prisma.$Account_ItemsPayload<ExtArgs>[]
+      ChatMember: Prisma.$ChatMemberPayload<ExtArgs>[]
+      Message: Prisma.$MessagePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       AccountID: string
@@ -2879,6 +3338,8 @@ export namespace Prisma {
   export interface Prisma__AccountsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     Account_Items<T extends Accounts$Account_ItemsArgs<ExtArgs> = {}>(args?: Subset<T, Accounts$Account_ItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Account_ItemsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ChatMember<T extends Accounts$ChatMemberArgs<ExtArgs> = {}>(args?: Subset<T, Accounts$ChatMemberArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Message<T extends Accounts$MessageArgs<ExtArgs> = {}>(args?: Subset<T, Accounts$MessageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3325,6 +3786,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Account_ItemsScalarFieldEnum | Account_ItemsScalarFieldEnum[]
+  }
+
+  /**
+   * Accounts.ChatMember
+   */
+  export type Accounts$ChatMemberArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMember
+     */
+    select?: ChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMember
+     */
+    omit?: ChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMemberInclude<ExtArgs> | null
+    where?: ChatMemberWhereInput
+    orderBy?: ChatMemberOrderByWithRelationInput | ChatMemberOrderByWithRelationInput[]
+    cursor?: ChatMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChatMemberScalarFieldEnum | ChatMemberScalarFieldEnum[]
+  }
+
+  /**
+   * Accounts.Message
+   */
+  export type Accounts$MessageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+    where?: MessageWhereInput
+    orderBy?: MessageOrderByWithRelationInput | MessageOrderByWithRelationInput[]
+    cursor?: MessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
   }
 
   /**
@@ -4485,6 +4994,4297 @@ export namespace Prisma {
 
 
   /**
+   * Model Chat
+   */
+
+  export type AggregateChat = {
+    _count: ChatCountAggregateOutputType | null
+    _min: ChatMinAggregateOutputType | null
+    _max: ChatMaxAggregateOutputType | null
+  }
+
+  export type ChatMinAggregateOutputType = {
+    ChatID: string | null
+    Name: string | null
+  }
+
+  export type ChatMaxAggregateOutputType = {
+    ChatID: string | null
+    Name: string | null
+  }
+
+  export type ChatCountAggregateOutputType = {
+    ChatID: number
+    Name: number
+    _all: number
+  }
+
+
+  export type ChatMinAggregateInputType = {
+    ChatID?: true
+    Name?: true
+  }
+
+  export type ChatMaxAggregateInputType = {
+    ChatID?: true
+    Name?: true
+  }
+
+  export type ChatCountAggregateInputType = {
+    ChatID?: true
+    Name?: true
+    _all?: true
+  }
+
+  export type ChatAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Chat to aggregate.
+     */
+    where?: ChatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Chats to fetch.
+     */
+    orderBy?: ChatOrderByWithRelationInput | ChatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ChatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Chats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Chats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Chats
+    **/
+    _count?: true | ChatCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ChatMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ChatMaxAggregateInputType
+  }
+
+  export type GetChatAggregateType<T extends ChatAggregateArgs> = {
+        [P in keyof T & keyof AggregateChat]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateChat[P]>
+      : GetScalarType<T[P], AggregateChat[P]>
+  }
+
+
+
+
+  export type ChatGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatWhereInput
+    orderBy?: ChatOrderByWithAggregationInput | ChatOrderByWithAggregationInput[]
+    by: ChatScalarFieldEnum[] | ChatScalarFieldEnum
+    having?: ChatScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ChatCountAggregateInputType | true
+    _min?: ChatMinAggregateInputType
+    _max?: ChatMaxAggregateInputType
+  }
+
+  export type ChatGroupByOutputType = {
+    ChatID: string
+    Name: string | null
+    _count: ChatCountAggregateOutputType | null
+    _min: ChatMinAggregateOutputType | null
+    _max: ChatMaxAggregateOutputType | null
+  }
+
+  type GetChatGroupByPayload<T extends ChatGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ChatGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ChatGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ChatGroupByOutputType[P]>
+            : GetScalarType<T[P], ChatGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ChatSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    ChatID?: boolean
+    Name?: boolean
+    Messages?: boolean | Chat$MessagesArgs<ExtArgs>
+    Members?: boolean | Chat$MembersArgs<ExtArgs>
+    _count?: boolean | ChatCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chat"]>
+
+  export type ChatSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    ChatID?: boolean
+    Name?: boolean
+  }, ExtArgs["result"]["chat"]>
+
+  export type ChatSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    ChatID?: boolean
+    Name?: boolean
+  }, ExtArgs["result"]["chat"]>
+
+  export type ChatSelectScalar = {
+    ChatID?: boolean
+    Name?: boolean
+  }
+
+  export type ChatOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ChatID" | "Name", ExtArgs["result"]["chat"]>
+  export type ChatInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Messages?: boolean | Chat$MessagesArgs<ExtArgs>
+    Members?: boolean | Chat$MembersArgs<ExtArgs>
+    _count?: boolean | ChatCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ChatIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ChatIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $ChatPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Chat"
+    objects: {
+      Messages: Prisma.$MessagePayload<ExtArgs>[]
+      Members: Prisma.$ChatMemberPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      ChatID: string
+      Name: string | null
+    }, ExtArgs["result"]["chat"]>
+    composites: {}
+  }
+
+  type ChatGetPayload<S extends boolean | null | undefined | ChatDefaultArgs> = $Result.GetResult<Prisma.$ChatPayload, S>
+
+  type ChatCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ChatFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ChatCountAggregateInputType | true
+    }
+
+  export interface ChatDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Chat'], meta: { name: 'Chat' } }
+    /**
+     * Find zero or one Chat that matches the filter.
+     * @param {ChatFindUniqueArgs} args - Arguments to find a Chat
+     * @example
+     * // Get one Chat
+     * const chat = await prisma.chat.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ChatFindUniqueArgs>(args: SelectSubset<T, ChatFindUniqueArgs<ExtArgs>>): Prisma__ChatClient<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Chat that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ChatFindUniqueOrThrowArgs} args - Arguments to find a Chat
+     * @example
+     * // Get one Chat
+     * const chat = await prisma.chat.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ChatFindUniqueOrThrowArgs>(args: SelectSubset<T, ChatFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ChatClient<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Chat that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatFindFirstArgs} args - Arguments to find a Chat
+     * @example
+     * // Get one Chat
+     * const chat = await prisma.chat.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ChatFindFirstArgs>(args?: SelectSubset<T, ChatFindFirstArgs<ExtArgs>>): Prisma__ChatClient<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Chat that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatFindFirstOrThrowArgs} args - Arguments to find a Chat
+     * @example
+     * // Get one Chat
+     * const chat = await prisma.chat.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ChatFindFirstOrThrowArgs>(args?: SelectSubset<T, ChatFindFirstOrThrowArgs<ExtArgs>>): Prisma__ChatClient<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Chats that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Chats
+     * const chats = await prisma.chat.findMany()
+     * 
+     * // Get first 10 Chats
+     * const chats = await prisma.chat.findMany({ take: 10 })
+     * 
+     * // Only select the `ChatID`
+     * const chatWithChatIDOnly = await prisma.chat.findMany({ select: { ChatID: true } })
+     * 
+     */
+    findMany<T extends ChatFindManyArgs>(args?: SelectSubset<T, ChatFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Chat.
+     * @param {ChatCreateArgs} args - Arguments to create a Chat.
+     * @example
+     * // Create one Chat
+     * const Chat = await prisma.chat.create({
+     *   data: {
+     *     // ... data to create a Chat
+     *   }
+     * })
+     * 
+     */
+    create<T extends ChatCreateArgs>(args: SelectSubset<T, ChatCreateArgs<ExtArgs>>): Prisma__ChatClient<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Chats.
+     * @param {ChatCreateManyArgs} args - Arguments to create many Chats.
+     * @example
+     * // Create many Chats
+     * const chat = await prisma.chat.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ChatCreateManyArgs>(args?: SelectSubset<T, ChatCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Chats and returns the data saved in the database.
+     * @param {ChatCreateManyAndReturnArgs} args - Arguments to create many Chats.
+     * @example
+     * // Create many Chats
+     * const chat = await prisma.chat.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Chats and only return the `ChatID`
+     * const chatWithChatIDOnly = await prisma.chat.createManyAndReturn({
+     *   select: { ChatID: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ChatCreateManyAndReturnArgs>(args?: SelectSubset<T, ChatCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Chat.
+     * @param {ChatDeleteArgs} args - Arguments to delete one Chat.
+     * @example
+     * // Delete one Chat
+     * const Chat = await prisma.chat.delete({
+     *   where: {
+     *     // ... filter to delete one Chat
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ChatDeleteArgs>(args: SelectSubset<T, ChatDeleteArgs<ExtArgs>>): Prisma__ChatClient<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Chat.
+     * @param {ChatUpdateArgs} args - Arguments to update one Chat.
+     * @example
+     * // Update one Chat
+     * const chat = await prisma.chat.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ChatUpdateArgs>(args: SelectSubset<T, ChatUpdateArgs<ExtArgs>>): Prisma__ChatClient<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Chats.
+     * @param {ChatDeleteManyArgs} args - Arguments to filter Chats to delete.
+     * @example
+     * // Delete a few Chats
+     * const { count } = await prisma.chat.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ChatDeleteManyArgs>(args?: SelectSubset<T, ChatDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Chats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Chats
+     * const chat = await prisma.chat.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ChatUpdateManyArgs>(args: SelectSubset<T, ChatUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Chats and returns the data updated in the database.
+     * @param {ChatUpdateManyAndReturnArgs} args - Arguments to update many Chats.
+     * @example
+     * // Update many Chats
+     * const chat = await prisma.chat.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Chats and only return the `ChatID`
+     * const chatWithChatIDOnly = await prisma.chat.updateManyAndReturn({
+     *   select: { ChatID: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ChatUpdateManyAndReturnArgs>(args: SelectSubset<T, ChatUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Chat.
+     * @param {ChatUpsertArgs} args - Arguments to update or create a Chat.
+     * @example
+     * // Update or create a Chat
+     * const chat = await prisma.chat.upsert({
+     *   create: {
+     *     // ... data to create a Chat
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Chat we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ChatUpsertArgs>(args: SelectSubset<T, ChatUpsertArgs<ExtArgs>>): Prisma__ChatClient<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Chats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatCountArgs} args - Arguments to filter Chats to count.
+     * @example
+     * // Count the number of Chats
+     * const count = await prisma.chat.count({
+     *   where: {
+     *     // ... the filter for the Chats we want to count
+     *   }
+     * })
+    **/
+    count<T extends ChatCountArgs>(
+      args?: Subset<T, ChatCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ChatCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Chat.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ChatAggregateArgs>(args: Subset<T, ChatAggregateArgs>): Prisma.PrismaPromise<GetChatAggregateType<T>>
+
+    /**
+     * Group by Chat.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ChatGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ChatGroupByArgs['orderBy'] }
+        : { orderBy?: ChatGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ChatGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChatGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Chat model
+   */
+  readonly fields: ChatFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Chat.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ChatClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    Messages<T extends Chat$MessagesArgs<ExtArgs> = {}>(args?: Subset<T, Chat$MessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Members<T extends Chat$MembersArgs<ExtArgs> = {}>(args?: Subset<T, Chat$MembersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Chat model
+   */
+  interface ChatFieldRefs {
+    readonly ChatID: FieldRef<"Chat", 'String'>
+    readonly Name: FieldRef<"Chat", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Chat findUnique
+   */
+  export type ChatFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Chat
+     */
+    select?: ChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Chat
+     */
+    omit?: ChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatInclude<ExtArgs> | null
+    /**
+     * Filter, which Chat to fetch.
+     */
+    where: ChatWhereUniqueInput
+  }
+
+  /**
+   * Chat findUniqueOrThrow
+   */
+  export type ChatFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Chat
+     */
+    select?: ChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Chat
+     */
+    omit?: ChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatInclude<ExtArgs> | null
+    /**
+     * Filter, which Chat to fetch.
+     */
+    where: ChatWhereUniqueInput
+  }
+
+  /**
+   * Chat findFirst
+   */
+  export type ChatFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Chat
+     */
+    select?: ChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Chat
+     */
+    omit?: ChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatInclude<ExtArgs> | null
+    /**
+     * Filter, which Chat to fetch.
+     */
+    where?: ChatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Chats to fetch.
+     */
+    orderBy?: ChatOrderByWithRelationInput | ChatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Chats.
+     */
+    cursor?: ChatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Chats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Chats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Chats.
+     */
+    distinct?: ChatScalarFieldEnum | ChatScalarFieldEnum[]
+  }
+
+  /**
+   * Chat findFirstOrThrow
+   */
+  export type ChatFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Chat
+     */
+    select?: ChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Chat
+     */
+    omit?: ChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatInclude<ExtArgs> | null
+    /**
+     * Filter, which Chat to fetch.
+     */
+    where?: ChatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Chats to fetch.
+     */
+    orderBy?: ChatOrderByWithRelationInput | ChatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Chats.
+     */
+    cursor?: ChatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Chats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Chats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Chats.
+     */
+    distinct?: ChatScalarFieldEnum | ChatScalarFieldEnum[]
+  }
+
+  /**
+   * Chat findMany
+   */
+  export type ChatFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Chat
+     */
+    select?: ChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Chat
+     */
+    omit?: ChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatInclude<ExtArgs> | null
+    /**
+     * Filter, which Chats to fetch.
+     */
+    where?: ChatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Chats to fetch.
+     */
+    orderBy?: ChatOrderByWithRelationInput | ChatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Chats.
+     */
+    cursor?: ChatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Chats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Chats.
+     */
+    skip?: number
+    distinct?: ChatScalarFieldEnum | ChatScalarFieldEnum[]
+  }
+
+  /**
+   * Chat create
+   */
+  export type ChatCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Chat
+     */
+    select?: ChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Chat
+     */
+    omit?: ChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Chat.
+     */
+    data?: XOR<ChatCreateInput, ChatUncheckedCreateInput>
+  }
+
+  /**
+   * Chat createMany
+   */
+  export type ChatCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Chats.
+     */
+    data: ChatCreateManyInput | ChatCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Chat createManyAndReturn
+   */
+  export type ChatCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Chat
+     */
+    select?: ChatSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Chat
+     */
+    omit?: ChatOmit<ExtArgs> | null
+    /**
+     * The data used to create many Chats.
+     */
+    data: ChatCreateManyInput | ChatCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Chat update
+   */
+  export type ChatUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Chat
+     */
+    select?: ChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Chat
+     */
+    omit?: ChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Chat.
+     */
+    data: XOR<ChatUpdateInput, ChatUncheckedUpdateInput>
+    /**
+     * Choose, which Chat to update.
+     */
+    where: ChatWhereUniqueInput
+  }
+
+  /**
+   * Chat updateMany
+   */
+  export type ChatUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Chats.
+     */
+    data: XOR<ChatUpdateManyMutationInput, ChatUncheckedUpdateManyInput>
+    /**
+     * Filter which Chats to update
+     */
+    where?: ChatWhereInput
+    /**
+     * Limit how many Chats to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Chat updateManyAndReturn
+   */
+  export type ChatUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Chat
+     */
+    select?: ChatSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Chat
+     */
+    omit?: ChatOmit<ExtArgs> | null
+    /**
+     * The data used to update Chats.
+     */
+    data: XOR<ChatUpdateManyMutationInput, ChatUncheckedUpdateManyInput>
+    /**
+     * Filter which Chats to update
+     */
+    where?: ChatWhereInput
+    /**
+     * Limit how many Chats to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Chat upsert
+   */
+  export type ChatUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Chat
+     */
+    select?: ChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Chat
+     */
+    omit?: ChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Chat to update in case it exists.
+     */
+    where: ChatWhereUniqueInput
+    /**
+     * In case the Chat found by the `where` argument doesn't exist, create a new Chat with this data.
+     */
+    create: XOR<ChatCreateInput, ChatUncheckedCreateInput>
+    /**
+     * In case the Chat was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ChatUpdateInput, ChatUncheckedUpdateInput>
+  }
+
+  /**
+   * Chat delete
+   */
+  export type ChatDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Chat
+     */
+    select?: ChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Chat
+     */
+    omit?: ChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatInclude<ExtArgs> | null
+    /**
+     * Filter which Chat to delete.
+     */
+    where: ChatWhereUniqueInput
+  }
+
+  /**
+   * Chat deleteMany
+   */
+  export type ChatDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Chats to delete
+     */
+    where?: ChatWhereInput
+    /**
+     * Limit how many Chats to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Chat.Messages
+   */
+  export type Chat$MessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+    where?: MessageWhereInput
+    orderBy?: MessageOrderByWithRelationInput | MessageOrderByWithRelationInput[]
+    cursor?: MessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
+  }
+
+  /**
+   * Chat.Members
+   */
+  export type Chat$MembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMember
+     */
+    select?: ChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMember
+     */
+    omit?: ChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMemberInclude<ExtArgs> | null
+    where?: ChatMemberWhereInput
+    orderBy?: ChatMemberOrderByWithRelationInput | ChatMemberOrderByWithRelationInput[]
+    cursor?: ChatMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChatMemberScalarFieldEnum | ChatMemberScalarFieldEnum[]
+  }
+
+  /**
+   * Chat without action
+   */
+  export type ChatDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Chat
+     */
+    select?: ChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Chat
+     */
+    omit?: ChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ChatMember
+   */
+
+  export type AggregateChatMember = {
+    _count: ChatMemberCountAggregateOutputType | null
+    _min: ChatMemberMinAggregateOutputType | null
+    _max: ChatMemberMaxAggregateOutputType | null
+  }
+
+  export type ChatMemberMinAggregateOutputType = {
+    ChatID: string | null
+    Username: string | null
+  }
+
+  export type ChatMemberMaxAggregateOutputType = {
+    ChatID: string | null
+    Username: string | null
+  }
+
+  export type ChatMemberCountAggregateOutputType = {
+    ChatID: number
+    Username: number
+    _all: number
+  }
+
+
+  export type ChatMemberMinAggregateInputType = {
+    ChatID?: true
+    Username?: true
+  }
+
+  export type ChatMemberMaxAggregateInputType = {
+    ChatID?: true
+    Username?: true
+  }
+
+  export type ChatMemberCountAggregateInputType = {
+    ChatID?: true
+    Username?: true
+    _all?: true
+  }
+
+  export type ChatMemberAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChatMember to aggregate.
+     */
+    where?: ChatMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMembers to fetch.
+     */
+    orderBy?: ChatMemberOrderByWithRelationInput | ChatMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ChatMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ChatMembers
+    **/
+    _count?: true | ChatMemberCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ChatMemberMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ChatMemberMaxAggregateInputType
+  }
+
+  export type GetChatMemberAggregateType<T extends ChatMemberAggregateArgs> = {
+        [P in keyof T & keyof AggregateChatMember]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateChatMember[P]>
+      : GetScalarType<T[P], AggregateChatMember[P]>
+  }
+
+
+
+
+  export type ChatMemberGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatMemberWhereInput
+    orderBy?: ChatMemberOrderByWithAggregationInput | ChatMemberOrderByWithAggregationInput[]
+    by: ChatMemberScalarFieldEnum[] | ChatMemberScalarFieldEnum
+    having?: ChatMemberScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ChatMemberCountAggregateInputType | true
+    _min?: ChatMemberMinAggregateInputType
+    _max?: ChatMemberMaxAggregateInputType
+  }
+
+  export type ChatMemberGroupByOutputType = {
+    ChatID: string
+    Username: string
+    _count: ChatMemberCountAggregateOutputType | null
+    _min: ChatMemberMinAggregateOutputType | null
+    _max: ChatMemberMaxAggregateOutputType | null
+  }
+
+  type GetChatMemberGroupByPayload<T extends ChatMemberGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ChatMemberGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ChatMemberGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ChatMemberGroupByOutputType[P]>
+            : GetScalarType<T[P], ChatMemberGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ChatMemberSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    ChatID?: boolean
+    Username?: boolean
+    Chat?: boolean | ChatDefaultArgs<ExtArgs>
+    User?: boolean | AccountsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatMember"]>
+
+  export type ChatMemberSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    ChatID?: boolean
+    Username?: boolean
+    Chat?: boolean | ChatDefaultArgs<ExtArgs>
+    User?: boolean | AccountsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatMember"]>
+
+  export type ChatMemberSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    ChatID?: boolean
+    Username?: boolean
+    Chat?: boolean | ChatDefaultArgs<ExtArgs>
+    User?: boolean | AccountsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatMember"]>
+
+  export type ChatMemberSelectScalar = {
+    ChatID?: boolean
+    Username?: boolean
+  }
+
+  export type ChatMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ChatID" | "Username", ExtArgs["result"]["chatMember"]>
+  export type ChatMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Chat?: boolean | ChatDefaultArgs<ExtArgs>
+    User?: boolean | AccountsDefaultArgs<ExtArgs>
+  }
+  export type ChatMemberIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Chat?: boolean | ChatDefaultArgs<ExtArgs>
+    User?: boolean | AccountsDefaultArgs<ExtArgs>
+  }
+  export type ChatMemberIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Chat?: boolean | ChatDefaultArgs<ExtArgs>
+    User?: boolean | AccountsDefaultArgs<ExtArgs>
+  }
+
+  export type $ChatMemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ChatMember"
+    objects: {
+      Chat: Prisma.$ChatPayload<ExtArgs>
+      User: Prisma.$AccountsPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      ChatID: string
+      Username: string
+    }, ExtArgs["result"]["chatMember"]>
+    composites: {}
+  }
+
+  type ChatMemberGetPayload<S extends boolean | null | undefined | ChatMemberDefaultArgs> = $Result.GetResult<Prisma.$ChatMemberPayload, S>
+
+  type ChatMemberCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ChatMemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ChatMemberCountAggregateInputType | true
+    }
+
+  export interface ChatMemberDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ChatMember'], meta: { name: 'ChatMember' } }
+    /**
+     * Find zero or one ChatMember that matches the filter.
+     * @param {ChatMemberFindUniqueArgs} args - Arguments to find a ChatMember
+     * @example
+     * // Get one ChatMember
+     * const chatMember = await prisma.chatMember.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ChatMemberFindUniqueArgs>(args: SelectSubset<T, ChatMemberFindUniqueArgs<ExtArgs>>): Prisma__ChatMemberClient<$Result.GetResult<Prisma.$ChatMemberPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ChatMember that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ChatMemberFindUniqueOrThrowArgs} args - Arguments to find a ChatMember
+     * @example
+     * // Get one ChatMember
+     * const chatMember = await prisma.chatMember.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ChatMemberFindUniqueOrThrowArgs>(args: SelectSubset<T, ChatMemberFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ChatMemberClient<$Result.GetResult<Prisma.$ChatMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ChatMember that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMemberFindFirstArgs} args - Arguments to find a ChatMember
+     * @example
+     * // Get one ChatMember
+     * const chatMember = await prisma.chatMember.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ChatMemberFindFirstArgs>(args?: SelectSubset<T, ChatMemberFindFirstArgs<ExtArgs>>): Prisma__ChatMemberClient<$Result.GetResult<Prisma.$ChatMemberPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ChatMember that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMemberFindFirstOrThrowArgs} args - Arguments to find a ChatMember
+     * @example
+     * // Get one ChatMember
+     * const chatMember = await prisma.chatMember.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ChatMemberFindFirstOrThrowArgs>(args?: SelectSubset<T, ChatMemberFindFirstOrThrowArgs<ExtArgs>>): Prisma__ChatMemberClient<$Result.GetResult<Prisma.$ChatMemberPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ChatMembers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMemberFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ChatMembers
+     * const chatMembers = await prisma.chatMember.findMany()
+     * 
+     * // Get first 10 ChatMembers
+     * const chatMembers = await prisma.chatMember.findMany({ take: 10 })
+     * 
+     * // Only select the `ChatID`
+     * const chatMemberWithChatIDOnly = await prisma.chatMember.findMany({ select: { ChatID: true } })
+     * 
+     */
+    findMany<T extends ChatMemberFindManyArgs>(args?: SelectSubset<T, ChatMemberFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ChatMember.
+     * @param {ChatMemberCreateArgs} args - Arguments to create a ChatMember.
+     * @example
+     * // Create one ChatMember
+     * const ChatMember = await prisma.chatMember.create({
+     *   data: {
+     *     // ... data to create a ChatMember
+     *   }
+     * })
+     * 
+     */
+    create<T extends ChatMemberCreateArgs>(args: SelectSubset<T, ChatMemberCreateArgs<ExtArgs>>): Prisma__ChatMemberClient<$Result.GetResult<Prisma.$ChatMemberPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ChatMembers.
+     * @param {ChatMemberCreateManyArgs} args - Arguments to create many ChatMembers.
+     * @example
+     * // Create many ChatMembers
+     * const chatMember = await prisma.chatMember.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ChatMemberCreateManyArgs>(args?: SelectSubset<T, ChatMemberCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ChatMembers and returns the data saved in the database.
+     * @param {ChatMemberCreateManyAndReturnArgs} args - Arguments to create many ChatMembers.
+     * @example
+     * // Create many ChatMembers
+     * const chatMember = await prisma.chatMember.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ChatMembers and only return the `ChatID`
+     * const chatMemberWithChatIDOnly = await prisma.chatMember.createManyAndReturn({
+     *   select: { ChatID: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ChatMemberCreateManyAndReturnArgs>(args?: SelectSubset<T, ChatMemberCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMemberPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ChatMember.
+     * @param {ChatMemberDeleteArgs} args - Arguments to delete one ChatMember.
+     * @example
+     * // Delete one ChatMember
+     * const ChatMember = await prisma.chatMember.delete({
+     *   where: {
+     *     // ... filter to delete one ChatMember
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ChatMemberDeleteArgs>(args: SelectSubset<T, ChatMemberDeleteArgs<ExtArgs>>): Prisma__ChatMemberClient<$Result.GetResult<Prisma.$ChatMemberPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ChatMember.
+     * @param {ChatMemberUpdateArgs} args - Arguments to update one ChatMember.
+     * @example
+     * // Update one ChatMember
+     * const chatMember = await prisma.chatMember.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ChatMemberUpdateArgs>(args: SelectSubset<T, ChatMemberUpdateArgs<ExtArgs>>): Prisma__ChatMemberClient<$Result.GetResult<Prisma.$ChatMemberPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ChatMembers.
+     * @param {ChatMemberDeleteManyArgs} args - Arguments to filter ChatMembers to delete.
+     * @example
+     * // Delete a few ChatMembers
+     * const { count } = await prisma.chatMember.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ChatMemberDeleteManyArgs>(args?: SelectSubset<T, ChatMemberDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ChatMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMemberUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ChatMembers
+     * const chatMember = await prisma.chatMember.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ChatMemberUpdateManyArgs>(args: SelectSubset<T, ChatMemberUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ChatMembers and returns the data updated in the database.
+     * @param {ChatMemberUpdateManyAndReturnArgs} args - Arguments to update many ChatMembers.
+     * @example
+     * // Update many ChatMembers
+     * const chatMember = await prisma.chatMember.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ChatMembers and only return the `ChatID`
+     * const chatMemberWithChatIDOnly = await prisma.chatMember.updateManyAndReturn({
+     *   select: { ChatID: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ChatMemberUpdateManyAndReturnArgs>(args: SelectSubset<T, ChatMemberUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMemberPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ChatMember.
+     * @param {ChatMemberUpsertArgs} args - Arguments to update or create a ChatMember.
+     * @example
+     * // Update or create a ChatMember
+     * const chatMember = await prisma.chatMember.upsert({
+     *   create: {
+     *     // ... data to create a ChatMember
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ChatMember we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ChatMemberUpsertArgs>(args: SelectSubset<T, ChatMemberUpsertArgs<ExtArgs>>): Prisma__ChatMemberClient<$Result.GetResult<Prisma.$ChatMemberPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ChatMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMemberCountArgs} args - Arguments to filter ChatMembers to count.
+     * @example
+     * // Count the number of ChatMembers
+     * const count = await prisma.chatMember.count({
+     *   where: {
+     *     // ... the filter for the ChatMembers we want to count
+     *   }
+     * })
+    **/
+    count<T extends ChatMemberCountArgs>(
+      args?: Subset<T, ChatMemberCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ChatMemberCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ChatMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMemberAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ChatMemberAggregateArgs>(args: Subset<T, ChatMemberAggregateArgs>): Prisma.PrismaPromise<GetChatMemberAggregateType<T>>
+
+    /**
+     * Group by ChatMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMemberGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ChatMemberGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ChatMemberGroupByArgs['orderBy'] }
+        : { orderBy?: ChatMemberGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ChatMemberGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChatMemberGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ChatMember model
+   */
+  readonly fields: ChatMemberFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ChatMember.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ChatMemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    Chat<T extends ChatDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ChatDefaultArgs<ExtArgs>>): Prisma__ChatClient<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    User<T extends AccountsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AccountsDefaultArgs<ExtArgs>>): Prisma__AccountsClient<$Result.GetResult<Prisma.$AccountsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ChatMember model
+   */
+  interface ChatMemberFieldRefs {
+    readonly ChatID: FieldRef<"ChatMember", 'String'>
+    readonly Username: FieldRef<"ChatMember", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ChatMember findUnique
+   */
+  export type ChatMemberFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMember
+     */
+    select?: ChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMember
+     */
+    omit?: ChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMember to fetch.
+     */
+    where: ChatMemberWhereUniqueInput
+  }
+
+  /**
+   * ChatMember findUniqueOrThrow
+   */
+  export type ChatMemberFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMember
+     */
+    select?: ChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMember
+     */
+    omit?: ChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMember to fetch.
+     */
+    where: ChatMemberWhereUniqueInput
+  }
+
+  /**
+   * ChatMember findFirst
+   */
+  export type ChatMemberFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMember
+     */
+    select?: ChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMember
+     */
+    omit?: ChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMember to fetch.
+     */
+    where?: ChatMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMembers to fetch.
+     */
+    orderBy?: ChatMemberOrderByWithRelationInput | ChatMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChatMembers.
+     */
+    cursor?: ChatMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChatMembers.
+     */
+    distinct?: ChatMemberScalarFieldEnum | ChatMemberScalarFieldEnum[]
+  }
+
+  /**
+   * ChatMember findFirstOrThrow
+   */
+  export type ChatMemberFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMember
+     */
+    select?: ChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMember
+     */
+    omit?: ChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMember to fetch.
+     */
+    where?: ChatMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMembers to fetch.
+     */
+    orderBy?: ChatMemberOrderByWithRelationInput | ChatMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChatMembers.
+     */
+    cursor?: ChatMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChatMembers.
+     */
+    distinct?: ChatMemberScalarFieldEnum | ChatMemberScalarFieldEnum[]
+  }
+
+  /**
+   * ChatMember findMany
+   */
+  export type ChatMemberFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMember
+     */
+    select?: ChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMember
+     */
+    omit?: ChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMembers to fetch.
+     */
+    where?: ChatMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMembers to fetch.
+     */
+    orderBy?: ChatMemberOrderByWithRelationInput | ChatMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ChatMembers.
+     */
+    cursor?: ChatMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMembers.
+     */
+    skip?: number
+    distinct?: ChatMemberScalarFieldEnum | ChatMemberScalarFieldEnum[]
+  }
+
+  /**
+   * ChatMember create
+   */
+  export type ChatMemberCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMember
+     */
+    select?: ChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMember
+     */
+    omit?: ChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ChatMember.
+     */
+    data: XOR<ChatMemberCreateInput, ChatMemberUncheckedCreateInput>
+  }
+
+  /**
+   * ChatMember createMany
+   */
+  export type ChatMemberCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ChatMembers.
+     */
+    data: ChatMemberCreateManyInput | ChatMemberCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ChatMember createManyAndReturn
+   */
+  export type ChatMemberCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMember
+     */
+    select?: ChatMemberSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMember
+     */
+    omit?: ChatMemberOmit<ExtArgs> | null
+    /**
+     * The data used to create many ChatMembers.
+     */
+    data: ChatMemberCreateManyInput | ChatMemberCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMemberIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ChatMember update
+   */
+  export type ChatMemberUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMember
+     */
+    select?: ChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMember
+     */
+    omit?: ChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ChatMember.
+     */
+    data: XOR<ChatMemberUpdateInput, ChatMemberUncheckedUpdateInput>
+    /**
+     * Choose, which ChatMember to update.
+     */
+    where: ChatMemberWhereUniqueInput
+  }
+
+  /**
+   * ChatMember updateMany
+   */
+  export type ChatMemberUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ChatMembers.
+     */
+    data: XOR<ChatMemberUpdateManyMutationInput, ChatMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which ChatMembers to update
+     */
+    where?: ChatMemberWhereInput
+    /**
+     * Limit how many ChatMembers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ChatMember updateManyAndReturn
+   */
+  export type ChatMemberUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMember
+     */
+    select?: ChatMemberSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMember
+     */
+    omit?: ChatMemberOmit<ExtArgs> | null
+    /**
+     * The data used to update ChatMembers.
+     */
+    data: XOR<ChatMemberUpdateManyMutationInput, ChatMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which ChatMembers to update
+     */
+    where?: ChatMemberWhereInput
+    /**
+     * Limit how many ChatMembers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMemberIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ChatMember upsert
+   */
+  export type ChatMemberUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMember
+     */
+    select?: ChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMember
+     */
+    omit?: ChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMemberInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ChatMember to update in case it exists.
+     */
+    where: ChatMemberWhereUniqueInput
+    /**
+     * In case the ChatMember found by the `where` argument doesn't exist, create a new ChatMember with this data.
+     */
+    create: XOR<ChatMemberCreateInput, ChatMemberUncheckedCreateInput>
+    /**
+     * In case the ChatMember was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ChatMemberUpdateInput, ChatMemberUncheckedUpdateInput>
+  }
+
+  /**
+   * ChatMember delete
+   */
+  export type ChatMemberDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMember
+     */
+    select?: ChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMember
+     */
+    omit?: ChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMemberInclude<ExtArgs> | null
+    /**
+     * Filter which ChatMember to delete.
+     */
+    where: ChatMemberWhereUniqueInput
+  }
+
+  /**
+   * ChatMember deleteMany
+   */
+  export type ChatMemberDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChatMembers to delete
+     */
+    where?: ChatMemberWhereInput
+    /**
+     * Limit how many ChatMembers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ChatMember without action
+   */
+  export type ChatMemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMember
+     */
+    select?: ChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMember
+     */
+    omit?: ChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMemberInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Message
+   */
+
+  export type AggregateMessage = {
+    _count: MessageCountAggregateOutputType | null
+    _min: MessageMinAggregateOutputType | null
+    _max: MessageMaxAggregateOutputType | null
+  }
+
+  export type MessageMinAggregateOutputType = {
+    MessageID: string | null
+    ChatID: string | null
+    SenderUsername: string | null
+    CreatedAt: Date | null
+  }
+
+  export type MessageMaxAggregateOutputType = {
+    MessageID: string | null
+    ChatID: string | null
+    SenderUsername: string | null
+    CreatedAt: Date | null
+  }
+
+  export type MessageCountAggregateOutputType = {
+    MessageID: number
+    ChatID: number
+    SenderUsername: number
+    CreatedAt: number
+    _all: number
+  }
+
+
+  export type MessageMinAggregateInputType = {
+    MessageID?: true
+    ChatID?: true
+    SenderUsername?: true
+    CreatedAt?: true
+  }
+
+  export type MessageMaxAggregateInputType = {
+    MessageID?: true
+    ChatID?: true
+    SenderUsername?: true
+    CreatedAt?: true
+  }
+
+  export type MessageCountAggregateInputType = {
+    MessageID?: true
+    ChatID?: true
+    SenderUsername?: true
+    CreatedAt?: true
+    _all?: true
+  }
+
+  export type MessageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Message to aggregate.
+     */
+    where?: MessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Messages to fetch.
+     */
+    orderBy?: MessageOrderByWithRelationInput | MessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Messages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Messages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Messages
+    **/
+    _count?: true | MessageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MessageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MessageMaxAggregateInputType
+  }
+
+  export type GetMessageAggregateType<T extends MessageAggregateArgs> = {
+        [P in keyof T & keyof AggregateMessage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMessage[P]>
+      : GetScalarType<T[P], AggregateMessage[P]>
+  }
+
+
+
+
+  export type MessageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MessageWhereInput
+    orderBy?: MessageOrderByWithAggregationInput | MessageOrderByWithAggregationInput[]
+    by: MessageScalarFieldEnum[] | MessageScalarFieldEnum
+    having?: MessageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MessageCountAggregateInputType | true
+    _min?: MessageMinAggregateInputType
+    _max?: MessageMaxAggregateInputType
+  }
+
+  export type MessageGroupByOutputType = {
+    MessageID: string
+    ChatID: string
+    SenderUsername: string
+    CreatedAt: Date
+    _count: MessageCountAggregateOutputType | null
+    _min: MessageMinAggregateOutputType | null
+    _max: MessageMaxAggregateOutputType | null
+  }
+
+  type GetMessageGroupByPayload<T extends MessageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MessageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MessageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MessageGroupByOutputType[P]>
+            : GetScalarType<T[P], MessageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MessageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    MessageID?: boolean
+    ChatID?: boolean
+    SenderUsername?: boolean
+    CreatedAt?: boolean
+    Chat?: boolean | ChatDefaultArgs<ExtArgs>
+    Sender?: boolean | AccountsDefaultArgs<ExtArgs>
+    MessageContent?: boolean | Message$MessageContentArgs<ExtArgs>
+    _count?: boolean | MessageCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["message"]>
+
+  export type MessageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    MessageID?: boolean
+    ChatID?: boolean
+    SenderUsername?: boolean
+    CreatedAt?: boolean
+    Chat?: boolean | ChatDefaultArgs<ExtArgs>
+    Sender?: boolean | AccountsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["message"]>
+
+  export type MessageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    MessageID?: boolean
+    ChatID?: boolean
+    SenderUsername?: boolean
+    CreatedAt?: boolean
+    Chat?: boolean | ChatDefaultArgs<ExtArgs>
+    Sender?: boolean | AccountsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["message"]>
+
+  export type MessageSelectScalar = {
+    MessageID?: boolean
+    ChatID?: boolean
+    SenderUsername?: boolean
+    CreatedAt?: boolean
+  }
+
+  export type MessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"MessageID" | "ChatID" | "SenderUsername" | "CreatedAt", ExtArgs["result"]["message"]>
+  export type MessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Chat?: boolean | ChatDefaultArgs<ExtArgs>
+    Sender?: boolean | AccountsDefaultArgs<ExtArgs>
+    MessageContent?: boolean | Message$MessageContentArgs<ExtArgs>
+    _count?: boolean | MessageCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type MessageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Chat?: boolean | ChatDefaultArgs<ExtArgs>
+    Sender?: boolean | AccountsDefaultArgs<ExtArgs>
+  }
+  export type MessageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Chat?: boolean | ChatDefaultArgs<ExtArgs>
+    Sender?: boolean | AccountsDefaultArgs<ExtArgs>
+  }
+
+  export type $MessagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Message"
+    objects: {
+      Chat: Prisma.$ChatPayload<ExtArgs>
+      Sender: Prisma.$AccountsPayload<ExtArgs>
+      MessageContent: Prisma.$MessageContentPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      MessageID: string
+      ChatID: string
+      SenderUsername: string
+      CreatedAt: Date
+    }, ExtArgs["result"]["message"]>
+    composites: {}
+  }
+
+  type MessageGetPayload<S extends boolean | null | undefined | MessageDefaultArgs> = $Result.GetResult<Prisma.$MessagePayload, S>
+
+  type MessageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MessageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MessageCountAggregateInputType | true
+    }
+
+  export interface MessageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Message'], meta: { name: 'Message' } }
+    /**
+     * Find zero or one Message that matches the filter.
+     * @param {MessageFindUniqueArgs} args - Arguments to find a Message
+     * @example
+     * // Get one Message
+     * const message = await prisma.message.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MessageFindUniqueArgs>(args: SelectSubset<T, MessageFindUniqueArgs<ExtArgs>>): Prisma__MessageClient<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Message that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MessageFindUniqueOrThrowArgs} args - Arguments to find a Message
+     * @example
+     * // Get one Message
+     * const message = await prisma.message.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MessageFindUniqueOrThrowArgs>(args: SelectSubset<T, MessageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MessageClient<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Message that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageFindFirstArgs} args - Arguments to find a Message
+     * @example
+     * // Get one Message
+     * const message = await prisma.message.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MessageFindFirstArgs>(args?: SelectSubset<T, MessageFindFirstArgs<ExtArgs>>): Prisma__MessageClient<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Message that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageFindFirstOrThrowArgs} args - Arguments to find a Message
+     * @example
+     * // Get one Message
+     * const message = await prisma.message.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MessageFindFirstOrThrowArgs>(args?: SelectSubset<T, MessageFindFirstOrThrowArgs<ExtArgs>>): Prisma__MessageClient<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Messages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Messages
+     * const messages = await prisma.message.findMany()
+     * 
+     * // Get first 10 Messages
+     * const messages = await prisma.message.findMany({ take: 10 })
+     * 
+     * // Only select the `MessageID`
+     * const messageWithMessageIDOnly = await prisma.message.findMany({ select: { MessageID: true } })
+     * 
+     */
+    findMany<T extends MessageFindManyArgs>(args?: SelectSubset<T, MessageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Message.
+     * @param {MessageCreateArgs} args - Arguments to create a Message.
+     * @example
+     * // Create one Message
+     * const Message = await prisma.message.create({
+     *   data: {
+     *     // ... data to create a Message
+     *   }
+     * })
+     * 
+     */
+    create<T extends MessageCreateArgs>(args: SelectSubset<T, MessageCreateArgs<ExtArgs>>): Prisma__MessageClient<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Messages.
+     * @param {MessageCreateManyArgs} args - Arguments to create many Messages.
+     * @example
+     * // Create many Messages
+     * const message = await prisma.message.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MessageCreateManyArgs>(args?: SelectSubset<T, MessageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Messages and returns the data saved in the database.
+     * @param {MessageCreateManyAndReturnArgs} args - Arguments to create many Messages.
+     * @example
+     * // Create many Messages
+     * const message = await prisma.message.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Messages and only return the `MessageID`
+     * const messageWithMessageIDOnly = await prisma.message.createManyAndReturn({
+     *   select: { MessageID: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MessageCreateManyAndReturnArgs>(args?: SelectSubset<T, MessageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Message.
+     * @param {MessageDeleteArgs} args - Arguments to delete one Message.
+     * @example
+     * // Delete one Message
+     * const Message = await prisma.message.delete({
+     *   where: {
+     *     // ... filter to delete one Message
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MessageDeleteArgs>(args: SelectSubset<T, MessageDeleteArgs<ExtArgs>>): Prisma__MessageClient<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Message.
+     * @param {MessageUpdateArgs} args - Arguments to update one Message.
+     * @example
+     * // Update one Message
+     * const message = await prisma.message.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MessageUpdateArgs>(args: SelectSubset<T, MessageUpdateArgs<ExtArgs>>): Prisma__MessageClient<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Messages.
+     * @param {MessageDeleteManyArgs} args - Arguments to filter Messages to delete.
+     * @example
+     * // Delete a few Messages
+     * const { count } = await prisma.message.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MessageDeleteManyArgs>(args?: SelectSubset<T, MessageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Messages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Messages
+     * const message = await prisma.message.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MessageUpdateManyArgs>(args: SelectSubset<T, MessageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Messages and returns the data updated in the database.
+     * @param {MessageUpdateManyAndReturnArgs} args - Arguments to update many Messages.
+     * @example
+     * // Update many Messages
+     * const message = await prisma.message.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Messages and only return the `MessageID`
+     * const messageWithMessageIDOnly = await prisma.message.updateManyAndReturn({
+     *   select: { MessageID: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MessageUpdateManyAndReturnArgs>(args: SelectSubset<T, MessageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Message.
+     * @param {MessageUpsertArgs} args - Arguments to update or create a Message.
+     * @example
+     * // Update or create a Message
+     * const message = await prisma.message.upsert({
+     *   create: {
+     *     // ... data to create a Message
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Message we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MessageUpsertArgs>(args: SelectSubset<T, MessageUpsertArgs<ExtArgs>>): Prisma__MessageClient<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Messages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageCountArgs} args - Arguments to filter Messages to count.
+     * @example
+     * // Count the number of Messages
+     * const count = await prisma.message.count({
+     *   where: {
+     *     // ... the filter for the Messages we want to count
+     *   }
+     * })
+    **/
+    count<T extends MessageCountArgs>(
+      args?: Subset<T, MessageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MessageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Message.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MessageAggregateArgs>(args: Subset<T, MessageAggregateArgs>): Prisma.PrismaPromise<GetMessageAggregateType<T>>
+
+    /**
+     * Group by Message.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MessageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MessageGroupByArgs['orderBy'] }
+        : { orderBy?: MessageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MessageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMessageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Message model
+   */
+  readonly fields: MessageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Message.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MessageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    Chat<T extends ChatDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ChatDefaultArgs<ExtArgs>>): Prisma__ChatClient<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    Sender<T extends AccountsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AccountsDefaultArgs<ExtArgs>>): Prisma__AccountsClient<$Result.GetResult<Prisma.$AccountsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    MessageContent<T extends Message$MessageContentArgs<ExtArgs> = {}>(args?: Subset<T, Message$MessageContentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessageContentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Message model
+   */
+  interface MessageFieldRefs {
+    readonly MessageID: FieldRef<"Message", 'String'>
+    readonly ChatID: FieldRef<"Message", 'String'>
+    readonly SenderUsername: FieldRef<"Message", 'String'>
+    readonly CreatedAt: FieldRef<"Message", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Message findUnique
+   */
+  export type MessageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+    /**
+     * Filter, which Message to fetch.
+     */
+    where: MessageWhereUniqueInput
+  }
+
+  /**
+   * Message findUniqueOrThrow
+   */
+  export type MessageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+    /**
+     * Filter, which Message to fetch.
+     */
+    where: MessageWhereUniqueInput
+  }
+
+  /**
+   * Message findFirst
+   */
+  export type MessageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+    /**
+     * Filter, which Message to fetch.
+     */
+    where?: MessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Messages to fetch.
+     */
+    orderBy?: MessageOrderByWithRelationInput | MessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Messages.
+     */
+    cursor?: MessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Messages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Messages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Messages.
+     */
+    distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
+  }
+
+  /**
+   * Message findFirstOrThrow
+   */
+  export type MessageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+    /**
+     * Filter, which Message to fetch.
+     */
+    where?: MessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Messages to fetch.
+     */
+    orderBy?: MessageOrderByWithRelationInput | MessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Messages.
+     */
+    cursor?: MessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Messages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Messages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Messages.
+     */
+    distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
+  }
+
+  /**
+   * Message findMany
+   */
+  export type MessageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+    /**
+     * Filter, which Messages to fetch.
+     */
+    where?: MessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Messages to fetch.
+     */
+    orderBy?: MessageOrderByWithRelationInput | MessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Messages.
+     */
+    cursor?: MessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Messages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Messages.
+     */
+    skip?: number
+    distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
+  }
+
+  /**
+   * Message create
+   */
+  export type MessageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Message.
+     */
+    data: XOR<MessageCreateInput, MessageUncheckedCreateInput>
+  }
+
+  /**
+   * Message createMany
+   */
+  export type MessageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Messages.
+     */
+    data: MessageCreateManyInput | MessageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Message createManyAndReturn
+   */
+  export type MessageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * The data used to create many Messages.
+     */
+    data: MessageCreateManyInput | MessageCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Message update
+   */
+  export type MessageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Message.
+     */
+    data: XOR<MessageUpdateInput, MessageUncheckedUpdateInput>
+    /**
+     * Choose, which Message to update.
+     */
+    where: MessageWhereUniqueInput
+  }
+
+  /**
+   * Message updateMany
+   */
+  export type MessageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Messages.
+     */
+    data: XOR<MessageUpdateManyMutationInput, MessageUncheckedUpdateManyInput>
+    /**
+     * Filter which Messages to update
+     */
+    where?: MessageWhereInput
+    /**
+     * Limit how many Messages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Message updateManyAndReturn
+   */
+  export type MessageUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * The data used to update Messages.
+     */
+    data: XOR<MessageUpdateManyMutationInput, MessageUncheckedUpdateManyInput>
+    /**
+     * Filter which Messages to update
+     */
+    where?: MessageWhereInput
+    /**
+     * Limit how many Messages to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Message upsert
+   */
+  export type MessageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Message to update in case it exists.
+     */
+    where: MessageWhereUniqueInput
+    /**
+     * In case the Message found by the `where` argument doesn't exist, create a new Message with this data.
+     */
+    create: XOR<MessageCreateInput, MessageUncheckedCreateInput>
+    /**
+     * In case the Message was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MessageUpdateInput, MessageUncheckedUpdateInput>
+  }
+
+  /**
+   * Message delete
+   */
+  export type MessageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+    /**
+     * Filter which Message to delete.
+     */
+    where: MessageWhereUniqueInput
+  }
+
+  /**
+   * Message deleteMany
+   */
+  export type MessageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Messages to delete
+     */
+    where?: MessageWhereInput
+    /**
+     * Limit how many Messages to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Message.MessageContent
+   */
+  export type Message$MessageContentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageContent
+     */
+    select?: MessageContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MessageContent
+     */
+    omit?: MessageContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageContentInclude<ExtArgs> | null
+    where?: MessageContentWhereInput
+    orderBy?: MessageContentOrderByWithRelationInput | MessageContentOrderByWithRelationInput[]
+    cursor?: MessageContentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MessageContentScalarFieldEnum | MessageContentScalarFieldEnum[]
+  }
+
+  /**
+   * Message without action
+   */
+  export type MessageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MessageContent
+   */
+
+  export type AggregateMessageContent = {
+    _count: MessageContentCountAggregateOutputType | null
+    _avg: MessageContentAvgAggregateOutputType | null
+    _sum: MessageContentSumAggregateOutputType | null
+    _min: MessageContentMinAggregateOutputType | null
+    _max: MessageContentMaxAggregateOutputType | null
+  }
+
+  export type MessageContentAvgAggregateOutputType = {
+    MessageContentID: number | null
+    Index: number | null
+  }
+
+  export type MessageContentSumAggregateOutputType = {
+    MessageContentID: number | null
+    Index: number | null
+  }
+
+  export type MessageContentMinAggregateOutputType = {
+    MessageContentID: number | null
+    MessageID: string | null
+    Index: number | null
+    Text: string | null
+    Filename: string | null
+    MimeType: string | null
+    Data: Uint8Array | null
+  }
+
+  export type MessageContentMaxAggregateOutputType = {
+    MessageContentID: number | null
+    MessageID: string | null
+    Index: number | null
+    Text: string | null
+    Filename: string | null
+    MimeType: string | null
+    Data: Uint8Array | null
+  }
+
+  export type MessageContentCountAggregateOutputType = {
+    MessageContentID: number
+    MessageID: number
+    Index: number
+    Text: number
+    Filename: number
+    MimeType: number
+    Data: number
+    _all: number
+  }
+
+
+  export type MessageContentAvgAggregateInputType = {
+    MessageContentID?: true
+    Index?: true
+  }
+
+  export type MessageContentSumAggregateInputType = {
+    MessageContentID?: true
+    Index?: true
+  }
+
+  export type MessageContentMinAggregateInputType = {
+    MessageContentID?: true
+    MessageID?: true
+    Index?: true
+    Text?: true
+    Filename?: true
+    MimeType?: true
+    Data?: true
+  }
+
+  export type MessageContentMaxAggregateInputType = {
+    MessageContentID?: true
+    MessageID?: true
+    Index?: true
+    Text?: true
+    Filename?: true
+    MimeType?: true
+    Data?: true
+  }
+
+  export type MessageContentCountAggregateInputType = {
+    MessageContentID?: true
+    MessageID?: true
+    Index?: true
+    Text?: true
+    Filename?: true
+    MimeType?: true
+    Data?: true
+    _all?: true
+  }
+
+  export type MessageContentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MessageContent to aggregate.
+     */
+    where?: MessageContentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MessageContents to fetch.
+     */
+    orderBy?: MessageContentOrderByWithRelationInput | MessageContentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MessageContentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MessageContents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MessageContents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MessageContents
+    **/
+    _count?: true | MessageContentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MessageContentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MessageContentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MessageContentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MessageContentMaxAggregateInputType
+  }
+
+  export type GetMessageContentAggregateType<T extends MessageContentAggregateArgs> = {
+        [P in keyof T & keyof AggregateMessageContent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMessageContent[P]>
+      : GetScalarType<T[P], AggregateMessageContent[P]>
+  }
+
+
+
+
+  export type MessageContentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MessageContentWhereInput
+    orderBy?: MessageContentOrderByWithAggregationInput | MessageContentOrderByWithAggregationInput[]
+    by: MessageContentScalarFieldEnum[] | MessageContentScalarFieldEnum
+    having?: MessageContentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MessageContentCountAggregateInputType | true
+    _avg?: MessageContentAvgAggregateInputType
+    _sum?: MessageContentSumAggregateInputType
+    _min?: MessageContentMinAggregateInputType
+    _max?: MessageContentMaxAggregateInputType
+  }
+
+  export type MessageContentGroupByOutputType = {
+    MessageContentID: number
+    MessageID: string
+    Index: number
+    Text: string | null
+    Filename: string | null
+    MimeType: string | null
+    Data: Uint8Array | null
+    _count: MessageContentCountAggregateOutputType | null
+    _avg: MessageContentAvgAggregateOutputType | null
+    _sum: MessageContentSumAggregateOutputType | null
+    _min: MessageContentMinAggregateOutputType | null
+    _max: MessageContentMaxAggregateOutputType | null
+  }
+
+  type GetMessageContentGroupByPayload<T extends MessageContentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MessageContentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MessageContentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MessageContentGroupByOutputType[P]>
+            : GetScalarType<T[P], MessageContentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MessageContentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    MessageContentID?: boolean
+    MessageID?: boolean
+    Index?: boolean
+    Text?: boolean
+    Filename?: boolean
+    MimeType?: boolean
+    Data?: boolean
+    Message?: boolean | MessageDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["messageContent"]>
+
+  export type MessageContentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    MessageContentID?: boolean
+    MessageID?: boolean
+    Index?: boolean
+    Text?: boolean
+    Filename?: boolean
+    MimeType?: boolean
+    Data?: boolean
+    Message?: boolean | MessageDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["messageContent"]>
+
+  export type MessageContentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    MessageContentID?: boolean
+    MessageID?: boolean
+    Index?: boolean
+    Text?: boolean
+    Filename?: boolean
+    MimeType?: boolean
+    Data?: boolean
+    Message?: boolean | MessageDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["messageContent"]>
+
+  export type MessageContentSelectScalar = {
+    MessageContentID?: boolean
+    MessageID?: boolean
+    Index?: boolean
+    Text?: boolean
+    Filename?: boolean
+    MimeType?: boolean
+    Data?: boolean
+  }
+
+  export type MessageContentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"MessageContentID" | "MessageID" | "Index" | "Text" | "Filename" | "MimeType" | "Data", ExtArgs["result"]["messageContent"]>
+  export type MessageContentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Message?: boolean | MessageDefaultArgs<ExtArgs>
+  }
+  export type MessageContentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Message?: boolean | MessageDefaultArgs<ExtArgs>
+  }
+  export type MessageContentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Message?: boolean | MessageDefaultArgs<ExtArgs>
+  }
+
+  export type $MessageContentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MessageContent"
+    objects: {
+      Message: Prisma.$MessagePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      MessageContentID: number
+      MessageID: string
+      Index: number
+      Text: string | null
+      Filename: string | null
+      MimeType: string | null
+      Data: Uint8Array | null
+    }, ExtArgs["result"]["messageContent"]>
+    composites: {}
+  }
+
+  type MessageContentGetPayload<S extends boolean | null | undefined | MessageContentDefaultArgs> = $Result.GetResult<Prisma.$MessageContentPayload, S>
+
+  type MessageContentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MessageContentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MessageContentCountAggregateInputType | true
+    }
+
+  export interface MessageContentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MessageContent'], meta: { name: 'MessageContent' } }
+    /**
+     * Find zero or one MessageContent that matches the filter.
+     * @param {MessageContentFindUniqueArgs} args - Arguments to find a MessageContent
+     * @example
+     * // Get one MessageContent
+     * const messageContent = await prisma.messageContent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MessageContentFindUniqueArgs>(args: SelectSubset<T, MessageContentFindUniqueArgs<ExtArgs>>): Prisma__MessageContentClient<$Result.GetResult<Prisma.$MessageContentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MessageContent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MessageContentFindUniqueOrThrowArgs} args - Arguments to find a MessageContent
+     * @example
+     * // Get one MessageContent
+     * const messageContent = await prisma.messageContent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MessageContentFindUniqueOrThrowArgs>(args: SelectSubset<T, MessageContentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MessageContentClient<$Result.GetResult<Prisma.$MessageContentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MessageContent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageContentFindFirstArgs} args - Arguments to find a MessageContent
+     * @example
+     * // Get one MessageContent
+     * const messageContent = await prisma.messageContent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MessageContentFindFirstArgs>(args?: SelectSubset<T, MessageContentFindFirstArgs<ExtArgs>>): Prisma__MessageContentClient<$Result.GetResult<Prisma.$MessageContentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MessageContent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageContentFindFirstOrThrowArgs} args - Arguments to find a MessageContent
+     * @example
+     * // Get one MessageContent
+     * const messageContent = await prisma.messageContent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MessageContentFindFirstOrThrowArgs>(args?: SelectSubset<T, MessageContentFindFirstOrThrowArgs<ExtArgs>>): Prisma__MessageContentClient<$Result.GetResult<Prisma.$MessageContentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MessageContents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageContentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MessageContents
+     * const messageContents = await prisma.messageContent.findMany()
+     * 
+     * // Get first 10 MessageContents
+     * const messageContents = await prisma.messageContent.findMany({ take: 10 })
+     * 
+     * // Only select the `MessageContentID`
+     * const messageContentWithMessageContentIDOnly = await prisma.messageContent.findMany({ select: { MessageContentID: true } })
+     * 
+     */
+    findMany<T extends MessageContentFindManyArgs>(args?: SelectSubset<T, MessageContentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessageContentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MessageContent.
+     * @param {MessageContentCreateArgs} args - Arguments to create a MessageContent.
+     * @example
+     * // Create one MessageContent
+     * const MessageContent = await prisma.messageContent.create({
+     *   data: {
+     *     // ... data to create a MessageContent
+     *   }
+     * })
+     * 
+     */
+    create<T extends MessageContentCreateArgs>(args: SelectSubset<T, MessageContentCreateArgs<ExtArgs>>): Prisma__MessageContentClient<$Result.GetResult<Prisma.$MessageContentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MessageContents.
+     * @param {MessageContentCreateManyArgs} args - Arguments to create many MessageContents.
+     * @example
+     * // Create many MessageContents
+     * const messageContent = await prisma.messageContent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MessageContentCreateManyArgs>(args?: SelectSubset<T, MessageContentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MessageContents and returns the data saved in the database.
+     * @param {MessageContentCreateManyAndReturnArgs} args - Arguments to create many MessageContents.
+     * @example
+     * // Create many MessageContents
+     * const messageContent = await prisma.messageContent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MessageContents and only return the `MessageContentID`
+     * const messageContentWithMessageContentIDOnly = await prisma.messageContent.createManyAndReturn({
+     *   select: { MessageContentID: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MessageContentCreateManyAndReturnArgs>(args?: SelectSubset<T, MessageContentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessageContentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MessageContent.
+     * @param {MessageContentDeleteArgs} args - Arguments to delete one MessageContent.
+     * @example
+     * // Delete one MessageContent
+     * const MessageContent = await prisma.messageContent.delete({
+     *   where: {
+     *     // ... filter to delete one MessageContent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MessageContentDeleteArgs>(args: SelectSubset<T, MessageContentDeleteArgs<ExtArgs>>): Prisma__MessageContentClient<$Result.GetResult<Prisma.$MessageContentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MessageContent.
+     * @param {MessageContentUpdateArgs} args - Arguments to update one MessageContent.
+     * @example
+     * // Update one MessageContent
+     * const messageContent = await prisma.messageContent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MessageContentUpdateArgs>(args: SelectSubset<T, MessageContentUpdateArgs<ExtArgs>>): Prisma__MessageContentClient<$Result.GetResult<Prisma.$MessageContentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MessageContents.
+     * @param {MessageContentDeleteManyArgs} args - Arguments to filter MessageContents to delete.
+     * @example
+     * // Delete a few MessageContents
+     * const { count } = await prisma.messageContent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MessageContentDeleteManyArgs>(args?: SelectSubset<T, MessageContentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MessageContents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageContentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MessageContents
+     * const messageContent = await prisma.messageContent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MessageContentUpdateManyArgs>(args: SelectSubset<T, MessageContentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MessageContents and returns the data updated in the database.
+     * @param {MessageContentUpdateManyAndReturnArgs} args - Arguments to update many MessageContents.
+     * @example
+     * // Update many MessageContents
+     * const messageContent = await prisma.messageContent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MessageContents and only return the `MessageContentID`
+     * const messageContentWithMessageContentIDOnly = await prisma.messageContent.updateManyAndReturn({
+     *   select: { MessageContentID: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MessageContentUpdateManyAndReturnArgs>(args: SelectSubset<T, MessageContentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessageContentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MessageContent.
+     * @param {MessageContentUpsertArgs} args - Arguments to update or create a MessageContent.
+     * @example
+     * // Update or create a MessageContent
+     * const messageContent = await prisma.messageContent.upsert({
+     *   create: {
+     *     // ... data to create a MessageContent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MessageContent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MessageContentUpsertArgs>(args: SelectSubset<T, MessageContentUpsertArgs<ExtArgs>>): Prisma__MessageContentClient<$Result.GetResult<Prisma.$MessageContentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MessageContents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageContentCountArgs} args - Arguments to filter MessageContents to count.
+     * @example
+     * // Count the number of MessageContents
+     * const count = await prisma.messageContent.count({
+     *   where: {
+     *     // ... the filter for the MessageContents we want to count
+     *   }
+     * })
+    **/
+    count<T extends MessageContentCountArgs>(
+      args?: Subset<T, MessageContentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MessageContentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MessageContent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageContentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MessageContentAggregateArgs>(args: Subset<T, MessageContentAggregateArgs>): Prisma.PrismaPromise<GetMessageContentAggregateType<T>>
+
+    /**
+     * Group by MessageContent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageContentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MessageContentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MessageContentGroupByArgs['orderBy'] }
+        : { orderBy?: MessageContentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MessageContentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMessageContentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MessageContent model
+   */
+  readonly fields: MessageContentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MessageContent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MessageContentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    Message<T extends MessageDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MessageDefaultArgs<ExtArgs>>): Prisma__MessageClient<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MessageContent model
+   */
+  interface MessageContentFieldRefs {
+    readonly MessageContentID: FieldRef<"MessageContent", 'Int'>
+    readonly MessageID: FieldRef<"MessageContent", 'String'>
+    readonly Index: FieldRef<"MessageContent", 'Int'>
+    readonly Text: FieldRef<"MessageContent", 'String'>
+    readonly Filename: FieldRef<"MessageContent", 'String'>
+    readonly MimeType: FieldRef<"MessageContent", 'String'>
+    readonly Data: FieldRef<"MessageContent", 'Bytes'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MessageContent findUnique
+   */
+  export type MessageContentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageContent
+     */
+    select?: MessageContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MessageContent
+     */
+    omit?: MessageContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageContentInclude<ExtArgs> | null
+    /**
+     * Filter, which MessageContent to fetch.
+     */
+    where: MessageContentWhereUniqueInput
+  }
+
+  /**
+   * MessageContent findUniqueOrThrow
+   */
+  export type MessageContentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageContent
+     */
+    select?: MessageContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MessageContent
+     */
+    omit?: MessageContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageContentInclude<ExtArgs> | null
+    /**
+     * Filter, which MessageContent to fetch.
+     */
+    where: MessageContentWhereUniqueInput
+  }
+
+  /**
+   * MessageContent findFirst
+   */
+  export type MessageContentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageContent
+     */
+    select?: MessageContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MessageContent
+     */
+    omit?: MessageContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageContentInclude<ExtArgs> | null
+    /**
+     * Filter, which MessageContent to fetch.
+     */
+    where?: MessageContentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MessageContents to fetch.
+     */
+    orderBy?: MessageContentOrderByWithRelationInput | MessageContentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MessageContents.
+     */
+    cursor?: MessageContentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MessageContents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MessageContents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MessageContents.
+     */
+    distinct?: MessageContentScalarFieldEnum | MessageContentScalarFieldEnum[]
+  }
+
+  /**
+   * MessageContent findFirstOrThrow
+   */
+  export type MessageContentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageContent
+     */
+    select?: MessageContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MessageContent
+     */
+    omit?: MessageContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageContentInclude<ExtArgs> | null
+    /**
+     * Filter, which MessageContent to fetch.
+     */
+    where?: MessageContentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MessageContents to fetch.
+     */
+    orderBy?: MessageContentOrderByWithRelationInput | MessageContentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MessageContents.
+     */
+    cursor?: MessageContentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MessageContents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MessageContents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MessageContents.
+     */
+    distinct?: MessageContentScalarFieldEnum | MessageContentScalarFieldEnum[]
+  }
+
+  /**
+   * MessageContent findMany
+   */
+  export type MessageContentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageContent
+     */
+    select?: MessageContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MessageContent
+     */
+    omit?: MessageContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageContentInclude<ExtArgs> | null
+    /**
+     * Filter, which MessageContents to fetch.
+     */
+    where?: MessageContentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MessageContents to fetch.
+     */
+    orderBy?: MessageContentOrderByWithRelationInput | MessageContentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MessageContents.
+     */
+    cursor?: MessageContentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MessageContents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MessageContents.
+     */
+    skip?: number
+    distinct?: MessageContentScalarFieldEnum | MessageContentScalarFieldEnum[]
+  }
+
+  /**
+   * MessageContent create
+   */
+  export type MessageContentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageContent
+     */
+    select?: MessageContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MessageContent
+     */
+    omit?: MessageContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageContentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MessageContent.
+     */
+    data: XOR<MessageContentCreateInput, MessageContentUncheckedCreateInput>
+  }
+
+  /**
+   * MessageContent createMany
+   */
+  export type MessageContentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MessageContents.
+     */
+    data: MessageContentCreateManyInput | MessageContentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MessageContent createManyAndReturn
+   */
+  export type MessageContentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageContent
+     */
+    select?: MessageContentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MessageContent
+     */
+    omit?: MessageContentOmit<ExtArgs> | null
+    /**
+     * The data used to create many MessageContents.
+     */
+    data: MessageContentCreateManyInput | MessageContentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageContentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MessageContent update
+   */
+  export type MessageContentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageContent
+     */
+    select?: MessageContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MessageContent
+     */
+    omit?: MessageContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageContentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MessageContent.
+     */
+    data: XOR<MessageContentUpdateInput, MessageContentUncheckedUpdateInput>
+    /**
+     * Choose, which MessageContent to update.
+     */
+    where: MessageContentWhereUniqueInput
+  }
+
+  /**
+   * MessageContent updateMany
+   */
+  export type MessageContentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MessageContents.
+     */
+    data: XOR<MessageContentUpdateManyMutationInput, MessageContentUncheckedUpdateManyInput>
+    /**
+     * Filter which MessageContents to update
+     */
+    where?: MessageContentWhereInput
+    /**
+     * Limit how many MessageContents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MessageContent updateManyAndReturn
+   */
+  export type MessageContentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageContent
+     */
+    select?: MessageContentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MessageContent
+     */
+    omit?: MessageContentOmit<ExtArgs> | null
+    /**
+     * The data used to update MessageContents.
+     */
+    data: XOR<MessageContentUpdateManyMutationInput, MessageContentUncheckedUpdateManyInput>
+    /**
+     * Filter which MessageContents to update
+     */
+    where?: MessageContentWhereInput
+    /**
+     * Limit how many MessageContents to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageContentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MessageContent upsert
+   */
+  export type MessageContentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageContent
+     */
+    select?: MessageContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MessageContent
+     */
+    omit?: MessageContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageContentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MessageContent to update in case it exists.
+     */
+    where: MessageContentWhereUniqueInput
+    /**
+     * In case the MessageContent found by the `where` argument doesn't exist, create a new MessageContent with this data.
+     */
+    create: XOR<MessageContentCreateInput, MessageContentUncheckedCreateInput>
+    /**
+     * In case the MessageContent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MessageContentUpdateInput, MessageContentUncheckedUpdateInput>
+  }
+
+  /**
+   * MessageContent delete
+   */
+  export type MessageContentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageContent
+     */
+    select?: MessageContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MessageContent
+     */
+    omit?: MessageContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageContentInclude<ExtArgs> | null
+    /**
+     * Filter which MessageContent to delete.
+     */
+    where: MessageContentWhereUniqueInput
+  }
+
+  /**
+   * MessageContent deleteMany
+   */
+  export type MessageContentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MessageContents to delete
+     */
+    where?: MessageContentWhereInput
+    /**
+     * Limit how many MessageContents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MessageContent without action
+   */
+  export type MessageContentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageContent
+     */
+    select?: MessageContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MessageContent
+     */
+    omit?: MessageContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageContentInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -4535,6 +9335,45 @@ export namespace Prisma {
   };
 
   export type ItemsScalarFieldEnum = (typeof ItemsScalarFieldEnum)[keyof typeof ItemsScalarFieldEnum]
+
+
+  export const ChatScalarFieldEnum: {
+    ChatID: 'ChatID',
+    Name: 'Name'
+  };
+
+  export type ChatScalarFieldEnum = (typeof ChatScalarFieldEnum)[keyof typeof ChatScalarFieldEnum]
+
+
+  export const ChatMemberScalarFieldEnum: {
+    ChatID: 'ChatID',
+    Username: 'Username'
+  };
+
+  export type ChatMemberScalarFieldEnum = (typeof ChatMemberScalarFieldEnum)[keyof typeof ChatMemberScalarFieldEnum]
+
+
+  export const MessageScalarFieldEnum: {
+    MessageID: 'MessageID',
+    ChatID: 'ChatID',
+    SenderUsername: 'SenderUsername',
+    CreatedAt: 'CreatedAt'
+  };
+
+  export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+  export const MessageContentScalarFieldEnum: {
+    MessageContentID: 'MessageContentID',
+    MessageID: 'MessageID',
+    Index: 'Index',
+    Text: 'Text',
+    Filename: 'Filename',
+    MimeType: 'MimeType',
+    Data: 'Data'
+  };
+
+  export type MessageContentScalarFieldEnum = (typeof MessageContentScalarFieldEnum)[keyof typeof MessageContentScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -4605,6 +9444,20 @@ export namespace Prisma {
    * Reference to a field of type 'Bytes[]'
    */
   export type ListBytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -4718,6 +9571,8 @@ export namespace Prisma {
     FacebookID?: StringNullableFilter<"Accounts"> | string | null
     GoogleID?: StringNullableFilter<"Accounts"> | string | null
     Account_Items?: Account_ItemsListRelationFilter
+    ChatMember?: ChatMemberListRelationFilter
+    Message?: MessageListRelationFilter
   }
 
   export type AccountsOrderByWithRelationInput = {
@@ -4730,6 +9585,8 @@ export namespace Prisma {
     FacebookID?: SortOrderInput | SortOrder
     GoogleID?: SortOrderInput | SortOrder
     Account_Items?: Account_ItemsOrderByRelationAggregateInput
+    ChatMember?: ChatMemberOrderByRelationAggregateInput
+    Message?: MessageOrderByRelationAggregateInput
   }
 
   export type AccountsWhereUniqueInput = Prisma.AtLeast<{
@@ -4745,6 +9602,8 @@ export namespace Prisma {
     LastName?: StringFilter<"Accounts"> | string
     Password?: BytesFilter<"Accounts"> | Uint8Array
     Account_Items?: Account_ItemsListRelationFilter
+    ChatMember?: ChatMemberListRelationFilter
+    Message?: MessageListRelationFilter
   }, "AccountID" | "Email" | "Username" | "FacebookID" | "GoogleID">
 
   export type AccountsOrderByWithAggregationInput = {
@@ -4842,6 +9701,216 @@ export namespace Prisma {
     DefaultImageLink?: StringWithAggregatesFilter<"Items"> | string
   }
 
+  export type ChatWhereInput = {
+    AND?: ChatWhereInput | ChatWhereInput[]
+    OR?: ChatWhereInput[]
+    NOT?: ChatWhereInput | ChatWhereInput[]
+    ChatID?: StringFilter<"Chat"> | string
+    Name?: StringNullableFilter<"Chat"> | string | null
+    Messages?: MessageListRelationFilter
+    Members?: ChatMemberListRelationFilter
+  }
+
+  export type ChatOrderByWithRelationInput = {
+    ChatID?: SortOrder
+    Name?: SortOrderInput | SortOrder
+    Messages?: MessageOrderByRelationAggregateInput
+    Members?: ChatMemberOrderByRelationAggregateInput
+  }
+
+  export type ChatWhereUniqueInput = Prisma.AtLeast<{
+    ChatID?: string
+    AND?: ChatWhereInput | ChatWhereInput[]
+    OR?: ChatWhereInput[]
+    NOT?: ChatWhereInput | ChatWhereInput[]
+    Name?: StringNullableFilter<"Chat"> | string | null
+    Messages?: MessageListRelationFilter
+    Members?: ChatMemberListRelationFilter
+  }, "ChatID">
+
+  export type ChatOrderByWithAggregationInput = {
+    ChatID?: SortOrder
+    Name?: SortOrderInput | SortOrder
+    _count?: ChatCountOrderByAggregateInput
+    _max?: ChatMaxOrderByAggregateInput
+    _min?: ChatMinOrderByAggregateInput
+  }
+
+  export type ChatScalarWhereWithAggregatesInput = {
+    AND?: ChatScalarWhereWithAggregatesInput | ChatScalarWhereWithAggregatesInput[]
+    OR?: ChatScalarWhereWithAggregatesInput[]
+    NOT?: ChatScalarWhereWithAggregatesInput | ChatScalarWhereWithAggregatesInput[]
+    ChatID?: StringWithAggregatesFilter<"Chat"> | string
+    Name?: StringNullableWithAggregatesFilter<"Chat"> | string | null
+  }
+
+  export type ChatMemberWhereInput = {
+    AND?: ChatMemberWhereInput | ChatMemberWhereInput[]
+    OR?: ChatMemberWhereInput[]
+    NOT?: ChatMemberWhereInput | ChatMemberWhereInput[]
+    ChatID?: StringFilter<"ChatMember"> | string
+    Username?: StringFilter<"ChatMember"> | string
+    Chat?: XOR<ChatScalarRelationFilter, ChatWhereInput>
+    User?: XOR<AccountsScalarRelationFilter, AccountsWhereInput>
+  }
+
+  export type ChatMemberOrderByWithRelationInput = {
+    ChatID?: SortOrder
+    Username?: SortOrder
+    Chat?: ChatOrderByWithRelationInput
+    User?: AccountsOrderByWithRelationInput
+  }
+
+  export type ChatMemberWhereUniqueInput = Prisma.AtLeast<{
+    ChatID_Username?: ChatMemberChatIDUsernameCompoundUniqueInput
+    AND?: ChatMemberWhereInput | ChatMemberWhereInput[]
+    OR?: ChatMemberWhereInput[]
+    NOT?: ChatMemberWhereInput | ChatMemberWhereInput[]
+    ChatID?: StringFilter<"ChatMember"> | string
+    Username?: StringFilter<"ChatMember"> | string
+    Chat?: XOR<ChatScalarRelationFilter, ChatWhereInput>
+    User?: XOR<AccountsScalarRelationFilter, AccountsWhereInput>
+  }, "ChatID_Username">
+
+  export type ChatMemberOrderByWithAggregationInput = {
+    ChatID?: SortOrder
+    Username?: SortOrder
+    _count?: ChatMemberCountOrderByAggregateInput
+    _max?: ChatMemberMaxOrderByAggregateInput
+    _min?: ChatMemberMinOrderByAggregateInput
+  }
+
+  export type ChatMemberScalarWhereWithAggregatesInput = {
+    AND?: ChatMemberScalarWhereWithAggregatesInput | ChatMemberScalarWhereWithAggregatesInput[]
+    OR?: ChatMemberScalarWhereWithAggregatesInput[]
+    NOT?: ChatMemberScalarWhereWithAggregatesInput | ChatMemberScalarWhereWithAggregatesInput[]
+    ChatID?: StringWithAggregatesFilter<"ChatMember"> | string
+    Username?: StringWithAggregatesFilter<"ChatMember"> | string
+  }
+
+  export type MessageWhereInput = {
+    AND?: MessageWhereInput | MessageWhereInput[]
+    OR?: MessageWhereInput[]
+    NOT?: MessageWhereInput | MessageWhereInput[]
+    MessageID?: StringFilter<"Message"> | string
+    ChatID?: StringFilter<"Message"> | string
+    SenderUsername?: StringFilter<"Message"> | string
+    CreatedAt?: DateTimeFilter<"Message"> | Date | string
+    Chat?: XOR<ChatScalarRelationFilter, ChatWhereInput>
+    Sender?: XOR<AccountsScalarRelationFilter, AccountsWhereInput>
+    MessageContent?: MessageContentListRelationFilter
+  }
+
+  export type MessageOrderByWithRelationInput = {
+    MessageID?: SortOrder
+    ChatID?: SortOrder
+    SenderUsername?: SortOrder
+    CreatedAt?: SortOrder
+    Chat?: ChatOrderByWithRelationInput
+    Sender?: AccountsOrderByWithRelationInput
+    MessageContent?: MessageContentOrderByRelationAggregateInput
+  }
+
+  export type MessageWhereUniqueInput = Prisma.AtLeast<{
+    MessageID?: string
+    AND?: MessageWhereInput | MessageWhereInput[]
+    OR?: MessageWhereInput[]
+    NOT?: MessageWhereInput | MessageWhereInput[]
+    ChatID?: StringFilter<"Message"> | string
+    SenderUsername?: StringFilter<"Message"> | string
+    CreatedAt?: DateTimeFilter<"Message"> | Date | string
+    Chat?: XOR<ChatScalarRelationFilter, ChatWhereInput>
+    Sender?: XOR<AccountsScalarRelationFilter, AccountsWhereInput>
+    MessageContent?: MessageContentListRelationFilter
+  }, "MessageID">
+
+  export type MessageOrderByWithAggregationInput = {
+    MessageID?: SortOrder
+    ChatID?: SortOrder
+    SenderUsername?: SortOrder
+    CreatedAt?: SortOrder
+    _count?: MessageCountOrderByAggregateInput
+    _max?: MessageMaxOrderByAggregateInput
+    _min?: MessageMinOrderByAggregateInput
+  }
+
+  export type MessageScalarWhereWithAggregatesInput = {
+    AND?: MessageScalarWhereWithAggregatesInput | MessageScalarWhereWithAggregatesInput[]
+    OR?: MessageScalarWhereWithAggregatesInput[]
+    NOT?: MessageScalarWhereWithAggregatesInput | MessageScalarWhereWithAggregatesInput[]
+    MessageID?: StringWithAggregatesFilter<"Message"> | string
+    ChatID?: StringWithAggregatesFilter<"Message"> | string
+    SenderUsername?: StringWithAggregatesFilter<"Message"> | string
+    CreatedAt?: DateTimeWithAggregatesFilter<"Message"> | Date | string
+  }
+
+  export type MessageContentWhereInput = {
+    AND?: MessageContentWhereInput | MessageContentWhereInput[]
+    OR?: MessageContentWhereInput[]
+    NOT?: MessageContentWhereInput | MessageContentWhereInput[]
+    MessageContentID?: IntFilter<"MessageContent"> | number
+    MessageID?: StringFilter<"MessageContent"> | string
+    Index?: IntFilter<"MessageContent"> | number
+    Text?: StringNullableFilter<"MessageContent"> | string | null
+    Filename?: StringNullableFilter<"MessageContent"> | string | null
+    MimeType?: StringNullableFilter<"MessageContent"> | string | null
+    Data?: BytesNullableFilter<"MessageContent"> | Uint8Array | null
+    Message?: XOR<MessageScalarRelationFilter, MessageWhereInput>
+  }
+
+  export type MessageContentOrderByWithRelationInput = {
+    MessageContentID?: SortOrder
+    MessageID?: SortOrder
+    Index?: SortOrder
+    Text?: SortOrderInput | SortOrder
+    Filename?: SortOrderInput | SortOrder
+    MimeType?: SortOrderInput | SortOrder
+    Data?: SortOrderInput | SortOrder
+    Message?: MessageOrderByWithRelationInput
+  }
+
+  export type MessageContentWhereUniqueInput = Prisma.AtLeast<{
+    MessageContentID?: number
+    AND?: MessageContentWhereInput | MessageContentWhereInput[]
+    OR?: MessageContentWhereInput[]
+    NOT?: MessageContentWhereInput | MessageContentWhereInput[]
+    MessageID?: StringFilter<"MessageContent"> | string
+    Index?: IntFilter<"MessageContent"> | number
+    Text?: StringNullableFilter<"MessageContent"> | string | null
+    Filename?: StringNullableFilter<"MessageContent"> | string | null
+    MimeType?: StringNullableFilter<"MessageContent"> | string | null
+    Data?: BytesNullableFilter<"MessageContent"> | Uint8Array | null
+    Message?: XOR<MessageScalarRelationFilter, MessageWhereInput>
+  }, "MessageContentID">
+
+  export type MessageContentOrderByWithAggregationInput = {
+    MessageContentID?: SortOrder
+    MessageID?: SortOrder
+    Index?: SortOrder
+    Text?: SortOrderInput | SortOrder
+    Filename?: SortOrderInput | SortOrder
+    MimeType?: SortOrderInput | SortOrder
+    Data?: SortOrderInput | SortOrder
+    _count?: MessageContentCountOrderByAggregateInput
+    _avg?: MessageContentAvgOrderByAggregateInput
+    _max?: MessageContentMaxOrderByAggregateInput
+    _min?: MessageContentMinOrderByAggregateInput
+    _sum?: MessageContentSumOrderByAggregateInput
+  }
+
+  export type MessageContentScalarWhereWithAggregatesInput = {
+    AND?: MessageContentScalarWhereWithAggregatesInput | MessageContentScalarWhereWithAggregatesInput[]
+    OR?: MessageContentScalarWhereWithAggregatesInput[]
+    NOT?: MessageContentScalarWhereWithAggregatesInput | MessageContentScalarWhereWithAggregatesInput[]
+    MessageContentID?: IntWithAggregatesFilter<"MessageContent"> | number
+    MessageID?: StringWithAggregatesFilter<"MessageContent"> | string
+    Index?: IntWithAggregatesFilter<"MessageContent"> | number
+    Text?: StringNullableWithAggregatesFilter<"MessageContent"> | string | null
+    Filename?: StringNullableWithAggregatesFilter<"MessageContent"> | string | null
+    MimeType?: StringNullableWithAggregatesFilter<"MessageContent"> | string | null
+    Data?: BytesNullableWithAggregatesFilter<"MessageContent"> | Uint8Array | null
+  }
+
   export type Account_ItemsCreateInput = {
     Price: bigint | number
     PurchasePrice: bigint | number
@@ -4913,6 +9982,8 @@ export namespace Prisma {
     FacebookID?: string | null
     GoogleID?: string | null
     Account_Items?: Account_ItemsCreateNestedManyWithoutAccountsInput
+    ChatMember?: ChatMemberCreateNestedManyWithoutUserInput
+    Message?: MessageCreateNestedManyWithoutSenderInput
   }
 
   export type AccountsUncheckedCreateInput = {
@@ -4925,6 +9996,8 @@ export namespace Prisma {
     FacebookID?: string | null
     GoogleID?: string | null
     Account_Items?: Account_ItemsUncheckedCreateNestedManyWithoutAccountsInput
+    ChatMember?: ChatMemberUncheckedCreateNestedManyWithoutUserInput
+    Message?: MessageUncheckedCreateNestedManyWithoutSenderInput
   }
 
   export type AccountsUpdateInput = {
@@ -4937,6 +10010,8 @@ export namespace Prisma {
     FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
     GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
     Account_Items?: Account_ItemsUpdateManyWithoutAccountsNestedInput
+    ChatMember?: ChatMemberUpdateManyWithoutUserNestedInput
+    Message?: MessageUpdateManyWithoutSenderNestedInput
   }
 
   export type AccountsUncheckedUpdateInput = {
@@ -4949,6 +10024,8 @@ export namespace Prisma {
     FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
     GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
     Account_Items?: Account_ItemsUncheckedUpdateManyWithoutAccountsNestedInput
+    ChatMember?: ChatMemberUncheckedUpdateManyWithoutUserNestedInput
+    Message?: MessageUncheckedUpdateManyWithoutSenderNestedInput
   }
 
   export type AccountsCreateManyInput = {
@@ -5056,6 +10133,200 @@ export namespace Prisma {
     Brand?: StringFieldUpdateOperationsInput | string
     Type?: StringFieldUpdateOperationsInput | string
     DefaultImageLink?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ChatCreateInput = {
+    ChatID?: string
+    Name?: string | null
+    Messages?: MessageCreateNestedManyWithoutChatInput
+    Members?: ChatMemberCreateNestedManyWithoutChatInput
+  }
+
+  export type ChatUncheckedCreateInput = {
+    ChatID?: string
+    Name?: string | null
+    Messages?: MessageUncheckedCreateNestedManyWithoutChatInput
+    Members?: ChatMemberUncheckedCreateNestedManyWithoutChatInput
+  }
+
+  export type ChatUpdateInput = {
+    ChatID?: StringFieldUpdateOperationsInput | string
+    Name?: NullableStringFieldUpdateOperationsInput | string | null
+    Messages?: MessageUpdateManyWithoutChatNestedInput
+    Members?: ChatMemberUpdateManyWithoutChatNestedInput
+  }
+
+  export type ChatUncheckedUpdateInput = {
+    ChatID?: StringFieldUpdateOperationsInput | string
+    Name?: NullableStringFieldUpdateOperationsInput | string | null
+    Messages?: MessageUncheckedUpdateManyWithoutChatNestedInput
+    Members?: ChatMemberUncheckedUpdateManyWithoutChatNestedInput
+  }
+
+  export type ChatCreateManyInput = {
+    ChatID?: string
+    Name?: string | null
+  }
+
+  export type ChatUpdateManyMutationInput = {
+    ChatID?: StringFieldUpdateOperationsInput | string
+    Name?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ChatUncheckedUpdateManyInput = {
+    ChatID?: StringFieldUpdateOperationsInput | string
+    Name?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ChatMemberCreateInput = {
+    Chat: ChatCreateNestedOneWithoutMembersInput
+    User: AccountsCreateNestedOneWithoutChatMemberInput
+  }
+
+  export type ChatMemberUncheckedCreateInput = {
+    ChatID: string
+    Username: string
+  }
+
+  export type ChatMemberUpdateInput = {
+    Chat?: ChatUpdateOneRequiredWithoutMembersNestedInput
+    User?: AccountsUpdateOneRequiredWithoutChatMemberNestedInput
+  }
+
+  export type ChatMemberUncheckedUpdateInput = {
+    ChatID?: StringFieldUpdateOperationsInput | string
+    Username?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ChatMemberCreateManyInput = {
+    ChatID: string
+    Username: string
+  }
+
+  export type ChatMemberUpdateManyMutationInput = {
+
+  }
+
+  export type ChatMemberUncheckedUpdateManyInput = {
+    ChatID?: StringFieldUpdateOperationsInput | string
+    Username?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MessageCreateInput = {
+    MessageID?: string
+    CreatedAt?: Date | string
+    Chat: ChatCreateNestedOneWithoutMessagesInput
+    Sender: AccountsCreateNestedOneWithoutMessageInput
+    MessageContent?: MessageContentCreateNestedManyWithoutMessageInput
+  }
+
+  export type MessageUncheckedCreateInput = {
+    MessageID?: string
+    ChatID: string
+    SenderUsername: string
+    CreatedAt?: Date | string
+    MessageContent?: MessageContentUncheckedCreateNestedManyWithoutMessageInput
+  }
+
+  export type MessageUpdateInput = {
+    MessageID?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Chat?: ChatUpdateOneRequiredWithoutMessagesNestedInput
+    Sender?: AccountsUpdateOneRequiredWithoutMessageNestedInput
+    MessageContent?: MessageContentUpdateManyWithoutMessageNestedInput
+  }
+
+  export type MessageUncheckedUpdateInput = {
+    MessageID?: StringFieldUpdateOperationsInput | string
+    ChatID?: StringFieldUpdateOperationsInput | string
+    SenderUsername?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    MessageContent?: MessageContentUncheckedUpdateManyWithoutMessageNestedInput
+  }
+
+  export type MessageCreateManyInput = {
+    MessageID?: string
+    ChatID: string
+    SenderUsername: string
+    CreatedAt?: Date | string
+  }
+
+  export type MessageUpdateManyMutationInput = {
+    MessageID?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MessageUncheckedUpdateManyInput = {
+    MessageID?: StringFieldUpdateOperationsInput | string
+    ChatID?: StringFieldUpdateOperationsInput | string
+    SenderUsername?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MessageContentCreateInput = {
+    Index: number
+    Text?: string | null
+    Filename?: string | null
+    MimeType?: string | null
+    Data?: Uint8Array | null
+    Message: MessageCreateNestedOneWithoutMessageContentInput
+  }
+
+  export type MessageContentUncheckedCreateInput = {
+    MessageContentID?: number
+    MessageID: string
+    Index: number
+    Text?: string | null
+    Filename?: string | null
+    MimeType?: string | null
+    Data?: Uint8Array | null
+  }
+
+  export type MessageContentUpdateInput = {
+    Index?: IntFieldUpdateOperationsInput | number
+    Text?: NullableStringFieldUpdateOperationsInput | string | null
+    Filename?: NullableStringFieldUpdateOperationsInput | string | null
+    MimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    Data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
+    Message?: MessageUpdateOneRequiredWithoutMessageContentNestedInput
+  }
+
+  export type MessageContentUncheckedUpdateInput = {
+    MessageContentID?: IntFieldUpdateOperationsInput | number
+    MessageID?: StringFieldUpdateOperationsInput | string
+    Index?: IntFieldUpdateOperationsInput | number
+    Text?: NullableStringFieldUpdateOperationsInput | string | null
+    Filename?: NullableStringFieldUpdateOperationsInput | string | null
+    MimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    Data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
+  }
+
+  export type MessageContentCreateManyInput = {
+    MessageContentID?: number
+    MessageID: string
+    Index: number
+    Text?: string | null
+    Filename?: string | null
+    MimeType?: string | null
+    Data?: Uint8Array | null
+  }
+
+  export type MessageContentUpdateManyMutationInput = {
+    Index?: IntFieldUpdateOperationsInput | number
+    Text?: NullableStringFieldUpdateOperationsInput | string | null
+    Filename?: NullableStringFieldUpdateOperationsInput | string | null
+    MimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    Data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
+  }
+
+  export type MessageContentUncheckedUpdateManyInput = {
+    MessageContentID?: IntFieldUpdateOperationsInput | number
+    MessageID?: StringFieldUpdateOperationsInput | string
+    Index?: IntFieldUpdateOperationsInput | number
+    Text?: NullableStringFieldUpdateOperationsInput | string | null
+    Filename?: NullableStringFieldUpdateOperationsInput | string | null
+    MimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    Data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
   }
 
   export type UuidFilter<$PrismaModel = never> = {
@@ -5229,12 +10500,32 @@ export namespace Prisma {
     none?: Account_ItemsWhereInput
   }
 
+  export type ChatMemberListRelationFilter = {
+    every?: ChatMemberWhereInput
+    some?: ChatMemberWhereInput
+    none?: ChatMemberWhereInput
+  }
+
+  export type MessageListRelationFilter = {
+    every?: MessageWhereInput
+    some?: MessageWhereInput
+    none?: MessageWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
   export type Account_ItemsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ChatMemberOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MessageOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -5341,6 +10632,191 @@ export namespace Prisma {
     CategoryID?: SortOrder
   }
 
+  export type ChatCountOrderByAggregateInput = {
+    ChatID?: SortOrder
+    Name?: SortOrder
+  }
+
+  export type ChatMaxOrderByAggregateInput = {
+    ChatID?: SortOrder
+    Name?: SortOrder
+  }
+
+  export type ChatMinOrderByAggregateInput = {
+    ChatID?: SortOrder
+    Name?: SortOrder
+  }
+
+  export type ChatScalarRelationFilter = {
+    is?: ChatWhereInput
+    isNot?: ChatWhereInput
+  }
+
+  export type ChatMemberChatIDUsernameCompoundUniqueInput = {
+    ChatID: string
+    Username: string
+  }
+
+  export type ChatMemberCountOrderByAggregateInput = {
+    ChatID?: SortOrder
+    Username?: SortOrder
+  }
+
+  export type ChatMemberMaxOrderByAggregateInput = {
+    ChatID?: SortOrder
+    Username?: SortOrder
+  }
+
+  export type ChatMemberMinOrderByAggregateInput = {
+    ChatID?: SortOrder
+    Username?: SortOrder
+  }
+
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type MessageContentListRelationFilter = {
+    every?: MessageContentWhereInput
+    some?: MessageContentWhereInput
+    none?: MessageContentWhereInput
+  }
+
+  export type MessageContentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MessageCountOrderByAggregateInput = {
+    MessageID?: SortOrder
+    ChatID?: SortOrder
+    SenderUsername?: SortOrder
+    CreatedAt?: SortOrder
+  }
+
+  export type MessageMaxOrderByAggregateInput = {
+    MessageID?: SortOrder
+    ChatID?: SortOrder
+    SenderUsername?: SortOrder
+    CreatedAt?: SortOrder
+  }
+
+  export type MessageMinOrderByAggregateInput = {
+    MessageID?: SortOrder
+    ChatID?: SortOrder
+    SenderUsername?: SortOrder
+    CreatedAt?: SortOrder
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type BytesNullableFilter<$PrismaModel = never> = {
+    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel> | null
+    in?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableFilter<$PrismaModel> | Uint8Array | null
+  }
+
+  export type MessageScalarRelationFilter = {
+    is?: MessageWhereInput
+    isNot?: MessageWhereInput
+  }
+
+  export type MessageContentCountOrderByAggregateInput = {
+    MessageContentID?: SortOrder
+    MessageID?: SortOrder
+    Index?: SortOrder
+    Text?: SortOrder
+    Filename?: SortOrder
+    MimeType?: SortOrder
+    Data?: SortOrder
+  }
+
+  export type MessageContentAvgOrderByAggregateInput = {
+    MessageContentID?: SortOrder
+    Index?: SortOrder
+  }
+
+  export type MessageContentMaxOrderByAggregateInput = {
+    MessageContentID?: SortOrder
+    MessageID?: SortOrder
+    Index?: SortOrder
+    Text?: SortOrder
+    Filename?: SortOrder
+    MimeType?: SortOrder
+    Data?: SortOrder
+  }
+
+  export type MessageContentMinOrderByAggregateInput = {
+    MessageContentID?: SortOrder
+    MessageID?: SortOrder
+    Index?: SortOrder
+    Text?: SortOrder
+    Filename?: SortOrder
+    MimeType?: SortOrder
+    Data?: SortOrder
+  }
+
+  export type MessageContentSumOrderByAggregateInput = {
+    MessageContentID?: SortOrder
+    Index?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type BytesNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel> | null
+    in?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableWithAggregatesFilter<$PrismaModel> | Uint8Array | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBytesNullableFilter<$PrismaModel>
+    _max?: NestedBytesNullableFilter<$PrismaModel>
+  }
+
   export type AccountsCreateNestedOneWithoutAccount_ItemsInput = {
     create?: XOR<AccountsCreateWithoutAccount_ItemsInput, AccountsUncheckedCreateWithoutAccount_ItemsInput>
     connectOrCreate?: AccountsCreateOrConnectWithoutAccount_ItemsInput
@@ -5388,11 +10864,39 @@ export namespace Prisma {
     connect?: Account_ItemsWhereUniqueInput | Account_ItemsWhereUniqueInput[]
   }
 
+  export type ChatMemberCreateNestedManyWithoutUserInput = {
+    create?: XOR<ChatMemberCreateWithoutUserInput, ChatMemberUncheckedCreateWithoutUserInput> | ChatMemberCreateWithoutUserInput[] | ChatMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatMemberCreateOrConnectWithoutUserInput | ChatMemberCreateOrConnectWithoutUserInput[]
+    createMany?: ChatMemberCreateManyUserInputEnvelope
+    connect?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+  }
+
+  export type MessageCreateNestedManyWithoutSenderInput = {
+    create?: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput> | MessageCreateWithoutSenderInput[] | MessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutSenderInput | MessageCreateOrConnectWithoutSenderInput[]
+    createMany?: MessageCreateManySenderInputEnvelope
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+  }
+
   export type Account_ItemsUncheckedCreateNestedManyWithoutAccountsInput = {
     create?: XOR<Account_ItemsCreateWithoutAccountsInput, Account_ItemsUncheckedCreateWithoutAccountsInput> | Account_ItemsCreateWithoutAccountsInput[] | Account_ItemsUncheckedCreateWithoutAccountsInput[]
     connectOrCreate?: Account_ItemsCreateOrConnectWithoutAccountsInput | Account_ItemsCreateOrConnectWithoutAccountsInput[]
     createMany?: Account_ItemsCreateManyAccountsInputEnvelope
     connect?: Account_ItemsWhereUniqueInput | Account_ItemsWhereUniqueInput[]
+  }
+
+  export type ChatMemberUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ChatMemberCreateWithoutUserInput, ChatMemberUncheckedCreateWithoutUserInput> | ChatMemberCreateWithoutUserInput[] | ChatMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatMemberCreateOrConnectWithoutUserInput | ChatMemberCreateOrConnectWithoutUserInput[]
+    createMany?: ChatMemberCreateManyUserInputEnvelope
+    connect?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+  }
+
+  export type MessageUncheckedCreateNestedManyWithoutSenderInput = {
+    create?: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput> | MessageCreateWithoutSenderInput[] | MessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutSenderInput | MessageCreateOrConnectWithoutSenderInput[]
+    createMany?: MessageCreateManySenderInputEnvelope
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
   }
 
   export type BytesFieldUpdateOperationsInput = {
@@ -5417,6 +10921,34 @@ export namespace Prisma {
     deleteMany?: Account_ItemsScalarWhereInput | Account_ItemsScalarWhereInput[]
   }
 
+  export type ChatMemberUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ChatMemberCreateWithoutUserInput, ChatMemberUncheckedCreateWithoutUserInput> | ChatMemberCreateWithoutUserInput[] | ChatMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatMemberCreateOrConnectWithoutUserInput | ChatMemberCreateOrConnectWithoutUserInput[]
+    upsert?: ChatMemberUpsertWithWhereUniqueWithoutUserInput | ChatMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ChatMemberCreateManyUserInputEnvelope
+    set?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    disconnect?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    delete?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    connect?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    update?: ChatMemberUpdateWithWhereUniqueWithoutUserInput | ChatMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ChatMemberUpdateManyWithWhereWithoutUserInput | ChatMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ChatMemberScalarWhereInput | ChatMemberScalarWhereInput[]
+  }
+
+  export type MessageUpdateManyWithoutSenderNestedInput = {
+    create?: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput> | MessageCreateWithoutSenderInput[] | MessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutSenderInput | MessageCreateOrConnectWithoutSenderInput[]
+    upsert?: MessageUpsertWithWhereUniqueWithoutSenderInput | MessageUpsertWithWhereUniqueWithoutSenderInput[]
+    createMany?: MessageCreateManySenderInputEnvelope
+    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    update?: MessageUpdateWithWhereUniqueWithoutSenderInput | MessageUpdateWithWhereUniqueWithoutSenderInput[]
+    updateMany?: MessageUpdateManyWithWhereWithoutSenderInput | MessageUpdateManyWithWhereWithoutSenderInput[]
+    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
+  }
+
   export type Account_ItemsUncheckedUpdateManyWithoutAccountsNestedInput = {
     create?: XOR<Account_ItemsCreateWithoutAccountsInput, Account_ItemsUncheckedCreateWithoutAccountsInput> | Account_ItemsCreateWithoutAccountsInput[] | Account_ItemsUncheckedCreateWithoutAccountsInput[]
     connectOrCreate?: Account_ItemsCreateOrConnectWithoutAccountsInput | Account_ItemsCreateOrConnectWithoutAccountsInput[]
@@ -5429,6 +10961,34 @@ export namespace Prisma {
     update?: Account_ItemsUpdateWithWhereUniqueWithoutAccountsInput | Account_ItemsUpdateWithWhereUniqueWithoutAccountsInput[]
     updateMany?: Account_ItemsUpdateManyWithWhereWithoutAccountsInput | Account_ItemsUpdateManyWithWhereWithoutAccountsInput[]
     deleteMany?: Account_ItemsScalarWhereInput | Account_ItemsScalarWhereInput[]
+  }
+
+  export type ChatMemberUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ChatMemberCreateWithoutUserInput, ChatMemberUncheckedCreateWithoutUserInput> | ChatMemberCreateWithoutUserInput[] | ChatMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatMemberCreateOrConnectWithoutUserInput | ChatMemberCreateOrConnectWithoutUserInput[]
+    upsert?: ChatMemberUpsertWithWhereUniqueWithoutUserInput | ChatMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ChatMemberCreateManyUserInputEnvelope
+    set?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    disconnect?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    delete?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    connect?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    update?: ChatMemberUpdateWithWhereUniqueWithoutUserInput | ChatMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ChatMemberUpdateManyWithWhereWithoutUserInput | ChatMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ChatMemberScalarWhereInput | ChatMemberScalarWhereInput[]
+  }
+
+  export type MessageUncheckedUpdateManyWithoutSenderNestedInput = {
+    create?: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput> | MessageCreateWithoutSenderInput[] | MessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutSenderInput | MessageCreateOrConnectWithoutSenderInput[]
+    upsert?: MessageUpsertWithWhereUniqueWithoutSenderInput | MessageUpsertWithWhereUniqueWithoutSenderInput[]
+    createMany?: MessageCreateManySenderInputEnvelope
+    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    update?: MessageUpdateWithWhereUniqueWithoutSenderInput | MessageUpdateWithWhereUniqueWithoutSenderInput[]
+    updateMany?: MessageUpdateManyWithWhereWithoutSenderInput | MessageUpdateManyWithWhereWithoutSenderInput[]
+    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
   }
 
   export type Account_ItemsCreateNestedManyWithoutItemsInput = {
@@ -5471,6 +11031,218 @@ export namespace Prisma {
     update?: Account_ItemsUpdateWithWhereUniqueWithoutItemsInput | Account_ItemsUpdateWithWhereUniqueWithoutItemsInput[]
     updateMany?: Account_ItemsUpdateManyWithWhereWithoutItemsInput | Account_ItemsUpdateManyWithWhereWithoutItemsInput[]
     deleteMany?: Account_ItemsScalarWhereInput | Account_ItemsScalarWhereInput[]
+  }
+
+  export type MessageCreateNestedManyWithoutChatInput = {
+    create?: XOR<MessageCreateWithoutChatInput, MessageUncheckedCreateWithoutChatInput> | MessageCreateWithoutChatInput[] | MessageUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutChatInput | MessageCreateOrConnectWithoutChatInput[]
+    createMany?: MessageCreateManyChatInputEnvelope
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+  }
+
+  export type ChatMemberCreateNestedManyWithoutChatInput = {
+    create?: XOR<ChatMemberCreateWithoutChatInput, ChatMemberUncheckedCreateWithoutChatInput> | ChatMemberCreateWithoutChatInput[] | ChatMemberUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: ChatMemberCreateOrConnectWithoutChatInput | ChatMemberCreateOrConnectWithoutChatInput[]
+    createMany?: ChatMemberCreateManyChatInputEnvelope
+    connect?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+  }
+
+  export type MessageUncheckedCreateNestedManyWithoutChatInput = {
+    create?: XOR<MessageCreateWithoutChatInput, MessageUncheckedCreateWithoutChatInput> | MessageCreateWithoutChatInput[] | MessageUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutChatInput | MessageCreateOrConnectWithoutChatInput[]
+    createMany?: MessageCreateManyChatInputEnvelope
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+  }
+
+  export type ChatMemberUncheckedCreateNestedManyWithoutChatInput = {
+    create?: XOR<ChatMemberCreateWithoutChatInput, ChatMemberUncheckedCreateWithoutChatInput> | ChatMemberCreateWithoutChatInput[] | ChatMemberUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: ChatMemberCreateOrConnectWithoutChatInput | ChatMemberCreateOrConnectWithoutChatInput[]
+    createMany?: ChatMemberCreateManyChatInputEnvelope
+    connect?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+  }
+
+  export type MessageUpdateManyWithoutChatNestedInput = {
+    create?: XOR<MessageCreateWithoutChatInput, MessageUncheckedCreateWithoutChatInput> | MessageCreateWithoutChatInput[] | MessageUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutChatInput | MessageCreateOrConnectWithoutChatInput[]
+    upsert?: MessageUpsertWithWhereUniqueWithoutChatInput | MessageUpsertWithWhereUniqueWithoutChatInput[]
+    createMany?: MessageCreateManyChatInputEnvelope
+    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    update?: MessageUpdateWithWhereUniqueWithoutChatInput | MessageUpdateWithWhereUniqueWithoutChatInput[]
+    updateMany?: MessageUpdateManyWithWhereWithoutChatInput | MessageUpdateManyWithWhereWithoutChatInput[]
+    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
+  }
+
+  export type ChatMemberUpdateManyWithoutChatNestedInput = {
+    create?: XOR<ChatMemberCreateWithoutChatInput, ChatMemberUncheckedCreateWithoutChatInput> | ChatMemberCreateWithoutChatInput[] | ChatMemberUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: ChatMemberCreateOrConnectWithoutChatInput | ChatMemberCreateOrConnectWithoutChatInput[]
+    upsert?: ChatMemberUpsertWithWhereUniqueWithoutChatInput | ChatMemberUpsertWithWhereUniqueWithoutChatInput[]
+    createMany?: ChatMemberCreateManyChatInputEnvelope
+    set?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    disconnect?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    delete?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    connect?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    update?: ChatMemberUpdateWithWhereUniqueWithoutChatInput | ChatMemberUpdateWithWhereUniqueWithoutChatInput[]
+    updateMany?: ChatMemberUpdateManyWithWhereWithoutChatInput | ChatMemberUpdateManyWithWhereWithoutChatInput[]
+    deleteMany?: ChatMemberScalarWhereInput | ChatMemberScalarWhereInput[]
+  }
+
+  export type MessageUncheckedUpdateManyWithoutChatNestedInput = {
+    create?: XOR<MessageCreateWithoutChatInput, MessageUncheckedCreateWithoutChatInput> | MessageCreateWithoutChatInput[] | MessageUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutChatInput | MessageCreateOrConnectWithoutChatInput[]
+    upsert?: MessageUpsertWithWhereUniqueWithoutChatInput | MessageUpsertWithWhereUniqueWithoutChatInput[]
+    createMany?: MessageCreateManyChatInputEnvelope
+    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    update?: MessageUpdateWithWhereUniqueWithoutChatInput | MessageUpdateWithWhereUniqueWithoutChatInput[]
+    updateMany?: MessageUpdateManyWithWhereWithoutChatInput | MessageUpdateManyWithWhereWithoutChatInput[]
+    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
+  }
+
+  export type ChatMemberUncheckedUpdateManyWithoutChatNestedInput = {
+    create?: XOR<ChatMemberCreateWithoutChatInput, ChatMemberUncheckedCreateWithoutChatInput> | ChatMemberCreateWithoutChatInput[] | ChatMemberUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: ChatMemberCreateOrConnectWithoutChatInput | ChatMemberCreateOrConnectWithoutChatInput[]
+    upsert?: ChatMemberUpsertWithWhereUniqueWithoutChatInput | ChatMemberUpsertWithWhereUniqueWithoutChatInput[]
+    createMany?: ChatMemberCreateManyChatInputEnvelope
+    set?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    disconnect?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    delete?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    connect?: ChatMemberWhereUniqueInput | ChatMemberWhereUniqueInput[]
+    update?: ChatMemberUpdateWithWhereUniqueWithoutChatInput | ChatMemberUpdateWithWhereUniqueWithoutChatInput[]
+    updateMany?: ChatMemberUpdateManyWithWhereWithoutChatInput | ChatMemberUpdateManyWithWhereWithoutChatInput[]
+    deleteMany?: ChatMemberScalarWhereInput | ChatMemberScalarWhereInput[]
+  }
+
+  export type ChatCreateNestedOneWithoutMembersInput = {
+    create?: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: ChatCreateOrConnectWithoutMembersInput
+    connect?: ChatWhereUniqueInput
+  }
+
+  export type AccountsCreateNestedOneWithoutChatMemberInput = {
+    create?: XOR<AccountsCreateWithoutChatMemberInput, AccountsUncheckedCreateWithoutChatMemberInput>
+    connectOrCreate?: AccountsCreateOrConnectWithoutChatMemberInput
+    connect?: AccountsWhereUniqueInput
+  }
+
+  export type ChatUpdateOneRequiredWithoutMembersNestedInput = {
+    create?: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: ChatCreateOrConnectWithoutMembersInput
+    upsert?: ChatUpsertWithoutMembersInput
+    connect?: ChatWhereUniqueInput
+    update?: XOR<XOR<ChatUpdateToOneWithWhereWithoutMembersInput, ChatUpdateWithoutMembersInput>, ChatUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type AccountsUpdateOneRequiredWithoutChatMemberNestedInput = {
+    create?: XOR<AccountsCreateWithoutChatMemberInput, AccountsUncheckedCreateWithoutChatMemberInput>
+    connectOrCreate?: AccountsCreateOrConnectWithoutChatMemberInput
+    upsert?: AccountsUpsertWithoutChatMemberInput
+    connect?: AccountsWhereUniqueInput
+    update?: XOR<XOR<AccountsUpdateToOneWithWhereWithoutChatMemberInput, AccountsUpdateWithoutChatMemberInput>, AccountsUncheckedUpdateWithoutChatMemberInput>
+  }
+
+  export type ChatCreateNestedOneWithoutMessagesInput = {
+    create?: XOR<ChatCreateWithoutMessagesInput, ChatUncheckedCreateWithoutMessagesInput>
+    connectOrCreate?: ChatCreateOrConnectWithoutMessagesInput
+    connect?: ChatWhereUniqueInput
+  }
+
+  export type AccountsCreateNestedOneWithoutMessageInput = {
+    create?: XOR<AccountsCreateWithoutMessageInput, AccountsUncheckedCreateWithoutMessageInput>
+    connectOrCreate?: AccountsCreateOrConnectWithoutMessageInput
+    connect?: AccountsWhereUniqueInput
+  }
+
+  export type MessageContentCreateNestedManyWithoutMessageInput = {
+    create?: XOR<MessageContentCreateWithoutMessageInput, MessageContentUncheckedCreateWithoutMessageInput> | MessageContentCreateWithoutMessageInput[] | MessageContentUncheckedCreateWithoutMessageInput[]
+    connectOrCreate?: MessageContentCreateOrConnectWithoutMessageInput | MessageContentCreateOrConnectWithoutMessageInput[]
+    createMany?: MessageContentCreateManyMessageInputEnvelope
+    connect?: MessageContentWhereUniqueInput | MessageContentWhereUniqueInput[]
+  }
+
+  export type MessageContentUncheckedCreateNestedManyWithoutMessageInput = {
+    create?: XOR<MessageContentCreateWithoutMessageInput, MessageContentUncheckedCreateWithoutMessageInput> | MessageContentCreateWithoutMessageInput[] | MessageContentUncheckedCreateWithoutMessageInput[]
+    connectOrCreate?: MessageContentCreateOrConnectWithoutMessageInput | MessageContentCreateOrConnectWithoutMessageInput[]
+    createMany?: MessageContentCreateManyMessageInputEnvelope
+    connect?: MessageContentWhereUniqueInput | MessageContentWhereUniqueInput[]
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
+  export type ChatUpdateOneRequiredWithoutMessagesNestedInput = {
+    create?: XOR<ChatCreateWithoutMessagesInput, ChatUncheckedCreateWithoutMessagesInput>
+    connectOrCreate?: ChatCreateOrConnectWithoutMessagesInput
+    upsert?: ChatUpsertWithoutMessagesInput
+    connect?: ChatWhereUniqueInput
+    update?: XOR<XOR<ChatUpdateToOneWithWhereWithoutMessagesInput, ChatUpdateWithoutMessagesInput>, ChatUncheckedUpdateWithoutMessagesInput>
+  }
+
+  export type AccountsUpdateOneRequiredWithoutMessageNestedInput = {
+    create?: XOR<AccountsCreateWithoutMessageInput, AccountsUncheckedCreateWithoutMessageInput>
+    connectOrCreate?: AccountsCreateOrConnectWithoutMessageInput
+    upsert?: AccountsUpsertWithoutMessageInput
+    connect?: AccountsWhereUniqueInput
+    update?: XOR<XOR<AccountsUpdateToOneWithWhereWithoutMessageInput, AccountsUpdateWithoutMessageInput>, AccountsUncheckedUpdateWithoutMessageInput>
+  }
+
+  export type MessageContentUpdateManyWithoutMessageNestedInput = {
+    create?: XOR<MessageContentCreateWithoutMessageInput, MessageContentUncheckedCreateWithoutMessageInput> | MessageContentCreateWithoutMessageInput[] | MessageContentUncheckedCreateWithoutMessageInput[]
+    connectOrCreate?: MessageContentCreateOrConnectWithoutMessageInput | MessageContentCreateOrConnectWithoutMessageInput[]
+    upsert?: MessageContentUpsertWithWhereUniqueWithoutMessageInput | MessageContentUpsertWithWhereUniqueWithoutMessageInput[]
+    createMany?: MessageContentCreateManyMessageInputEnvelope
+    set?: MessageContentWhereUniqueInput | MessageContentWhereUniqueInput[]
+    disconnect?: MessageContentWhereUniqueInput | MessageContentWhereUniqueInput[]
+    delete?: MessageContentWhereUniqueInput | MessageContentWhereUniqueInput[]
+    connect?: MessageContentWhereUniqueInput | MessageContentWhereUniqueInput[]
+    update?: MessageContentUpdateWithWhereUniqueWithoutMessageInput | MessageContentUpdateWithWhereUniqueWithoutMessageInput[]
+    updateMany?: MessageContentUpdateManyWithWhereWithoutMessageInput | MessageContentUpdateManyWithWhereWithoutMessageInput[]
+    deleteMany?: MessageContentScalarWhereInput | MessageContentScalarWhereInput[]
+  }
+
+  export type MessageContentUncheckedUpdateManyWithoutMessageNestedInput = {
+    create?: XOR<MessageContentCreateWithoutMessageInput, MessageContentUncheckedCreateWithoutMessageInput> | MessageContentCreateWithoutMessageInput[] | MessageContentUncheckedCreateWithoutMessageInput[]
+    connectOrCreate?: MessageContentCreateOrConnectWithoutMessageInput | MessageContentCreateOrConnectWithoutMessageInput[]
+    upsert?: MessageContentUpsertWithWhereUniqueWithoutMessageInput | MessageContentUpsertWithWhereUniqueWithoutMessageInput[]
+    createMany?: MessageContentCreateManyMessageInputEnvelope
+    set?: MessageContentWhereUniqueInput | MessageContentWhereUniqueInput[]
+    disconnect?: MessageContentWhereUniqueInput | MessageContentWhereUniqueInput[]
+    delete?: MessageContentWhereUniqueInput | MessageContentWhereUniqueInput[]
+    connect?: MessageContentWhereUniqueInput | MessageContentWhereUniqueInput[]
+    update?: MessageContentUpdateWithWhereUniqueWithoutMessageInput | MessageContentUpdateWithWhereUniqueWithoutMessageInput[]
+    updateMany?: MessageContentUpdateManyWithWhereWithoutMessageInput | MessageContentUpdateManyWithWhereWithoutMessageInput[]
+    deleteMany?: MessageContentScalarWhereInput | MessageContentScalarWhereInput[]
+  }
+
+  export type MessageCreateNestedOneWithoutMessageContentInput = {
+    create?: XOR<MessageCreateWithoutMessageContentInput, MessageUncheckedCreateWithoutMessageContentInput>
+    connectOrCreate?: MessageCreateOrConnectWithoutMessageContentInput
+    connect?: MessageWhereUniqueInput
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableBytesFieldUpdateOperationsInput = {
+    set?: Uint8Array | null
+  }
+
+  export type MessageUpdateOneRequiredWithoutMessageContentNestedInput = {
+    create?: XOR<MessageCreateWithoutMessageContentInput, MessageUncheckedCreateWithoutMessageContentInput>
+    connectOrCreate?: MessageCreateOrConnectWithoutMessageContentInput
+    upsert?: MessageUpsertWithoutMessageContentInput
+    connect?: MessageWhereUniqueInput
+    update?: XOR<XOR<MessageUpdateToOneWithWhereWithoutMessageContentInput, MessageUpdateWithoutMessageContentInput>, MessageUncheckedUpdateWithoutMessageContentInput>
   }
 
   export type NestedUuidFilter<$PrismaModel = never> = {
@@ -5637,6 +11409,64 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedBytesNullableFilter<$PrismaModel = never> = {
+    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel> | null
+    in?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableFilter<$PrismaModel> | Uint8Array | null
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedBytesNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel> | null
+    in?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableWithAggregatesFilter<$PrismaModel> | Uint8Array | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBytesNullableFilter<$PrismaModel>
+    _max?: NestedBytesNullableFilter<$PrismaModel>
+  }
+
   export type AccountsCreateWithoutAccount_ItemsInput = {
     AccountID: string
     Email: string
@@ -5646,6 +11476,8 @@ export namespace Prisma {
     Username?: string | null
     FacebookID?: string | null
     GoogleID?: string | null
+    ChatMember?: ChatMemberCreateNestedManyWithoutUserInput
+    Message?: MessageCreateNestedManyWithoutSenderInput
   }
 
   export type AccountsUncheckedCreateWithoutAccount_ItemsInput = {
@@ -5657,6 +11489,8 @@ export namespace Prisma {
     Username?: string | null
     FacebookID?: string | null
     GoogleID?: string | null
+    ChatMember?: ChatMemberUncheckedCreateNestedManyWithoutUserInput
+    Message?: MessageUncheckedCreateNestedManyWithoutSenderInput
   }
 
   export type AccountsCreateOrConnectWithoutAccount_ItemsInput = {
@@ -5709,6 +11543,8 @@ export namespace Prisma {
     Username?: NullableStringFieldUpdateOperationsInput | string | null
     FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
     GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    ChatMember?: ChatMemberUpdateManyWithoutUserNestedInput
+    Message?: MessageUpdateManyWithoutSenderNestedInput
   }
 
   export type AccountsUncheckedUpdateWithoutAccount_ItemsInput = {
@@ -5720,6 +11556,8 @@ export namespace Prisma {
     Username?: NullableStringFieldUpdateOperationsInput | string | null
     FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
     GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    ChatMember?: ChatMemberUncheckedUpdateManyWithoutUserNestedInput
+    Message?: MessageUncheckedUpdateManyWithoutSenderNestedInput
   }
 
   export type ItemsUpsertWithoutAccount_ItemsInput = {
@@ -5779,6 +11617,48 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ChatMemberCreateWithoutUserInput = {
+    Chat: ChatCreateNestedOneWithoutMembersInput
+  }
+
+  export type ChatMemberUncheckedCreateWithoutUserInput = {
+    ChatID: string
+  }
+
+  export type ChatMemberCreateOrConnectWithoutUserInput = {
+    where: ChatMemberWhereUniqueInput
+    create: XOR<ChatMemberCreateWithoutUserInput, ChatMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type ChatMemberCreateManyUserInputEnvelope = {
+    data: ChatMemberCreateManyUserInput | ChatMemberCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MessageCreateWithoutSenderInput = {
+    MessageID?: string
+    CreatedAt?: Date | string
+    Chat: ChatCreateNestedOneWithoutMessagesInput
+    MessageContent?: MessageContentCreateNestedManyWithoutMessageInput
+  }
+
+  export type MessageUncheckedCreateWithoutSenderInput = {
+    MessageID?: string
+    ChatID: string
+    CreatedAt?: Date | string
+    MessageContent?: MessageContentUncheckedCreateNestedManyWithoutMessageInput
+  }
+
+  export type MessageCreateOrConnectWithoutSenderInput = {
+    where: MessageWhereUniqueInput
+    create: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput>
+  }
+
+  export type MessageCreateManySenderInputEnvelope = {
+    data: MessageCreateManySenderInput | MessageCreateManySenderInput[]
+    skipDuplicates?: boolean
+  }
+
   export type Account_ItemsUpsertWithWhereUniqueWithoutAccountsInput = {
     where: Account_ItemsWhereUniqueInput
     update: XOR<Account_ItemsUpdateWithoutAccountsInput, Account_ItemsUncheckedUpdateWithoutAccountsInput>
@@ -5805,6 +11685,56 @@ export namespace Prisma {
     PurchasePrice?: BigIntFilter<"Account_Items"> | bigint | number
     Qty?: BigIntFilter<"Account_Items"> | bigint | number
     ImageLink?: StringFilter<"Account_Items"> | string
+  }
+
+  export type ChatMemberUpsertWithWhereUniqueWithoutUserInput = {
+    where: ChatMemberWhereUniqueInput
+    update: XOR<ChatMemberUpdateWithoutUserInput, ChatMemberUncheckedUpdateWithoutUserInput>
+    create: XOR<ChatMemberCreateWithoutUserInput, ChatMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type ChatMemberUpdateWithWhereUniqueWithoutUserInput = {
+    where: ChatMemberWhereUniqueInput
+    data: XOR<ChatMemberUpdateWithoutUserInput, ChatMemberUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ChatMemberUpdateManyWithWhereWithoutUserInput = {
+    where: ChatMemberScalarWhereInput
+    data: XOR<ChatMemberUpdateManyMutationInput, ChatMemberUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ChatMemberScalarWhereInput = {
+    AND?: ChatMemberScalarWhereInput | ChatMemberScalarWhereInput[]
+    OR?: ChatMemberScalarWhereInput[]
+    NOT?: ChatMemberScalarWhereInput | ChatMemberScalarWhereInput[]
+    ChatID?: StringFilter<"ChatMember"> | string
+    Username?: StringFilter<"ChatMember"> | string
+  }
+
+  export type MessageUpsertWithWhereUniqueWithoutSenderInput = {
+    where: MessageWhereUniqueInput
+    update: XOR<MessageUpdateWithoutSenderInput, MessageUncheckedUpdateWithoutSenderInput>
+    create: XOR<MessageCreateWithoutSenderInput, MessageUncheckedCreateWithoutSenderInput>
+  }
+
+  export type MessageUpdateWithWhereUniqueWithoutSenderInput = {
+    where: MessageWhereUniqueInput
+    data: XOR<MessageUpdateWithoutSenderInput, MessageUncheckedUpdateWithoutSenderInput>
+  }
+
+  export type MessageUpdateManyWithWhereWithoutSenderInput = {
+    where: MessageScalarWhereInput
+    data: XOR<MessageUpdateManyMutationInput, MessageUncheckedUpdateManyWithoutSenderInput>
+  }
+
+  export type MessageScalarWhereInput = {
+    AND?: MessageScalarWhereInput | MessageScalarWhereInput[]
+    OR?: MessageScalarWhereInput[]
+    NOT?: MessageScalarWhereInput | MessageScalarWhereInput[]
+    MessageID?: StringFilter<"Message"> | string
+    ChatID?: StringFilter<"Message"> | string
+    SenderUsername?: StringFilter<"Message"> | string
+    CreatedAt?: DateTimeFilter<"Message"> | Date | string
   }
 
   export type Account_ItemsCreateWithoutItemsInput = {
@@ -5849,12 +11779,412 @@ export namespace Prisma {
     data: XOR<Account_ItemsUpdateManyMutationInput, Account_ItemsUncheckedUpdateManyWithoutItemsInput>
   }
 
+  export type MessageCreateWithoutChatInput = {
+    MessageID?: string
+    CreatedAt?: Date | string
+    Sender: AccountsCreateNestedOneWithoutMessageInput
+    MessageContent?: MessageContentCreateNestedManyWithoutMessageInput
+  }
+
+  export type MessageUncheckedCreateWithoutChatInput = {
+    MessageID?: string
+    SenderUsername: string
+    CreatedAt?: Date | string
+    MessageContent?: MessageContentUncheckedCreateNestedManyWithoutMessageInput
+  }
+
+  export type MessageCreateOrConnectWithoutChatInput = {
+    where: MessageWhereUniqueInput
+    create: XOR<MessageCreateWithoutChatInput, MessageUncheckedCreateWithoutChatInput>
+  }
+
+  export type MessageCreateManyChatInputEnvelope = {
+    data: MessageCreateManyChatInput | MessageCreateManyChatInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ChatMemberCreateWithoutChatInput = {
+    User: AccountsCreateNestedOneWithoutChatMemberInput
+  }
+
+  export type ChatMemberUncheckedCreateWithoutChatInput = {
+    Username: string
+  }
+
+  export type ChatMemberCreateOrConnectWithoutChatInput = {
+    where: ChatMemberWhereUniqueInput
+    create: XOR<ChatMemberCreateWithoutChatInput, ChatMemberUncheckedCreateWithoutChatInput>
+  }
+
+  export type ChatMemberCreateManyChatInputEnvelope = {
+    data: ChatMemberCreateManyChatInput | ChatMemberCreateManyChatInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MessageUpsertWithWhereUniqueWithoutChatInput = {
+    where: MessageWhereUniqueInput
+    update: XOR<MessageUpdateWithoutChatInput, MessageUncheckedUpdateWithoutChatInput>
+    create: XOR<MessageCreateWithoutChatInput, MessageUncheckedCreateWithoutChatInput>
+  }
+
+  export type MessageUpdateWithWhereUniqueWithoutChatInput = {
+    where: MessageWhereUniqueInput
+    data: XOR<MessageUpdateWithoutChatInput, MessageUncheckedUpdateWithoutChatInput>
+  }
+
+  export type MessageUpdateManyWithWhereWithoutChatInput = {
+    where: MessageScalarWhereInput
+    data: XOR<MessageUpdateManyMutationInput, MessageUncheckedUpdateManyWithoutChatInput>
+  }
+
+  export type ChatMemberUpsertWithWhereUniqueWithoutChatInput = {
+    where: ChatMemberWhereUniqueInput
+    update: XOR<ChatMemberUpdateWithoutChatInput, ChatMemberUncheckedUpdateWithoutChatInput>
+    create: XOR<ChatMemberCreateWithoutChatInput, ChatMemberUncheckedCreateWithoutChatInput>
+  }
+
+  export type ChatMemberUpdateWithWhereUniqueWithoutChatInput = {
+    where: ChatMemberWhereUniqueInput
+    data: XOR<ChatMemberUpdateWithoutChatInput, ChatMemberUncheckedUpdateWithoutChatInput>
+  }
+
+  export type ChatMemberUpdateManyWithWhereWithoutChatInput = {
+    where: ChatMemberScalarWhereInput
+    data: XOR<ChatMemberUpdateManyMutationInput, ChatMemberUncheckedUpdateManyWithoutChatInput>
+  }
+
+  export type ChatCreateWithoutMembersInput = {
+    ChatID?: string
+    Name?: string | null
+    Messages?: MessageCreateNestedManyWithoutChatInput
+  }
+
+  export type ChatUncheckedCreateWithoutMembersInput = {
+    ChatID?: string
+    Name?: string | null
+    Messages?: MessageUncheckedCreateNestedManyWithoutChatInput
+  }
+
+  export type ChatCreateOrConnectWithoutMembersInput = {
+    where: ChatWhereUniqueInput
+    create: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput>
+  }
+
+  export type AccountsCreateWithoutChatMemberInput = {
+    AccountID: string
+    Email: string
+    FirstName: string
+    LastName: string
+    Password: Uint8Array
+    Username?: string | null
+    FacebookID?: string | null
+    GoogleID?: string | null
+    Account_Items?: Account_ItemsCreateNestedManyWithoutAccountsInput
+    Message?: MessageCreateNestedManyWithoutSenderInput
+  }
+
+  export type AccountsUncheckedCreateWithoutChatMemberInput = {
+    AccountID: string
+    Email: string
+    FirstName: string
+    LastName: string
+    Password: Uint8Array
+    Username?: string | null
+    FacebookID?: string | null
+    GoogleID?: string | null
+    Account_Items?: Account_ItemsUncheckedCreateNestedManyWithoutAccountsInput
+    Message?: MessageUncheckedCreateNestedManyWithoutSenderInput
+  }
+
+  export type AccountsCreateOrConnectWithoutChatMemberInput = {
+    where: AccountsWhereUniqueInput
+    create: XOR<AccountsCreateWithoutChatMemberInput, AccountsUncheckedCreateWithoutChatMemberInput>
+  }
+
+  export type ChatUpsertWithoutMembersInput = {
+    update: XOR<ChatUpdateWithoutMembersInput, ChatUncheckedUpdateWithoutMembersInput>
+    create: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput>
+    where?: ChatWhereInput
+  }
+
+  export type ChatUpdateToOneWithWhereWithoutMembersInput = {
+    where?: ChatWhereInput
+    data: XOR<ChatUpdateWithoutMembersInput, ChatUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type ChatUpdateWithoutMembersInput = {
+    ChatID?: StringFieldUpdateOperationsInput | string
+    Name?: NullableStringFieldUpdateOperationsInput | string | null
+    Messages?: MessageUpdateManyWithoutChatNestedInput
+  }
+
+  export type ChatUncheckedUpdateWithoutMembersInput = {
+    ChatID?: StringFieldUpdateOperationsInput | string
+    Name?: NullableStringFieldUpdateOperationsInput | string | null
+    Messages?: MessageUncheckedUpdateManyWithoutChatNestedInput
+  }
+
+  export type AccountsUpsertWithoutChatMemberInput = {
+    update: XOR<AccountsUpdateWithoutChatMemberInput, AccountsUncheckedUpdateWithoutChatMemberInput>
+    create: XOR<AccountsCreateWithoutChatMemberInput, AccountsUncheckedCreateWithoutChatMemberInput>
+    where?: AccountsWhereInput
+  }
+
+  export type AccountsUpdateToOneWithWhereWithoutChatMemberInput = {
+    where?: AccountsWhereInput
+    data: XOR<AccountsUpdateWithoutChatMemberInput, AccountsUncheckedUpdateWithoutChatMemberInput>
+  }
+
+  export type AccountsUpdateWithoutChatMemberInput = {
+    AccountID?: StringFieldUpdateOperationsInput | string
+    Email?: StringFieldUpdateOperationsInput | string
+    FirstName?: StringFieldUpdateOperationsInput | string
+    LastName?: StringFieldUpdateOperationsInput | string
+    Password?: BytesFieldUpdateOperationsInput | Uint8Array
+    Username?: NullableStringFieldUpdateOperationsInput | string | null
+    FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
+    GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    Account_Items?: Account_ItemsUpdateManyWithoutAccountsNestedInput
+    Message?: MessageUpdateManyWithoutSenderNestedInput
+  }
+
+  export type AccountsUncheckedUpdateWithoutChatMemberInput = {
+    AccountID?: StringFieldUpdateOperationsInput | string
+    Email?: StringFieldUpdateOperationsInput | string
+    FirstName?: StringFieldUpdateOperationsInput | string
+    LastName?: StringFieldUpdateOperationsInput | string
+    Password?: BytesFieldUpdateOperationsInput | Uint8Array
+    Username?: NullableStringFieldUpdateOperationsInput | string | null
+    FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
+    GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    Account_Items?: Account_ItemsUncheckedUpdateManyWithoutAccountsNestedInput
+    Message?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+  }
+
+  export type ChatCreateWithoutMessagesInput = {
+    ChatID?: string
+    Name?: string | null
+    Members?: ChatMemberCreateNestedManyWithoutChatInput
+  }
+
+  export type ChatUncheckedCreateWithoutMessagesInput = {
+    ChatID?: string
+    Name?: string | null
+    Members?: ChatMemberUncheckedCreateNestedManyWithoutChatInput
+  }
+
+  export type ChatCreateOrConnectWithoutMessagesInput = {
+    where: ChatWhereUniqueInput
+    create: XOR<ChatCreateWithoutMessagesInput, ChatUncheckedCreateWithoutMessagesInput>
+  }
+
+  export type AccountsCreateWithoutMessageInput = {
+    AccountID: string
+    Email: string
+    FirstName: string
+    LastName: string
+    Password: Uint8Array
+    Username?: string | null
+    FacebookID?: string | null
+    GoogleID?: string | null
+    Account_Items?: Account_ItemsCreateNestedManyWithoutAccountsInput
+    ChatMember?: ChatMemberCreateNestedManyWithoutUserInput
+  }
+
+  export type AccountsUncheckedCreateWithoutMessageInput = {
+    AccountID: string
+    Email: string
+    FirstName: string
+    LastName: string
+    Password: Uint8Array
+    Username?: string | null
+    FacebookID?: string | null
+    GoogleID?: string | null
+    Account_Items?: Account_ItemsUncheckedCreateNestedManyWithoutAccountsInput
+    ChatMember?: ChatMemberUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type AccountsCreateOrConnectWithoutMessageInput = {
+    where: AccountsWhereUniqueInput
+    create: XOR<AccountsCreateWithoutMessageInput, AccountsUncheckedCreateWithoutMessageInput>
+  }
+
+  export type MessageContentCreateWithoutMessageInput = {
+    Index: number
+    Text?: string | null
+    Filename?: string | null
+    MimeType?: string | null
+    Data?: Uint8Array | null
+  }
+
+  export type MessageContentUncheckedCreateWithoutMessageInput = {
+    MessageContentID?: number
+    Index: number
+    Text?: string | null
+    Filename?: string | null
+    MimeType?: string | null
+    Data?: Uint8Array | null
+  }
+
+  export type MessageContentCreateOrConnectWithoutMessageInput = {
+    where: MessageContentWhereUniqueInput
+    create: XOR<MessageContentCreateWithoutMessageInput, MessageContentUncheckedCreateWithoutMessageInput>
+  }
+
+  export type MessageContentCreateManyMessageInputEnvelope = {
+    data: MessageContentCreateManyMessageInput | MessageContentCreateManyMessageInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ChatUpsertWithoutMessagesInput = {
+    update: XOR<ChatUpdateWithoutMessagesInput, ChatUncheckedUpdateWithoutMessagesInput>
+    create: XOR<ChatCreateWithoutMessagesInput, ChatUncheckedCreateWithoutMessagesInput>
+    where?: ChatWhereInput
+  }
+
+  export type ChatUpdateToOneWithWhereWithoutMessagesInput = {
+    where?: ChatWhereInput
+    data: XOR<ChatUpdateWithoutMessagesInput, ChatUncheckedUpdateWithoutMessagesInput>
+  }
+
+  export type ChatUpdateWithoutMessagesInput = {
+    ChatID?: StringFieldUpdateOperationsInput | string
+    Name?: NullableStringFieldUpdateOperationsInput | string | null
+    Members?: ChatMemberUpdateManyWithoutChatNestedInput
+  }
+
+  export type ChatUncheckedUpdateWithoutMessagesInput = {
+    ChatID?: StringFieldUpdateOperationsInput | string
+    Name?: NullableStringFieldUpdateOperationsInput | string | null
+    Members?: ChatMemberUncheckedUpdateManyWithoutChatNestedInput
+  }
+
+  export type AccountsUpsertWithoutMessageInput = {
+    update: XOR<AccountsUpdateWithoutMessageInput, AccountsUncheckedUpdateWithoutMessageInput>
+    create: XOR<AccountsCreateWithoutMessageInput, AccountsUncheckedCreateWithoutMessageInput>
+    where?: AccountsWhereInput
+  }
+
+  export type AccountsUpdateToOneWithWhereWithoutMessageInput = {
+    where?: AccountsWhereInput
+    data: XOR<AccountsUpdateWithoutMessageInput, AccountsUncheckedUpdateWithoutMessageInput>
+  }
+
+  export type AccountsUpdateWithoutMessageInput = {
+    AccountID?: StringFieldUpdateOperationsInput | string
+    Email?: StringFieldUpdateOperationsInput | string
+    FirstName?: StringFieldUpdateOperationsInput | string
+    LastName?: StringFieldUpdateOperationsInput | string
+    Password?: BytesFieldUpdateOperationsInput | Uint8Array
+    Username?: NullableStringFieldUpdateOperationsInput | string | null
+    FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
+    GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    Account_Items?: Account_ItemsUpdateManyWithoutAccountsNestedInput
+    ChatMember?: ChatMemberUpdateManyWithoutUserNestedInput
+  }
+
+  export type AccountsUncheckedUpdateWithoutMessageInput = {
+    AccountID?: StringFieldUpdateOperationsInput | string
+    Email?: StringFieldUpdateOperationsInput | string
+    FirstName?: StringFieldUpdateOperationsInput | string
+    LastName?: StringFieldUpdateOperationsInput | string
+    Password?: BytesFieldUpdateOperationsInput | Uint8Array
+    Username?: NullableStringFieldUpdateOperationsInput | string | null
+    FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
+    GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    Account_Items?: Account_ItemsUncheckedUpdateManyWithoutAccountsNestedInput
+    ChatMember?: ChatMemberUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type MessageContentUpsertWithWhereUniqueWithoutMessageInput = {
+    where: MessageContentWhereUniqueInput
+    update: XOR<MessageContentUpdateWithoutMessageInput, MessageContentUncheckedUpdateWithoutMessageInput>
+    create: XOR<MessageContentCreateWithoutMessageInput, MessageContentUncheckedCreateWithoutMessageInput>
+  }
+
+  export type MessageContentUpdateWithWhereUniqueWithoutMessageInput = {
+    where: MessageContentWhereUniqueInput
+    data: XOR<MessageContentUpdateWithoutMessageInput, MessageContentUncheckedUpdateWithoutMessageInput>
+  }
+
+  export type MessageContentUpdateManyWithWhereWithoutMessageInput = {
+    where: MessageContentScalarWhereInput
+    data: XOR<MessageContentUpdateManyMutationInput, MessageContentUncheckedUpdateManyWithoutMessageInput>
+  }
+
+  export type MessageContentScalarWhereInput = {
+    AND?: MessageContentScalarWhereInput | MessageContentScalarWhereInput[]
+    OR?: MessageContentScalarWhereInput[]
+    NOT?: MessageContentScalarWhereInput | MessageContentScalarWhereInput[]
+    MessageContentID?: IntFilter<"MessageContent"> | number
+    MessageID?: StringFilter<"MessageContent"> | string
+    Index?: IntFilter<"MessageContent"> | number
+    Text?: StringNullableFilter<"MessageContent"> | string | null
+    Filename?: StringNullableFilter<"MessageContent"> | string | null
+    MimeType?: StringNullableFilter<"MessageContent"> | string | null
+    Data?: BytesNullableFilter<"MessageContent"> | Uint8Array | null
+  }
+
+  export type MessageCreateWithoutMessageContentInput = {
+    MessageID?: string
+    CreatedAt?: Date | string
+    Chat: ChatCreateNestedOneWithoutMessagesInput
+    Sender: AccountsCreateNestedOneWithoutMessageInput
+  }
+
+  export type MessageUncheckedCreateWithoutMessageContentInput = {
+    MessageID?: string
+    ChatID: string
+    SenderUsername: string
+    CreatedAt?: Date | string
+  }
+
+  export type MessageCreateOrConnectWithoutMessageContentInput = {
+    where: MessageWhereUniqueInput
+    create: XOR<MessageCreateWithoutMessageContentInput, MessageUncheckedCreateWithoutMessageContentInput>
+  }
+
+  export type MessageUpsertWithoutMessageContentInput = {
+    update: XOR<MessageUpdateWithoutMessageContentInput, MessageUncheckedUpdateWithoutMessageContentInput>
+    create: XOR<MessageCreateWithoutMessageContentInput, MessageUncheckedCreateWithoutMessageContentInput>
+    where?: MessageWhereInput
+  }
+
+  export type MessageUpdateToOneWithWhereWithoutMessageContentInput = {
+    where?: MessageWhereInput
+    data: XOR<MessageUpdateWithoutMessageContentInput, MessageUncheckedUpdateWithoutMessageContentInput>
+  }
+
+  export type MessageUpdateWithoutMessageContentInput = {
+    MessageID?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Chat?: ChatUpdateOneRequiredWithoutMessagesNestedInput
+    Sender?: AccountsUpdateOneRequiredWithoutMessageNestedInput
+  }
+
+  export type MessageUncheckedUpdateWithoutMessageContentInput = {
+    MessageID?: StringFieldUpdateOperationsInput | string
+    ChatID?: StringFieldUpdateOperationsInput | string
+    SenderUsername?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type Account_ItemsCreateManyAccountsInput = {
     ItemID: bigint | number
     Price: bigint | number
     PurchasePrice: bigint | number
     Qty: bigint | number
     ImageLink: string
+  }
+
+  export type ChatMemberCreateManyUserInput = {
+    ChatID: string
+  }
+
+  export type MessageCreateManySenderInput = {
+    MessageID?: string
+    ChatID: string
+    CreatedAt?: Date | string
   }
 
   export type Account_ItemsUpdateWithoutAccountsInput = {
@@ -5879,6 +12209,38 @@ export namespace Prisma {
     PurchasePrice?: BigIntFieldUpdateOperationsInput | bigint | number
     Qty?: BigIntFieldUpdateOperationsInput | bigint | number
     ImageLink?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ChatMemberUpdateWithoutUserInput = {
+    Chat?: ChatUpdateOneRequiredWithoutMembersNestedInput
+  }
+
+  export type ChatMemberUncheckedUpdateWithoutUserInput = {
+    ChatID?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ChatMemberUncheckedUpdateManyWithoutUserInput = {
+    ChatID?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MessageUpdateWithoutSenderInput = {
+    MessageID?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Chat?: ChatUpdateOneRequiredWithoutMessagesNestedInput
+    MessageContent?: MessageContentUpdateManyWithoutMessageNestedInput
+  }
+
+  export type MessageUncheckedUpdateWithoutSenderInput = {
+    MessageID?: StringFieldUpdateOperationsInput | string
+    ChatID?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    MessageContent?: MessageContentUncheckedUpdateManyWithoutMessageNestedInput
+  }
+
+  export type MessageUncheckedUpdateManyWithoutSenderInput = {
+    MessageID?: StringFieldUpdateOperationsInput | string
+    ChatID?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type Account_ItemsCreateManyItemsInput = {
@@ -5911,6 +12273,83 @@ export namespace Prisma {
     PurchasePrice?: BigIntFieldUpdateOperationsInput | bigint | number
     Qty?: BigIntFieldUpdateOperationsInput | bigint | number
     ImageLink?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MessageCreateManyChatInput = {
+    MessageID?: string
+    SenderUsername: string
+    CreatedAt?: Date | string
+  }
+
+  export type ChatMemberCreateManyChatInput = {
+    Username: string
+  }
+
+  export type MessageUpdateWithoutChatInput = {
+    MessageID?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Sender?: AccountsUpdateOneRequiredWithoutMessageNestedInput
+    MessageContent?: MessageContentUpdateManyWithoutMessageNestedInput
+  }
+
+  export type MessageUncheckedUpdateWithoutChatInput = {
+    MessageID?: StringFieldUpdateOperationsInput | string
+    SenderUsername?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    MessageContent?: MessageContentUncheckedUpdateManyWithoutMessageNestedInput
+  }
+
+  export type MessageUncheckedUpdateManyWithoutChatInput = {
+    MessageID?: StringFieldUpdateOperationsInput | string
+    SenderUsername?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMemberUpdateWithoutChatInput = {
+    User?: AccountsUpdateOneRequiredWithoutChatMemberNestedInput
+  }
+
+  export type ChatMemberUncheckedUpdateWithoutChatInput = {
+    Username?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ChatMemberUncheckedUpdateManyWithoutChatInput = {
+    Username?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MessageContentCreateManyMessageInput = {
+    MessageContentID?: number
+    Index: number
+    Text?: string | null
+    Filename?: string | null
+    MimeType?: string | null
+    Data?: Uint8Array | null
+  }
+
+  export type MessageContentUpdateWithoutMessageInput = {
+    Index?: IntFieldUpdateOperationsInput | number
+    Text?: NullableStringFieldUpdateOperationsInput | string | null
+    Filename?: NullableStringFieldUpdateOperationsInput | string | null
+    MimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    Data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
+  }
+
+  export type MessageContentUncheckedUpdateWithoutMessageInput = {
+    MessageContentID?: IntFieldUpdateOperationsInput | number
+    Index?: IntFieldUpdateOperationsInput | number
+    Text?: NullableStringFieldUpdateOperationsInput | string | null
+    Filename?: NullableStringFieldUpdateOperationsInput | string | null
+    MimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    Data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
+  }
+
+  export type MessageContentUncheckedUpdateManyWithoutMessageInput = {
+    MessageContentID?: IntFieldUpdateOperationsInput | number
+    Index?: IntFieldUpdateOperationsInput | number
+    Text?: NullableStringFieldUpdateOperationsInput | string | null
+    Filename?: NullableStringFieldUpdateOperationsInput | string | null
+    MimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    Data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
   }
 
 

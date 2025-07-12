@@ -6,6 +6,7 @@ import { ToastContainer } from "@/components/ui/toast";
 import NProgressProvider from "@/components/NProgressProvider";
 import { WebSocketProvider } from "@/lib/WSContext";
 import { useSession } from "@/lib/SessionContext";
+import StoreProvider from "@/lib/StoreContext";
 
 export default function ClientLayout({
   children,
@@ -16,11 +17,13 @@ export default function ClientLayout({
 
   return (
     <WebSocketProvider session={session}>
+    <StoreProvider>
       <Navbar />
       <ToastContainer>
         <NProgressProvider />
         {children}
       </ToastContainer>
+    </StoreProvider>
     </WebSocketProvider>
   );
 } 
