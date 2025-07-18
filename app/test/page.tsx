@@ -1,5 +1,4 @@
 import { getChats, getSession } from "@/lib/actions";
-import TestForm from "./TestForm";
 import ChatBox from "./ChatBox";
 import { redirect } from "next/navigation";
 
