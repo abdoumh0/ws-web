@@ -1,11 +1,8 @@
 "use client";
 
-import { getSession, logoutUser } from "@/lib/actions";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { LogOut } from "lucide-react";
-import { AccountInfo } from "@/lib/types";
 import { useSession } from "@/lib/SessionContext";
 import Controls from "@/components/Controls";
 

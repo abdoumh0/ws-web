@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Ensure the user owns this item
-    if (session.user.AccountID !== accountId) {
+    if (session.AccountID !== accountId) {
       return NextResponse.json(
         { success: false, message: "Unauthorized" },
         { status: 403 }

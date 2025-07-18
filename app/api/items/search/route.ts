@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
     // Build the main query using Prisma's query API
     let query: any = {
       where: {
-        AccountID: session.user.AccountID,
+        AccountID: session.AccountID,
       },
       include: {
         Items: true,
@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
       );
       query.where = {
         AND: [
-          { AccountID: session.user.AccountID },
+          { AccountID: session.AccountID },
           {
             Items: {
               Name: {

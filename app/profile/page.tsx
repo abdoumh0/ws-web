@@ -7,7 +7,7 @@ type Props = {};
 export default async function page({}: Props) {
   const session = await getSession();
   if (!session) {
-    redirect("/login");
+    redirect("/auth");
   }
   return <div>page</div>;
 }

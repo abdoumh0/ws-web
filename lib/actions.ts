@@ -327,7 +327,7 @@ export async function verify(input: string): Promise<JWTPayload> {
     });
     return payload;
   } catch (error) {
-    console.error("[Auth] JWT verification failed:", error);
+    console.log("[Auth] JWT verification failed:", error);
     throw new Error("Invalid or expired session");
   }
 }
@@ -785,3 +785,69 @@ export async function searchItems(
     };
   }
 }
+
+/* export async function getChatMessages(chatID: string, skip: number) {
+  const messages = await prisma.message.findMany({
+    where: { ChatID: chatID },
+    skip: skip,
+    orderBy: { CreatedAt: "asc" },
+    include: {MessageContent: {orderBy: {Index: "asc"}}},
+    take: 10,
+  });
+} */
+
+
+export async function getChats(username:string, skip: number) {
+  try {
+  const chats = await prisma.chat.findMany({
+    where: {
+      Members: {
+        some: {
+          Username: username
+        }
+      }
+    },
+    include: {
+      Members: true, 
+      Messages: {
+        take: 20,
+        orderBy: {
+          CreatedAt: "asc"
+        },
+        include: {
+          MessageContent: {
+            orderBy: {Index: "asc"}
+          }
+        }
+      }
+    },
+    skip: skip
+  })
+
+  return chats
+  } catch (error) {
+    console.log("error in getChats()", error)
+    throw error
+  }
+}
+
+export async function getMessages(chatID: string, skip: number) {
+  try {
+    const messages = await prisma.message.findMany({
+      where: { ChatID: chatID },
+      skip: skip,
+      take: 20,
+      orderBy: { CreatedAt: "asc" },
+      include: {
+        MessageContent: { orderBy: { Index: "asc" } }
+      }
+    });
+    return messages;
+  } catch (error) {
+    console.log("error in getMessages()", error);
+    throw error;
+  }
+}
+
+export type ChatType = Awaited<ReturnType<typeof getChats>>
+export type MessageType = Awaited<ReturnType<typeof getMessages>>

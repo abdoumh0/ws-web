@@ -5,7 +5,6 @@ import {
   NextFetchEvent,
 } from "next/server";
 import { jwtVerify, importSPKI } from "jose";
-import { redirect } from "next/navigation";
 
 // RSA Key setup for middleware
 const getPublicKey = async () => {
@@ -40,45 +39,83 @@ function mwHelper(...args: NextMiddleware[]) {
   };
 }
 
-// if logged in, redirect to home page
-// if not logged in, allow access to auth pages
+// Default protected routes
+const DEFAULT_PROTECTED_ROUTES = [
+  '/profile',
+  '/settings',
+  '/store',
+  '/api/protected'
+];
+
+// Middleware to handle protected routes that require authentication
+const protectedRoutesMiddleware = (protectedPaths: string[] = DEFAULT_PROTECTED_ROUTES): NextMiddleware => {
+  return async (request: NextRequest) => {
+    const { pathname } = request.nextUrl;
+    
+    // Check if the current path matches any protected route
+    const isProtectedRoute = protectedPaths.some(route => 
+      pathname === route || pathname.startsWith(`${route}/`)
+    );
+    
+    // If not a protected route, skip this middleware
+    if (!isProtectedRoute) {
+      return NextResponse.next();
+    }
+    
+    const sessionCookie = request.cookies.get("session");
+    
+    // No session cookie, redirect to login
+    if (!sessionCookie) {
+      return NextResponse.redirect(new URL("/auth?tab=login", request.url));
+    }
+    
+    // Verify the JWT token
+    try {
+      const publicKey = await getPublicKey();
+      await jwtVerify(sessionCookie.value, publicKey, { algorithms: ["RS256"] });
+      // JWT is valid, allow access to protected route
+      return NextResponse.next();
+    } catch (err) {
+      console.error("[Protected Routes Middleware] Invalid JWT:", err);
+      // Invalid token, redirect to login
+      return NextResponse.redirect(new URL("/auth/login", request.url));
+    }
+  };
+};
+
+// Middleware to redirect authenticated users away from auth pages
 const authMiddleware: NextMiddleware = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
   const isAuthPage = pathname.startsWith("/auth");
+  
+  // If not an auth page, skip this middleware
+  if (!isAuthPage) {
+    return NextResponse.next();
+  }
+  
   const sessionCookie = request.cookies.get("session");
-
-  // Redirect authenticated users away from auth pages
-  if (sessionCookie && isAuthPage) {
-    try {
-      const publicKey = await getPublicKey();
-      const { payload, protectedHeader } = await jwtVerify(
-        sessionCookie.value,
-        publicKey,
-        { algorithms: ["RS256"] }
-      );
-      return NextResponse.redirect(new URL("/", request.url));
-    } catch (error) {
-      // Invalid token, allow access to auth pages
-      return NextResponse.next();
-    }
+  
+  // No session cookie, allow access to auth pages
+  if (!sessionCookie) {
+    return NextResponse.next();
   }
-
-  // Handle redirects for old routes
-  if (pathname.startsWith("/login")) {
-    return NextResponse.redirect(new URL("/auth?tab=login", request.url));
+  
+  // Verify the JWT token
+  try {
+    const publicKey = await getPublicKey();
+    await jwtVerify(sessionCookie.value, publicKey, { algorithms: ["RS256"] });
+    // JWT is valid, redirect authenticated users away from auth pages
+    return NextResponse.redirect(new URL("/", request.url));
+  } catch (error) {
+    // Invalid token, allow access to auth pages
+    return NextResponse.next();
   }
-
-  if (pathname.startsWith("/register")) {
-    return NextResponse.redirect(new URL("/auth?tab=register", request.url));
-  }
-
-  return NextResponse.next();
 };
 
 export function middleware(request: NextRequest, event: NextFetchEvent) {
-  return mwHelper(authMiddleware)(request, event);
+  // Use both middlewares: first check if it's a protected route, then handle auth pages
+  return mwHelper(
+    protectedRoutesMiddleware(), // Use default protected routes
+    authMiddleware
+  )(request, event);
 }
-
-export const config = {
-  matcher: ["/login/:path*", "/register/:path*", "/auth/:path*"],
-};
