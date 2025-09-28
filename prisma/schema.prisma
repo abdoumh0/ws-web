@@ -31,6 +31,8 @@ model Accounts {
   Username      String?         @unique(map: "accounts_username_unique") @db.VarChar(255)
   FacebookID    String?         @unique(map: "accounts_facebookid_unique") @db.VarChar(255)
   GoogleID      String?         @unique(map: "accounts_googleid_unique") @db.VarChar(255)
+  WorkArea      Json?            
+  WorkAreaIDs   Int[]
   Account_Items Account_Items[]
   ChatMember ChatMember[]
 

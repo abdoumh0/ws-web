@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { handleItemSubmit } from "@/lib/actions";
-import { useToast } from "./ui/toast";
+import { toast } from "sonner";
 import { Button } from "./ui/button";
 
 type ItemFormProps = {
@@ -41,7 +41,6 @@ export default function ItemForm({
   const [imageLoadError, setImageLoadError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const maxRetries = 3;
-  const { showToast } = useToast();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageIsLoading, setImageIsLoading] = useState(false);
   const [formState, setFormState] = useState<FormState>({
@@ -213,11 +212,8 @@ export default function ItemForm({
     if (retryCount < maxRetries) {
       setRetryCount((prev) => prev + 1);
     } else {
-      showToast({
-        variant: "error",
-        title: "Image Error",
-        description:
-          "Failed to load image after several attempts. Please try a different image.",
+      toast.error("Failed to load image after several attempts. Please try a different image.", {
+        description: "Image Error",
       });
     }
   };
@@ -246,10 +242,8 @@ export default function ItemForm({
     const imageValidation = validateImageFile(imageFile);
     if (!imageValidation.valid) {
       setIsLoading(false);
-      showToast({
-        variant: "error",
-        title: "Invalid Image",
-        description: imageValidation.message,
+      toast.error(imageValidation.message, {
+        description: "Invalid Image",
       });
       return;
     }
@@ -260,10 +254,8 @@ export default function ItemForm({
       if (result.ok) {
         setIsLoading(false);
         setOpen(false);
-        showToast({
-          variant: "success",
-          title: "Success",
-          description: "Item added successfully",
+        toast.success("Item added successfully", {
+          description: "Success",
         });
 
         // Reset form
@@ -289,18 +281,14 @@ export default function ItemForm({
         }
       } else {
         setIsLoading(false);
-        showToast({
-          variant: "error",
-          title: "Error",
-          description: result.message || "Failed to add item",
+        toast.error(result.message || "Failed to add item", {
+          description: "Error",
         });
       }
     } catch (error) {
       setIsLoading(false);
-      showToast({
-        variant: "error",
-        title: "Error",
-        description: "An unexpected error occurred",
+      toast.error("An unexpected error occurred", {
+        description: "Error",
       });
     }
   };

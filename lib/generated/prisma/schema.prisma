@@ -31,7 +31,12 @@ model Accounts {
   Username      String?         @unique(map: "accounts_username_unique") @db.VarChar(255)
   FacebookID    String?         @unique(map: "accounts_facebookid_unique") @db.VarChar(255)
   GoogleID      String?         @unique(map: "accounts_googleid_unique") @db.VarChar(255)
+  WorkArea      Json?
+  WorkAreaIDs   Int[]
   Account_Items Account_Items[]
+  ChatMember    ChatMember[]
+
+  Message Message[]
 }
 
 model Items {
@@ -45,4 +50,41 @@ model Items {
   Account_Items    Account_Items[]
 
   @@index([Code], map: "items_code_index")
+}
+
+model Chat {
+  ChatID   String       @id @default(uuid())
+  Name     String?
+  Messages Message[]    @relation("ChatToMessages")
+  Members  ChatMember[]
+}
+
+model ChatMember {
+  ChatID   String
+  Username String
+  Chat     Chat     @relation(fields: [ChatID], references: [ChatID])
+  User     Accounts @relation(fields: [Username], references: [Username])
+
+  @@id([ChatID, Username])
+}
+
+model Message {
+  MessageID      String           @id @default(uuid())
+  ChatID         String
+  SenderUsername String
+  Chat           Chat             @relation("ChatToMessages", fields: [ChatID], references: [ChatID])
+  Sender         Accounts         @relation(fields: [SenderUsername], references: [Username])
+  MessageContent MessageContent[]
+  CreatedAt      DateTime         @default(now())
+}
+
+model MessageContent {
+  MessageContentID Int     @id @default(autoincrement())
+  MessageID        String
+  Message          Message @relation(fields: [MessageID], references: [MessageID], onDelete: Cascade)
+  Index            Int
+  Text             String?
+  Filename         String?
+  MimeType         String?
+  Data             Bytes?
 }

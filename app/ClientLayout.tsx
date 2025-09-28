@@ -2,7 +2,7 @@
 
 import React from "react";
 import Navbar from "@/components/Navbar";
-import { ToastContainer } from "@/components/ui/toast";
+import { Toaster } from "@/components/ui/sonner";
 import NProgressProvider from "@/components/NProgressProvider";
 import { WebSocketProvider } from "@/lib/WSContext";
 import { useSession } from "@/lib/SessionContext";
@@ -22,10 +22,9 @@ export default function ClientLayout({
     <MessageProvider>
       
       <Navbar />
-      <ToastContainer>
-        <NProgressProvider />
-        {children}
-      </ToastContainer>
+      <Toaster />
+      <NProgressProvider />
+      {children}
     </MessageProvider>
     </StoreProvider>
     </WebSocketProvider>

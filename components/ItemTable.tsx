@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
-import { useToast } from "./ui/toast";
+import { toast } from "sonner";
 import { searchItems } from "@/lib/actions";
 import Item from "./Item";
 
@@ -14,7 +14,6 @@ type Props = {
 const ITEMS_PER_PAGE = 24;
 
 export default function ItemTable({ total = 0, initialItems = [] }: Props) {
-  const { showToast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
@@ -61,11 +60,8 @@ export default function ItemTable({ total = 0, initialItems = [] }: Props) {
       }
     } catch (error) {
       console.error("Search error:", error);
-      showToast({
-        variant: "error",
-        title: "Search Error",
-        description:
-          error instanceof Error ? error.message : "Failed to search items",
+      toast.error(error instanceof Error ? error.message : "Failed to search items", {
+        description: "Search Error",
       });
     } finally {
       setLoading(false);

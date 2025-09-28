@@ -2696,8 +2696,18 @@ export namespace Prisma {
 
   export type AggregateAccounts = {
     _count: AccountsCountAggregateOutputType | null
+    _avg: AccountsAvgAggregateOutputType | null
+    _sum: AccountsSumAggregateOutputType | null
     _min: AccountsMinAggregateOutputType | null
     _max: AccountsMaxAggregateOutputType | null
+  }
+
+  export type AccountsAvgAggregateOutputType = {
+    WorkAreaIDs: number | null
+  }
+
+  export type AccountsSumAggregateOutputType = {
+    WorkAreaIDs: number[]
   }
 
   export type AccountsMinAggregateOutputType = {
@@ -2731,9 +2741,19 @@ export namespace Prisma {
     Username: number
     FacebookID: number
     GoogleID: number
+    WorkArea: number
+    WorkAreaIDs: number
     _all: number
   }
 
+
+  export type AccountsAvgAggregateInputType = {
+    WorkAreaIDs?: true
+  }
+
+  export type AccountsSumAggregateInputType = {
+    WorkAreaIDs?: true
+  }
 
   export type AccountsMinAggregateInputType = {
     AccountID?: true
@@ -2766,6 +2786,8 @@ export namespace Prisma {
     Username?: true
     FacebookID?: true
     GoogleID?: true
+    WorkArea?: true
+    WorkAreaIDs?: true
     _all?: true
   }
 
@@ -2807,6 +2829,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: AccountsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AccountsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AccountsMinAggregateInputType
@@ -2837,6 +2871,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: AccountsCountAggregateInputType | true
+    _avg?: AccountsAvgAggregateInputType
+    _sum?: AccountsSumAggregateInputType
     _min?: AccountsMinAggregateInputType
     _max?: AccountsMaxAggregateInputType
   }
@@ -2850,7 +2886,11 @@ export namespace Prisma {
     Username: string | null
     FacebookID: string | null
     GoogleID: string | null
+    WorkArea: JsonValue | null
+    WorkAreaIDs: number[]
     _count: AccountsCountAggregateOutputType | null
+    _avg: AccountsAvgAggregateOutputType | null
+    _sum: AccountsSumAggregateOutputType | null
     _min: AccountsMinAggregateOutputType | null
     _max: AccountsMaxAggregateOutputType | null
   }
@@ -2878,6 +2918,8 @@ export namespace Prisma {
     Username?: boolean
     FacebookID?: boolean
     GoogleID?: boolean
+    WorkArea?: boolean
+    WorkAreaIDs?: boolean
     Account_Items?: boolean | Accounts$Account_ItemsArgs<ExtArgs>
     ChatMember?: boolean | Accounts$ChatMemberArgs<ExtArgs>
     Message?: boolean | Accounts$MessageArgs<ExtArgs>
@@ -2893,6 +2935,8 @@ export namespace Prisma {
     Username?: boolean
     FacebookID?: boolean
     GoogleID?: boolean
+    WorkArea?: boolean
+    WorkAreaIDs?: boolean
   }, ExtArgs["result"]["accounts"]>
 
   export type AccountsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2904,6 +2948,8 @@ export namespace Prisma {
     Username?: boolean
     FacebookID?: boolean
     GoogleID?: boolean
+    WorkArea?: boolean
+    WorkAreaIDs?: boolean
   }, ExtArgs["result"]["accounts"]>
 
   export type AccountsSelectScalar = {
@@ -2915,9 +2961,11 @@ export namespace Prisma {
     Username?: boolean
     FacebookID?: boolean
     GoogleID?: boolean
+    WorkArea?: boolean
+    WorkAreaIDs?: boolean
   }
 
-  export type AccountsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"AccountID" | "Email" | "FirstName" | "LastName" | "Password" | "Username" | "FacebookID" | "GoogleID", ExtArgs["result"]["accounts"]>
+  export type AccountsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"AccountID" | "Email" | "FirstName" | "LastName" | "Password" | "Username" | "FacebookID" | "GoogleID" | "WorkArea" | "WorkAreaIDs", ExtArgs["result"]["accounts"]>
   export type AccountsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Account_Items?: boolean | Accounts$Account_ItemsArgs<ExtArgs>
     ChatMember?: boolean | Accounts$ChatMemberArgs<ExtArgs>
@@ -2943,6 +2991,8 @@ export namespace Prisma {
       Username: string | null
       FacebookID: string | null
       GoogleID: string | null
+      WorkArea: Prisma.JsonValue | null
+      WorkAreaIDs: number[]
     }, ExtArgs["result"]["accounts"]>
     composites: {}
   }
@@ -3377,6 +3427,8 @@ export namespace Prisma {
     readonly Username: FieldRef<"Accounts", 'String'>
     readonly FacebookID: FieldRef<"Accounts", 'String'>
     readonly GoogleID: FieldRef<"Accounts", 'String'>
+    readonly WorkArea: FieldRef<"Accounts", 'Json'>
+    readonly WorkAreaIDs: FieldRef<"Accounts", 'Int[]'>
   }
     
 
@@ -9318,7 +9370,9 @@ export namespace Prisma {
     Password: 'Password',
     Username: 'Username',
     FacebookID: 'FacebookID',
-    GoogleID: 'GoogleID'
+    GoogleID: 'GoogleID',
+    WorkArea: 'WorkArea',
+    WorkAreaIDs: 'WorkAreaIDs'
   };
 
   export type AccountsScalarFieldEnum = (typeof AccountsScalarFieldEnum)[keyof typeof AccountsScalarFieldEnum]
@@ -9384,12 +9438,29 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
   };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   export const NullsOrder: {
@@ -9448,16 +9519,23 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'DateTime'
+   * Reference to a field of type 'Json'
    */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
     
 
 
   /**
-   * Reference to a field of type 'DateTime[]'
+   * Reference to a field of type 'QueryMode'
    */
-  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -9469,9 +9547,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int[]'
+   * Reference to a field of type 'DateTime'
    */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -9570,6 +9655,8 @@ export namespace Prisma {
     Username?: StringNullableFilter<"Accounts"> | string | null
     FacebookID?: StringNullableFilter<"Accounts"> | string | null
     GoogleID?: StringNullableFilter<"Accounts"> | string | null
+    WorkArea?: JsonNullableFilter<"Accounts">
+    WorkAreaIDs?: IntNullableListFilter<"Accounts">
     Account_Items?: Account_ItemsListRelationFilter
     ChatMember?: ChatMemberListRelationFilter
     Message?: MessageListRelationFilter
@@ -9584,6 +9671,8 @@ export namespace Prisma {
     Username?: SortOrderInput | SortOrder
     FacebookID?: SortOrderInput | SortOrder
     GoogleID?: SortOrderInput | SortOrder
+    WorkArea?: SortOrderInput | SortOrder
+    WorkAreaIDs?: SortOrder
     Account_Items?: Account_ItemsOrderByRelationAggregateInput
     ChatMember?: ChatMemberOrderByRelationAggregateInput
     Message?: MessageOrderByRelationAggregateInput
@@ -9601,6 +9690,8 @@ export namespace Prisma {
     FirstName?: StringFilter<"Accounts"> | string
     LastName?: StringFilter<"Accounts"> | string
     Password?: BytesFilter<"Accounts"> | Uint8Array
+    WorkArea?: JsonNullableFilter<"Accounts">
+    WorkAreaIDs?: IntNullableListFilter<"Accounts">
     Account_Items?: Account_ItemsListRelationFilter
     ChatMember?: ChatMemberListRelationFilter
     Message?: MessageListRelationFilter
@@ -9615,9 +9706,13 @@ export namespace Prisma {
     Username?: SortOrderInput | SortOrder
     FacebookID?: SortOrderInput | SortOrder
     GoogleID?: SortOrderInput | SortOrder
+    WorkArea?: SortOrderInput | SortOrder
+    WorkAreaIDs?: SortOrder
     _count?: AccountsCountOrderByAggregateInput
+    _avg?: AccountsAvgOrderByAggregateInput
     _max?: AccountsMaxOrderByAggregateInput
     _min?: AccountsMinOrderByAggregateInput
+    _sum?: AccountsSumOrderByAggregateInput
   }
 
   export type AccountsScalarWhereWithAggregatesInput = {
@@ -9632,6 +9727,8 @@ export namespace Prisma {
     Username?: StringNullableWithAggregatesFilter<"Accounts"> | string | null
     FacebookID?: StringNullableWithAggregatesFilter<"Accounts"> | string | null
     GoogleID?: StringNullableWithAggregatesFilter<"Accounts"> | string | null
+    WorkArea?: JsonNullableWithAggregatesFilter<"Accounts">
+    WorkAreaIDs?: IntNullableListFilter<"Accounts">
   }
 
   export type ItemsWhereInput = {
@@ -9981,6 +10078,8 @@ export namespace Prisma {
     Username?: string | null
     FacebookID?: string | null
     GoogleID?: string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsCreateWorkAreaIDsInput | number[]
     Account_Items?: Account_ItemsCreateNestedManyWithoutAccountsInput
     ChatMember?: ChatMemberCreateNestedManyWithoutUserInput
     Message?: MessageCreateNestedManyWithoutSenderInput
@@ -9995,6 +10094,8 @@ export namespace Prisma {
     Username?: string | null
     FacebookID?: string | null
     GoogleID?: string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsCreateWorkAreaIDsInput | number[]
     Account_Items?: Account_ItemsUncheckedCreateNestedManyWithoutAccountsInput
     ChatMember?: ChatMemberUncheckedCreateNestedManyWithoutUserInput
     Message?: MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -10009,6 +10110,8 @@ export namespace Prisma {
     Username?: NullableStringFieldUpdateOperationsInput | string | null
     FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
     GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsUpdateWorkAreaIDsInput | number[]
     Account_Items?: Account_ItemsUpdateManyWithoutAccountsNestedInput
     ChatMember?: ChatMemberUpdateManyWithoutUserNestedInput
     Message?: MessageUpdateManyWithoutSenderNestedInput
@@ -10023,6 +10126,8 @@ export namespace Prisma {
     Username?: NullableStringFieldUpdateOperationsInput | string | null
     FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
     GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsUpdateWorkAreaIDsInput | number[]
     Account_Items?: Account_ItemsUncheckedUpdateManyWithoutAccountsNestedInput
     ChatMember?: ChatMemberUncheckedUpdateManyWithoutUserNestedInput
     Message?: MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -10037,6 +10142,8 @@ export namespace Prisma {
     Username?: string | null
     FacebookID?: string | null
     GoogleID?: string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsCreateWorkAreaIDsInput | number[]
   }
 
   export type AccountsUpdateManyMutationInput = {
@@ -10048,6 +10155,8 @@ export namespace Prisma {
     Username?: NullableStringFieldUpdateOperationsInput | string | null
     FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
     GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsUpdateWorkAreaIDsInput | number[]
   }
 
   export type AccountsUncheckedUpdateManyInput = {
@@ -10059,6 +10168,8 @@ export namespace Prisma {
     Username?: NullableStringFieldUpdateOperationsInput | string | null
     FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
     GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsUpdateWorkAreaIDsInput | number[]
   }
 
   export type ItemsCreateInput = {
@@ -10493,6 +10604,37 @@ export namespace Prisma {
     mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type IntNullableListFilter<$PrismaModel = never> = {
+    equals?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    has?: number | IntFieldRefInput<$PrismaModel> | null
+    hasEvery?: number[] | ListIntFieldRefInput<$PrismaModel>
+    hasSome?: number[] | ListIntFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
 
   export type Account_ItemsListRelationFilter = {
     every?: Account_ItemsWhereInput
@@ -10538,6 +10680,12 @@ export namespace Prisma {
     Username?: SortOrder
     FacebookID?: SortOrder
     GoogleID?: SortOrder
+    WorkArea?: SortOrder
+    WorkAreaIDs?: SortOrder
+  }
+
+  export type AccountsAvgOrderByAggregateInput = {
+    WorkAreaIDs?: SortOrder
   }
 
   export type AccountsMaxOrderByAggregateInput = {
@@ -10560,6 +10708,10 @@ export namespace Prisma {
     Username?: SortOrder
     FacebookID?: SortOrder
     GoogleID?: SortOrder
+  }
+
+  export type AccountsSumOrderByAggregateInput = {
+    WorkAreaIDs?: SortOrder
   }
 
   export type BytesWithAggregatesFilter<$PrismaModel = never> = {
@@ -10588,6 +10740,32 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type ItemsCountOrderByAggregateInput = {
@@ -10857,6 +11035,10 @@ export namespace Prisma {
     update?: XOR<XOR<ItemsUpdateToOneWithWhereWithoutAccount_ItemsInput, ItemsUpdateWithoutAccount_ItemsInput>, ItemsUncheckedUpdateWithoutAccount_ItemsInput>
   }
 
+  export type AccountsCreateWorkAreaIDsInput = {
+    set: number[]
+  }
+
   export type Account_ItemsCreateNestedManyWithoutAccountsInput = {
     create?: XOR<Account_ItemsCreateWithoutAccountsInput, Account_ItemsUncheckedCreateWithoutAccountsInput> | Account_ItemsCreateWithoutAccountsInput[] | Account_ItemsUncheckedCreateWithoutAccountsInput[]
     connectOrCreate?: Account_ItemsCreateOrConnectWithoutAccountsInput | Account_ItemsCreateOrConnectWithoutAccountsInput[]
@@ -10905,6 +11087,11 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type AccountsUpdateWorkAreaIDsInput = {
+    set?: number[]
+    push?: number | number[]
   }
 
   export type Account_ItemsUpdateManyWithoutAccountsNestedInput = {
@@ -11408,6 +11595,29 @@ export namespace Prisma {
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -11476,6 +11686,8 @@ export namespace Prisma {
     Username?: string | null
     FacebookID?: string | null
     GoogleID?: string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsCreateWorkAreaIDsInput | number[]
     ChatMember?: ChatMemberCreateNestedManyWithoutUserInput
     Message?: MessageCreateNestedManyWithoutSenderInput
   }
@@ -11489,6 +11701,8 @@ export namespace Prisma {
     Username?: string | null
     FacebookID?: string | null
     GoogleID?: string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsCreateWorkAreaIDsInput | number[]
     ChatMember?: ChatMemberUncheckedCreateNestedManyWithoutUserInput
     Message?: MessageUncheckedCreateNestedManyWithoutSenderInput
   }
@@ -11543,6 +11757,8 @@ export namespace Prisma {
     Username?: NullableStringFieldUpdateOperationsInput | string | null
     FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
     GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsUpdateWorkAreaIDsInput | number[]
     ChatMember?: ChatMemberUpdateManyWithoutUserNestedInput
     Message?: MessageUpdateManyWithoutSenderNestedInput
   }
@@ -11556,6 +11772,8 @@ export namespace Prisma {
     Username?: NullableStringFieldUpdateOperationsInput | string | null
     FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
     GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsUpdateWorkAreaIDsInput | number[]
     ChatMember?: ChatMemberUncheckedUpdateManyWithoutUserNestedInput
     Message?: MessageUncheckedUpdateManyWithoutSenderNestedInput
   }
@@ -11879,6 +12097,8 @@ export namespace Prisma {
     Username?: string | null
     FacebookID?: string | null
     GoogleID?: string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsCreateWorkAreaIDsInput | number[]
     Account_Items?: Account_ItemsCreateNestedManyWithoutAccountsInput
     Message?: MessageCreateNestedManyWithoutSenderInput
   }
@@ -11892,6 +12112,8 @@ export namespace Prisma {
     Username?: string | null
     FacebookID?: string | null
     GoogleID?: string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsCreateWorkAreaIDsInput | number[]
     Account_Items?: Account_ItemsUncheckedCreateNestedManyWithoutAccountsInput
     Message?: MessageUncheckedCreateNestedManyWithoutSenderInput
   }
@@ -11944,6 +12166,8 @@ export namespace Prisma {
     Username?: NullableStringFieldUpdateOperationsInput | string | null
     FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
     GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsUpdateWorkAreaIDsInput | number[]
     Account_Items?: Account_ItemsUpdateManyWithoutAccountsNestedInput
     Message?: MessageUpdateManyWithoutSenderNestedInput
   }
@@ -11957,6 +12181,8 @@ export namespace Prisma {
     Username?: NullableStringFieldUpdateOperationsInput | string | null
     FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
     GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsUpdateWorkAreaIDsInput | number[]
     Account_Items?: Account_ItemsUncheckedUpdateManyWithoutAccountsNestedInput
     Message?: MessageUncheckedUpdateManyWithoutSenderNestedInput
   }
@@ -11987,6 +12213,8 @@ export namespace Prisma {
     Username?: string | null
     FacebookID?: string | null
     GoogleID?: string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsCreateWorkAreaIDsInput | number[]
     Account_Items?: Account_ItemsCreateNestedManyWithoutAccountsInput
     ChatMember?: ChatMemberCreateNestedManyWithoutUserInput
   }
@@ -12000,6 +12228,8 @@ export namespace Prisma {
     Username?: string | null
     FacebookID?: string | null
     GoogleID?: string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsCreateWorkAreaIDsInput | number[]
     Account_Items?: Account_ItemsUncheckedCreateNestedManyWithoutAccountsInput
     ChatMember?: ChatMemberUncheckedCreateNestedManyWithoutUserInput
   }
@@ -12079,6 +12309,8 @@ export namespace Prisma {
     Username?: NullableStringFieldUpdateOperationsInput | string | null
     FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
     GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsUpdateWorkAreaIDsInput | number[]
     Account_Items?: Account_ItemsUpdateManyWithoutAccountsNestedInput
     ChatMember?: ChatMemberUpdateManyWithoutUserNestedInput
   }
@@ -12092,6 +12324,8 @@ export namespace Prisma {
     Username?: NullableStringFieldUpdateOperationsInput | string | null
     FacebookID?: NullableStringFieldUpdateOperationsInput | string | null
     GoogleID?: NullableStringFieldUpdateOperationsInput | string | null
+    WorkArea?: NullableJsonNullValueInput | InputJsonValue
+    WorkAreaIDs?: AccountsUpdateWorkAreaIDsInput | number[]
     Account_Items?: Account_ItemsUncheckedUpdateManyWithoutAccountsNestedInput
     ChatMember?: ChatMemberUncheckedUpdateManyWithoutUserNestedInput
   }

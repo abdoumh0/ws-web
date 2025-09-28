@@ -3,7 +3,7 @@
 import { loginUser, registerUser } from "@/lib/actions";
 import { useSearchParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { useToast } from "@/components/ui/toast";
+import { toast } from "sonner";
 import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -16,7 +16,7 @@ export default function AuthPage() {
     searchParams.get("tab") === "register" ? "register" : "login";
 
   const [activeTab, setActiveTab] = useState(initialTab);
-  const { showToast } = useToast();
+
   const [isLoading, setIsLoading] = useState(false);
   const { refreshSession } = useSession();
 
@@ -29,10 +29,8 @@ export default function AuthPage() {
     try {
       const { ok, message, redirect } = await loginUser(formData);
       if (!ok) {
-        showToast({
-          variant: "error",
-          title: "Login Failed",
-          description: message || "Invalid credentials. Please try again.",
+        toast.error(message || "Invalid credentials. Please try again.", {
+          description: "Login Failed",
         });
         setIsLoading(false);
       } else {
@@ -42,10 +40,8 @@ export default function AuthPage() {
         }
       }
     } catch (error) {
-      showToast({
-        variant: "error",
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+      toast.error("An unexpected error occurred. Please try again.", {
+        description: "Error",
       });
       setIsLoading(false);
     }
@@ -60,10 +56,8 @@ export default function AuthPage() {
     const confirmPassword = formData.get("confirmPassword") as string;
 
     if (password !== confirmPassword) {
-      showToast({
-        variant: "error",
-        title: "Password Mismatch",
-        description: "Passwords do not match. Please try again.",
+      toast.error("Passwords do not match. Please try again.", {
+        description: "Password Mismatch",
       });
       setIsLoading(false);
       return;
@@ -73,27 +67,20 @@ export default function AuthPage() {
       const { ok, message, redirect } = await registerUser(formData);
       if (ok) {
         await refreshSession();
-        showToast({
-          variant: "success",
-          title: "Registration Successful",
-          description: "Your account has been created!",
+        toast.success("Your account has been created!", {
+          description: "Registration Successful",
         });
           router.push(redirect ?? "/");
         setIsLoading(false);
       } else {
-        showToast({
-          variant: "error",
-          title: "Registration Failed",
-          description:
-            message || "Could not create your account. Please try again.",
+        toast.error(message || "Could not create your account. Please try again.", {
+          description: "Registration Failed",
         });
         setIsLoading(false);
       }
     } catch (error) {
-      showToast({
-        variant: "error",
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+      toast.error("An unexpected error occurred. Please try again.", {
+        description: "Error",
       });
       setIsLoading(false);
     }

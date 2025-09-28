@@ -30,32 +30,7 @@ export default function Navbar() {
                 </span>
               </Link>
             </div>
-            <div className="hidden sm:ml-10 sm:flex sm:items-center sm:space-x-6">
-              <Link
-                href="/features"
-                className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
-              >
-                Features
-              </Link>
-              <Link
-                href="/pricing"
-                className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
-              >
-                Pricing
-              </Link>
-              <Link
-                href="/about"
-                className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
-              >
-                About Us
-              </Link>
-              <Link
-                href="/contact"
-                className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
-              >
-                Contact
-              </Link>
-            </div>
+            
           </div>
           <div className="hidden sm:flex sm:items-center sm:ml-6">
             {session && <Controls />}

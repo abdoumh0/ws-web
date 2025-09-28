@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
-import { useToast } from "./ui/toast";
+import { toast } from "sonner";
 import { LoaderCircle, Save, Upload, X } from "lucide-react";
 import {
   Dialog,
@@ -50,7 +50,6 @@ export default function EditItem({
     imageLink: "",
   });
   const [newImage, setNewImage] = useState<File | null>(null);
-  const { showToast } = useToast();
 
   // Load item data from localStorage when the dialog opens
   useEffect(() => {
@@ -60,22 +59,20 @@ export default function EditItem({
         try {
           const itemData = JSON.parse(storedItem);
           setFormState({
-            itemId: itemData.ItemID.toString(),
-            name: itemData.Name || "",
-            price: (itemData.Price / 100).toString(), // Convert from cents
-            purchasePrice: (itemData.PurchasePrice / 100).toString(), // Convert from cents
-            qty: itemData.Qty.toString(),
-            brand: itemData.Brand || "",
-            type: itemData.Type || "",
-            categoryId: itemData.CategoryID?.toString() || "1",
-            imageLink: itemData.ImageLink || "",
+            itemId: itemData.ItemID,
+            name: itemData.Name,
+            price: itemData.Price, 
+            purchasePrice: itemData.PurchasePrice,
+            qty: itemData.Qty,
+            brand: itemData.Brand,
+            type: itemData.Type,
+            categoryId: itemData.CategoryID || "1",
+            imageLink: itemData.ImageLink,
           });
         } catch (error) {
           console.error("Error parsing stored item data:", error);
-          showToast({
-            variant: "error",
-            title: "Error",
-            description: "Failed to load item data",
+          toast.error("Failed to load item data", {
+            description: "Error",
           });
           onOpenChange(false);
         }
@@ -95,7 +92,7 @@ export default function EditItem({
       });
       setNewImage(null);
     }
-  }, [open, onOpenChange, showToast]);
+  }, [open, onOpenChange]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -142,10 +139,8 @@ export default function EditItem({
       const result = await updateItem(formData);
 
       if (result.success) {
-        showToast({
-          variant: "success",
-          title: "Success",
-          description: "Item updated successfully",
+        toast.success("Item updated successfully", {
+          description: "Success",
         });
         onOpenChange(false);
         if (onItemUpdated) {
@@ -156,11 +151,8 @@ export default function EditItem({
       }
     } catch (error) {
       console.error("Error updating item:", error);
-      showToast({
-        variant: "error",
-        title: "Error",
-        description:
-          error instanceof Error ? error.message : "Failed to update item",
+      toast.error(error instanceof Error ? error.message : "Failed to update item", {
+        description: "Error",
       });
     } finally {
       setIsLoading(false);

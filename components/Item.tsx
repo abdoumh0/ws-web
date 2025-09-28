@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Account_Items, Items } from "@/lib/generated/prisma";
 import { Edit, Trash2 } from "lucide-react";
-import { useToast } from "./ui/toast";
+import { toast } from "sonner";
 import { deleteItem } from "@/lib/actions";
 import EditItem from "./EditItem";
 
@@ -22,7 +22,6 @@ export default function Item({
   AccountID,
   CategoryID,
 }: Props) {
-  const { showToast } = useToast();
   const [isDeleting, setIsDeleting] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(true);
@@ -32,7 +31,7 @@ export default function Item({
     style: "currency",
     currency: "DZD",
     minimumFractionDigits: 0,
-  }).format(Number(Price) / 100);
+  }).format(Number(Price));
 
   const handleDelete = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -47,10 +46,8 @@ export default function Item({
         const result = await deleteItem(ItemID.toString(), AccountID);
 
         if (result.success) {
-          showToast({
-            variant: "success",
-            title: "Item Removed",
-            description: "Item has been removed from your inventory",
+          toast.success("Item has been removed from your inventory", {
+            description: "Item Removed",
           });
           // Refresh the page to show updated inventory
           window.location.reload();
@@ -59,11 +56,8 @@ export default function Item({
         }
       } catch (error) {
         console.error("Error removing item:", error);
-        showToast({
-          variant: "error",
-          title: "Error",
-          description:
-            error instanceof Error ? error.message : "Failed to remove item",
+        toast.error(error instanceof Error ? error.message : "Failed to remove item", {
+          description: "Error",
         });
       } finally {
         setIsDeleting(false);
@@ -79,13 +73,13 @@ export default function Item({
     localStorage.setItem(
       "editItem",
       JSON.stringify({
-        ItemID,
+        ItemID: ItemID.toString(),
         Name,
-        Price: Number(Price),
-        PurchasePrice: Number(PurchasePrice),
-        Qty: Number(Qty),
+        Price: Price.toString(),
+        PurchasePrice: PurchasePrice.toString(),
+        Qty: Qty.toString(),
         Brand,
-        CategoryID: CategoryID,
+        CategoryID: CategoryID.toString(),
         Type: "Default", // Add a default value if not available
         ImageLink,
       })

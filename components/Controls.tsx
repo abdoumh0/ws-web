@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button } from "./ui/button";
 import { InboxIcon, BellIcon, MenuIcon } from "lucide-react";
 import { logoutUser } from "@/lib/actions";
@@ -65,14 +65,33 @@ function ControlButton({ className,icon, onClick }: React.ComponentProps<"button
   );
 }
 
+
+
 export default function Controls() {
   const [open, setOpen] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   const { refreshSession } = useSession();
 
+  useEffect(() => {
+    if (!open) return;
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node) &&
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setOpen(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
+
   const handleLogout = async () => {
-    await logoutUser(); // Then delete cookie and redirect
-    await refreshSession(); // Clear the session context first
+    await logoutUser();
+    await refreshSession();
   };
 
   let content: React.ReactNode = null;
@@ -131,7 +150,6 @@ export default function Controls() {
       </div>
     );
   }
-
   return (
     <div className="flex justify-between items-center relative" ref={containerRef}>
       <div className="flex items-center gap-2">
@@ -152,7 +170,7 @@ export default function Controls() {
         />
       </div>
       {open && content && (
-        <div className="absolute right-0 top-full mt-2 z-10">
+        <div className="absolute right-0 top-full mt-2 z-10" ref={modalRef}>
           {content}
         </div>
       )}

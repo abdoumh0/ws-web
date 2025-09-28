@@ -479,6 +479,8 @@ export async function getSession(): Promise<AccountInfo | null> {
       Username: userInfo.user.Username,
       FacebookID: userInfo.user.FacebookID,
       GoogleID: userInfo.user.GoogleID,
+      WorkArea: {},
+      WorkAreaIDs: []
     };
   } catch (error) {
     // If verify fails, return null (invalid/expired session)
@@ -617,8 +619,8 @@ export async function updateItem(formData: FormData) {
     }
 
     // Convert price values to cents for storage
-    const priceInCents = Math.round(parseFloat(price) * 100);
-    const purchasePriceInCents = Math.round(parseFloat(purchasePrice) * 100);
+    const priceInCents = Math.round(parseFloat(price) );
+    const purchasePriceInCents = Math.round(parseFloat(purchasePrice) );
 
     // Handle image upload if a new image is provided
     let finalImageUrl = imageLink;
@@ -847,6 +849,67 @@ export async function getMessages(chatID: string, skip: number) {
     console.log("error in getMessages()", error);
     throw error;
   }
+}
+
+export type Wilaya = {
+  id: number;
+  name_ar: string;
+  name_ln: string;
+  dairas: {
+    name_ar: string;
+    name_ln: string;
+    baladiyas: {
+      baladiya_id: number;
+      name_ar: string;
+      name_ln: string;
+    }[];
+  }[];
+}
+
+export async function updateUser({ username, email, workarea, oldPassword, newPassword }: { username: string; email: string; workarea?: Wilaya[]; oldPassword?: string; newPassword?: string }) {
+  const session = await getSession();
+  if (!session) throw new Error("Not authenticated");
+  const data: any = {
+    Username: username,
+    Email: email,
+  };
+  if (workarea !== undefined && workarea.length !== 0) {
+    data.WorkArea = workarea;
+    let workareaids: Number[] = []
+    for (const wilaya of workarea) {
+      for (const daira of wilaya.dairas) {
+        for (const baladiya of daira.baladiyas) {
+          workareaids.push(baladiya.baladiya_id)
+        }
+      }
+    }
+    data.WorkAreaIDs = workareaids
+    data.WorkArea = workarea
+  }
+  // Only update password if newPassword is provided
+  if (newPassword && newPassword.trim() !== "") {
+    if (!oldPassword) throw new Error("Old password is required to change password");
+    // Fetch current user from DB
+    const user = await prisma.accounts.findUnique({ where: { AccountID: session.AccountID } });
+    if (!user) throw new Error("User not found");
+    const match = await compare(oldPassword, Buffer.from(user.Password).toString());
+    if (!match) throw new Error("Old password is incorrect");
+    const hashed = await hash(newPassword, 10);
+    data.Password = Buffer.from(hashed);
+  }
+  await prisma.accounts.update({
+    where: { AccountID: session.AccountID },
+    data,
+  });
+}
+
+// Delete user account
+export async function deleteUser() {
+  const session = await getSession();
+  if (!session) throw new Error("Not authenticated");
+  await prisma.accounts.delete({
+    where: { AccountID: session.AccountID },
+  });
 }
 
 export type ChatType = Awaited<ReturnType<typeof getChats>>
