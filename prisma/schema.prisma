@@ -53,7 +53,8 @@ model Items {
 }
 model Chat {
   ChatID   String        @id @default(uuid())
-  Name     String?
+  Name     String        @default("")
+  Type     String        @default("")
   Messages Message[]     @relation("ChatToMessages")
   Members  ChatMember[]
 }

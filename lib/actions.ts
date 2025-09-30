@@ -912,5 +912,5 @@ export async function deleteUser() {
   });
 }
 
-export type ChatType = Awaited<ReturnType<typeof getChats>>
+export type getChatsType = Awaited<ReturnType<typeof getChats>>
 export type MessageType = Awaited<ReturnType<typeof getMessages>>

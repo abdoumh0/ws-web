@@ -1,7 +1,18 @@
 import React, { createContext, useContext, useState } from 'react'
+import { getChatsType } from './actions'
 
 type Props = {
     children?: React.ReactNode
+}
+
+export type ChatBox = {
+    Chat: Chat
+    isOpen: boolean
+}
+
+type ChatHistory = {
+    chatID: string
+    messages: Message[]
 }
 
 type StoreContextType = {
@@ -11,11 +22,10 @@ type StoreContextType = {
     setNotificationStore: (notifications: Notification[]) => void
 }
 
-type Chat = {
+export type Chat = {
     id: string
-    name?: string
+    name: string
     members: string[]
-    read: boolean
 }
 
 type MessageContent = {

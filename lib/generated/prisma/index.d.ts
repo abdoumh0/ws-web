@@ -5058,16 +5058,19 @@ export namespace Prisma {
   export type ChatMinAggregateOutputType = {
     ChatID: string | null
     Name: string | null
+    Type: string | null
   }
 
   export type ChatMaxAggregateOutputType = {
     ChatID: string | null
     Name: string | null
+    Type: string | null
   }
 
   export type ChatCountAggregateOutputType = {
     ChatID: number
     Name: number
+    Type: number
     _all: number
   }
 
@@ -5075,16 +5078,19 @@ export namespace Prisma {
   export type ChatMinAggregateInputType = {
     ChatID?: true
     Name?: true
+    Type?: true
   }
 
   export type ChatMaxAggregateInputType = {
     ChatID?: true
     Name?: true
+    Type?: true
   }
 
   export type ChatCountAggregateInputType = {
     ChatID?: true
     Name?: true
+    Type?: true
     _all?: true
   }
 
@@ -5162,7 +5168,8 @@ export namespace Prisma {
 
   export type ChatGroupByOutputType = {
     ChatID: string
-    Name: string | null
+    Name: string
+    Type: string
     _count: ChatCountAggregateOutputType | null
     _min: ChatMinAggregateOutputType | null
     _max: ChatMaxAggregateOutputType | null
@@ -5185,6 +5192,7 @@ export namespace Prisma {
   export type ChatSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     ChatID?: boolean
     Name?: boolean
+    Type?: boolean
     Messages?: boolean | Chat$MessagesArgs<ExtArgs>
     Members?: boolean | Chat$MembersArgs<ExtArgs>
     _count?: boolean | ChatCountOutputTypeDefaultArgs<ExtArgs>
@@ -5193,19 +5201,22 @@ export namespace Prisma {
   export type ChatSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     ChatID?: boolean
     Name?: boolean
+    Type?: boolean
   }, ExtArgs["result"]["chat"]>
 
   export type ChatSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     ChatID?: boolean
     Name?: boolean
+    Type?: boolean
   }, ExtArgs["result"]["chat"]>
 
   export type ChatSelectScalar = {
     ChatID?: boolean
     Name?: boolean
+    Type?: boolean
   }
 
-  export type ChatOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ChatID" | "Name", ExtArgs["result"]["chat"]>
+  export type ChatOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ChatID" | "Name" | "Type", ExtArgs["result"]["chat"]>
   export type ChatInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Messages?: boolean | Chat$MessagesArgs<ExtArgs>
     Members?: boolean | Chat$MembersArgs<ExtArgs>
@@ -5222,7 +5233,8 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       ChatID: string
-      Name: string | null
+      Name: string
+      Type: string
     }, ExtArgs["result"]["chat"]>
     composites: {}
   }
@@ -5650,6 +5662,7 @@ export namespace Prisma {
   interface ChatFieldRefs {
     readonly ChatID: FieldRef<"Chat", 'String'>
     readonly Name: FieldRef<"Chat", 'String'>
+    readonly Type: FieldRef<"Chat", 'String'>
   }
     
 
@@ -9393,7 +9406,8 @@ export namespace Prisma {
 
   export const ChatScalarFieldEnum: {
     ChatID: 'ChatID',
-    Name: 'Name'
+    Name: 'Name',
+    Type: 'Type'
   };
 
   export type ChatScalarFieldEnum = (typeof ChatScalarFieldEnum)[keyof typeof ChatScalarFieldEnum]
@@ -9803,14 +9817,16 @@ export namespace Prisma {
     OR?: ChatWhereInput[]
     NOT?: ChatWhereInput | ChatWhereInput[]
     ChatID?: StringFilter<"Chat"> | string
-    Name?: StringNullableFilter<"Chat"> | string | null
+    Name?: StringFilter<"Chat"> | string
+    Type?: StringFilter<"Chat"> | string
     Messages?: MessageListRelationFilter
     Members?: ChatMemberListRelationFilter
   }
 
   export type ChatOrderByWithRelationInput = {
     ChatID?: SortOrder
-    Name?: SortOrderInput | SortOrder
+    Name?: SortOrder
+    Type?: SortOrder
     Messages?: MessageOrderByRelationAggregateInput
     Members?: ChatMemberOrderByRelationAggregateInput
   }
@@ -9820,14 +9836,16 @@ export namespace Prisma {
     AND?: ChatWhereInput | ChatWhereInput[]
     OR?: ChatWhereInput[]
     NOT?: ChatWhereInput | ChatWhereInput[]
-    Name?: StringNullableFilter<"Chat"> | string | null
+    Name?: StringFilter<"Chat"> | string
+    Type?: StringFilter<"Chat"> | string
     Messages?: MessageListRelationFilter
     Members?: ChatMemberListRelationFilter
   }, "ChatID">
 
   export type ChatOrderByWithAggregationInput = {
     ChatID?: SortOrder
-    Name?: SortOrderInput | SortOrder
+    Name?: SortOrder
+    Type?: SortOrder
     _count?: ChatCountOrderByAggregateInput
     _max?: ChatMaxOrderByAggregateInput
     _min?: ChatMinOrderByAggregateInput
@@ -9838,7 +9856,8 @@ export namespace Prisma {
     OR?: ChatScalarWhereWithAggregatesInput[]
     NOT?: ChatScalarWhereWithAggregatesInput | ChatScalarWhereWithAggregatesInput[]
     ChatID?: StringWithAggregatesFilter<"Chat"> | string
-    Name?: StringNullableWithAggregatesFilter<"Chat"> | string | null
+    Name?: StringWithAggregatesFilter<"Chat"> | string
+    Type?: StringWithAggregatesFilter<"Chat"> | string
   }
 
   export type ChatMemberWhereInput = {
@@ -10248,45 +10267,52 @@ export namespace Prisma {
 
   export type ChatCreateInput = {
     ChatID?: string
-    Name?: string | null
+    Name?: string
+    Type?: string
     Messages?: MessageCreateNestedManyWithoutChatInput
     Members?: ChatMemberCreateNestedManyWithoutChatInput
   }
 
   export type ChatUncheckedCreateInput = {
     ChatID?: string
-    Name?: string | null
+    Name?: string
+    Type?: string
     Messages?: MessageUncheckedCreateNestedManyWithoutChatInput
     Members?: ChatMemberUncheckedCreateNestedManyWithoutChatInput
   }
 
   export type ChatUpdateInput = {
     ChatID?: StringFieldUpdateOperationsInput | string
-    Name?: NullableStringFieldUpdateOperationsInput | string | null
+    Name?: StringFieldUpdateOperationsInput | string
+    Type?: StringFieldUpdateOperationsInput | string
     Messages?: MessageUpdateManyWithoutChatNestedInput
     Members?: ChatMemberUpdateManyWithoutChatNestedInput
   }
 
   export type ChatUncheckedUpdateInput = {
     ChatID?: StringFieldUpdateOperationsInput | string
-    Name?: NullableStringFieldUpdateOperationsInput | string | null
+    Name?: StringFieldUpdateOperationsInput | string
+    Type?: StringFieldUpdateOperationsInput | string
     Messages?: MessageUncheckedUpdateManyWithoutChatNestedInput
     Members?: ChatMemberUncheckedUpdateManyWithoutChatNestedInput
   }
 
   export type ChatCreateManyInput = {
     ChatID?: string
-    Name?: string | null
+    Name?: string
+    Type?: string
   }
 
   export type ChatUpdateManyMutationInput = {
     ChatID?: StringFieldUpdateOperationsInput | string
-    Name?: NullableStringFieldUpdateOperationsInput | string | null
+    Name?: StringFieldUpdateOperationsInput | string
+    Type?: StringFieldUpdateOperationsInput | string
   }
 
   export type ChatUncheckedUpdateManyInput = {
     ChatID?: StringFieldUpdateOperationsInput | string
-    Name?: NullableStringFieldUpdateOperationsInput | string | null
+    Name?: StringFieldUpdateOperationsInput | string
+    Type?: StringFieldUpdateOperationsInput | string
   }
 
   export type ChatMemberCreateInput = {
@@ -10813,16 +10839,19 @@ export namespace Prisma {
   export type ChatCountOrderByAggregateInput = {
     ChatID?: SortOrder
     Name?: SortOrder
+    Type?: SortOrder
   }
 
   export type ChatMaxOrderByAggregateInput = {
     ChatID?: SortOrder
     Name?: SortOrder
+    Type?: SortOrder
   }
 
   export type ChatMinOrderByAggregateInput = {
     ChatID?: SortOrder
     Name?: SortOrder
+    Type?: SortOrder
   }
 
   export type ChatScalarRelationFilter = {
@@ -12073,13 +12102,15 @@ export namespace Prisma {
 
   export type ChatCreateWithoutMembersInput = {
     ChatID?: string
-    Name?: string | null
+    Name?: string
+    Type?: string
     Messages?: MessageCreateNestedManyWithoutChatInput
   }
 
   export type ChatUncheckedCreateWithoutMembersInput = {
     ChatID?: string
-    Name?: string | null
+    Name?: string
+    Type?: string
     Messages?: MessageUncheckedCreateNestedManyWithoutChatInput
   }
 
@@ -12136,13 +12167,15 @@ export namespace Prisma {
 
   export type ChatUpdateWithoutMembersInput = {
     ChatID?: StringFieldUpdateOperationsInput | string
-    Name?: NullableStringFieldUpdateOperationsInput | string | null
+    Name?: StringFieldUpdateOperationsInput | string
+    Type?: StringFieldUpdateOperationsInput | string
     Messages?: MessageUpdateManyWithoutChatNestedInput
   }
 
   export type ChatUncheckedUpdateWithoutMembersInput = {
     ChatID?: StringFieldUpdateOperationsInput | string
-    Name?: NullableStringFieldUpdateOperationsInput | string | null
+    Name?: StringFieldUpdateOperationsInput | string
+    Type?: StringFieldUpdateOperationsInput | string
     Messages?: MessageUncheckedUpdateManyWithoutChatNestedInput
   }
 
@@ -12189,13 +12222,15 @@ export namespace Prisma {
 
   export type ChatCreateWithoutMessagesInput = {
     ChatID?: string
-    Name?: string | null
+    Name?: string
+    Type?: string
     Members?: ChatMemberCreateNestedManyWithoutChatInput
   }
 
   export type ChatUncheckedCreateWithoutMessagesInput = {
     ChatID?: string
-    Name?: string | null
+    Name?: string
+    Type?: string
     Members?: ChatMemberUncheckedCreateNestedManyWithoutChatInput
   }
 
@@ -12279,13 +12314,15 @@ export namespace Prisma {
 
   export type ChatUpdateWithoutMessagesInput = {
     ChatID?: StringFieldUpdateOperationsInput | string
-    Name?: NullableStringFieldUpdateOperationsInput | string | null
+    Name?: StringFieldUpdateOperationsInput | string
+    Type?: StringFieldUpdateOperationsInput | string
     Members?: ChatMemberUpdateManyWithoutChatNestedInput
   }
 
   export type ChatUncheckedUpdateWithoutMessagesInput = {
     ChatID?: StringFieldUpdateOperationsInput | string
-    Name?: NullableStringFieldUpdateOperationsInput | string | null
+    Name?: StringFieldUpdateOperationsInput | string
+    Type?: StringFieldUpdateOperationsInput | string
     Members?: ChatMemberUncheckedUpdateManyWithoutChatNestedInput
   }
 

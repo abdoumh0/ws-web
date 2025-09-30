@@ -1,34 +1,56 @@
 "use client"
 import React, {useState, createContext, useContext} from 'react'
-import { ChatType } from './actions'
+import { getChatsType } from './actions'
+
+type ChatType = getChatsType[number]
 
 type Props = {
     children: React.ReactNode
 }
 
 type ChatBox = {
-    chatID: string
     Chat: ChatType
     isOpen: boolean
 }
 
 type MessageContextType = {
-    ChatStore: ChatType,
-    setChatStore: React.Dispatch<React.SetStateAction<ChatType>>,
+    ChatStore: ChatType[],
+    setChatStore: React.Dispatch<React.SetStateAction<ChatType[]>>,
     NotificationStore: ChatType[],
     setNotificationStore: React.Dispatch<React.SetStateAction<ChatType[]>>
-    ChatBoxes: ChatBox[];
-    setChatBoxes: React.Dispatch<React.SetStateAction<ChatBox[]>>
+    ChatBoxeStore: ChatBox[];
+    ChatBoxDispatch: React.Dispatch<{type: 'toggle' | 'open' | 'close', chatID?: string, newChat?: ChatType}>
 }
 
 const MessageContext = createContext<MessageContextType | undefined>(undefined)
 
+function chatboxReducer(state: ChatBox[], action: {type: 'toggle' | 'open' | 'close', chatID?: string, newChat?: ChatType}) {
+   switch (action.type) {
+     case 'toggle':
+       return state.map(chat =>
+         chat.Chat.ChatID === action.chatID ? { ...chat, isOpen: !chat.isOpen } : chat
+       )
+     case 'open':
+      if (!action.newChat) {
+        return state
+      }
+       return [...state, {Chat: action.newChat, isOpen: true}]
+     case 'close':
+        return state.filter(chat => chat.Chat.ChatID !== action.chatID)
+     default:
+       return state
+   }
+ }
+
+
 export default function MessageProvider({children}: Props) {
-    const [ChatStore, setChatStore] = useState<ChatType>([])
+    const [ChatStore, setChatStore] = useState<ChatType[]>([])
     const [NotificationStore, setNotificationStore] = useState<ChatType[]>([])
-    const [ChatBoxes, setChatBoxes] = useState<ChatBox[]>([])
+    const [ChatBoxeStore, ChatBoxDispatch] = React.useReducer(chatboxReducer, [])
+
+
   return (
-    <MessageContext.Provider value={{ChatStore, setChatStore, NotificationStore, setNotificationStore, ChatBoxes, setChatBoxes}}>
+    <MessageContext.Provider value={{ChatStore, setChatStore, NotificationStore, setNotificationStore, ChatBoxeStore, ChatBoxDispatch}}>
     {children}
     </MessageContext.Provider>
   )

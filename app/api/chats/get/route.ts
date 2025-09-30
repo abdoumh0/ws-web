@@ -5,9 +5,10 @@ export async function GET(req:NextRequest) {
     try {
         const session = await getSession()
         const url = new URL(req.url);
-        const skip = parseInt(url.searchParams.get("skip") ?? "0", 10)
+        const skip = parseInt(url.searchParams.get("skip") ?? "0")
         // await verify(session)
         if (!session || !session.Username) {
+            console.log("sess",session)
             return NextResponse.json({ok: false, data: []}, {status:401})
         }
         const data = await getChats(session.Username, skip)
