@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/actions";
+import Fuse, { FuseResult } from "fuse.js"
+import data from "@/app/muni_flat.json"
+
 
 export async function GET(request: NextRequest) {
   try {
@@ -21,6 +24,93 @@ export async function GET(request: NextRequest) {
     const minPrice = url.searchParams.get("min_price");
     const maxPrice = url.searchParams.get("max_price");
     const sortBy = url.searchParams.get("sort") || "newest";
+    const regionSortStyle = url.searchParams.get("region_sort") ?? "OR"
+    const wilaya = url.searchParams.getAll("wilaya")
+    const daira = url.searchParams.getAll("daira")
+    const baladiya= url.searchParams.getAll("commune")
+
+    console.log("wowie:", baladiya)
+
+    type regionDataType = typeof data
+
+    const wFuse = new Fuse(data, {
+      threshold: .1,
+      keys: ["wilaya_name_ln"],
+      findAllMatches: true,
+    })
+    const wResMap = new Map<string, FuseResult<regionDataType[0]>[]>()
+    wilaya.forEach(v => {
+      const res = wFuse.search(v)
+      wResMap.set(v, res)
+    })
+
+    const resMap = new Map<string, FuseResult<regionDataType[0]>[]>()
+    const wRes = Array.from(wResMap.values()).flat();
+    resMap.set("wilayas", wRes);
+
+    const dFuse = new Fuse(data, {
+      threshold: .1,
+      keys: ["daira_name_ln"]
+    })
+    const dResMap = new Map<string, FuseResult<regionDataType[0]>[]>()
+    daira.forEach(v => {
+      const res = dFuse.search(v)
+      dResMap.set(v, res)
+    })
+
+    const dRes = Array.from(dResMap.values()).flat();
+    resMap.set("dairas", dRes);
+
+    const bFuse = new Fuse(data, {
+      threshold: .1,
+      keys: ["baladiya_name_ln"]
+    })
+
+    const bResMap = new Map<string, FuseResult<regionDataType[0]>[]>()
+    baladiya.forEach(v => {
+      const res = bFuse.search(v)
+      bResMap.set(v, res)
+    })
+
+    const bRes = Array.from(bResMap.values()).flat();
+    resMap.set("baladiyas", bRes);
+
+    const wi =  resMap.get("wilayas")?.map(i => i.item) ?? []
+    const wboys = await prisma.accounts.findMany({
+      where: {
+        WorkAreaIDs: {
+          hasSome: wi.map(i => i.baladiya_id ?? 0)
+        }
+      }
+    })
+
+    const di = resMap.get("dairas")?.map(i => i.item) ?? []
+    const dboys = await prisma.accounts.findMany({
+      where: {
+        WorkAreaIDs: {
+          hasSome: di.map(i => i.baladiya_id ?? 0)
+        }
+      }
+    })
+
+    const bi = resMap.get("baladiyas")?.map(i => i.item) ?? []
+    const bboys = await prisma.accounts.findMany({
+      where: {
+        WorkAreaIDs: {
+          hasSome: bi.map(i => i.baladiya_id ?? 0)
+        }
+      }
+    })
+
+    console.log("the boys:", wboys, dboys, bboys)
+
+    // const merged = [...wRes, ...dRes, ...bRes]
+
+    // const allRes = Array.from(new Map(merged.map(i => [i.item.baladiya_id, i.item])).values())
+    // console.log("res",allRes)
+
+
+  
 
     // Build price range string from min and max values
     let priceRange: string | null = null;
