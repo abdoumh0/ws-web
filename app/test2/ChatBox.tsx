@@ -1,19 +1,13 @@
 import { getChatsType } from '@/lib/actions'
-import { useMessage } from '@/lib/MessageContext'
-import { ChatBox as ChatBoxType} from '@/lib/MessageContext'
+import { ChatType, useMessage } from '@/lib/MessageContext'
 import { useSession } from '@/lib/SessionContext'
 import { useWebSocket } from '@/lib/WSContext'
 import { Maximize2, Minimize2, Send, X } from 'lucide-react'
-import React, { use, useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 
 type Props = {
-    chat: getChatsType[number]
-    chatBoxDispatch: React.ActionDispatch<[action: {
-       type: "TOGGLE" | "OPEN" | "CLOSE";
-        chatID?: string;
-        newChat?: getChatsType[number];
-    }]>
-    isOpen: boolean;
+    chat: getChatsType[number] & {ChatBox: 'OPEN' | 'CLOSED' | 'MINIMIZED'}
+    chatStoreDispatch: React.Dispatch<{type: 'ADD' | 'REMOVE' | 'UPDATE' | 'ADD_MESSAGES' | 'SET_CHATBOX', chat: ChatType, ChatBox?: 'OPEN' | 'CLOSED' | 'MINIMIZED'}>,
 }
 
 export type WS_Notification =  {
@@ -39,11 +33,20 @@ export type WS_Notification =  {
 };
 
 
-export default function ChatBox({chat, chatBoxDispatch, isOpen}: Props) {
+export default function ChatBox({chat, chatStoreDispatch}: Props) {
     const {ChatStore, ChatStoreDispatch} = useMessage()
     const {ChatID, Name, Members} = chat
     const {session} = useSession()
     const {socket, status} = useWebSocket()
+
+    useEffect(() => {
+      console.log("state changed", chat.ChatBox)
+    
+      return () => {
+        
+      }
+    }, [chat])
+    
 
     const handleMessageSend = (chatID: string, text: string) :boolean => { //for now only text messages 
         if (!session) return false;
@@ -64,11 +67,21 @@ export default function ChatBox({chat, chatBoxDispatch, isOpen}: Props) {
             <div className='flex justify-between items-center px-3 py-1 h-fit bg-indigo-600 '>
             <h4 className='text-white font-semibold text-sm'>{chat.Type == "DM" ? chat.Members.filter(member => member.Username != session?.Username).map(member => member.Username).join(", ") : Name}</h4>
             <div className='flex gap-2 text-white'>
-                <button onClick={() => chatBoxDispatch({type: "TOGGLE", chatID: ChatID})}>{isOpen?<Minimize2 size={14}/>:<Maximize2 size={14}/>}</button>
-                <button onClick={() => chatBoxDispatch({type: "CLOSE", chatID: ChatID})}><X size={16}/></button>
+                <button onClick={() => 
+                    {
+                        
+                        let newState: 'OPEN' | 'MINIMIZED'
+                        if (chat.ChatBox == 'OPEN') {
+                            newState = 'MINIMIZED'
+                        } else newState = 'OPEN'
+                        console.log("setting chatbox", newState)
+                        chatStoreDispatch({type: "SET_CHATBOX", chat:{...chat}, ChatBox: newState})
+                    }
+                }>{chat.ChatBox=='OPEN'?<Minimize2 size={14}/>:<Maximize2 size={14}/>}</button>
+                <button onClick={() => chatStoreDispatch({type: "SET_CHATBOX", chat, ChatBox: "CLOSED" })}><X size={16}/></button>
             </div>
             </div>
-         <div className={`${isOpen ? '' : 'hidden'}`}>
+         <div className={`${chat.ChatBox == 'OPEN' ? '' : 'hidden'}`}>
             <div onClick={() => {console.log(chat.Messages)}} className=' justify-between bg-background h-64 overflow-scroll py-2 px-3 message-content-div' >
             {chat.Messages.toReversed().map(message => {
                 return (

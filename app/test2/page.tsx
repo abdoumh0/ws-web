@@ -8,7 +8,7 @@ type Props = {}
 
 export default function page({}: Props) {
 
-  const { ChatBoxStore, ChatBoxDispatch } = useMessage()
+  const { ChatStore, ChatStoreDispatch } = useMessage()
 
   useEffect(() => {
 
@@ -46,14 +46,23 @@ export default function page({}: Props) {
     }
   }, [])
   
+useEffect(() => {
+  
+console.log('changed ', ChatStore)
+  return () => {
+    
+  }
+}, [ChatStore])
 
+  
   return (
     <>
     <ChatHistory />
-    <div className='fixed bottom-0 right-0 flex justify-end gap-x-3 px-3 items-end messagebox-container w-screen pointer-events-none [&>*]:pointer-events-auto' >
-      {ChatBoxStore.map((chat) => (
-        <ChatBox key={chat.Chat.ChatID} chat={chat.Chat} chatBoxDispatch={ChatBoxDispatch} isOpen={chat.isOpen} />
-      ))}
+     <div className='fixed bottom-0 right-0 flex justify-end gap-x-3 px-3 items-end messagebox-container w-screen pointer-events-none [&>*]:pointer-events-auto' >
+      {ChatStore.map((chat) => {
+        if (chat.ChatBox != "CLOSED")
+        return  <ChatBox key={chat.ChatID} chat={chat} chatStoreDispatch={ChatStoreDispatch} />
+})}
     </div>
       </>
   )
