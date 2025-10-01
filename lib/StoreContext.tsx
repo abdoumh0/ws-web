@@ -5,15 +5,6 @@ type Props = {
     children?: React.ReactNode
 }
 
-export type ChatBox = {
-    Chat: Chat
-    isOpen: boolean
-}
-
-type ChatHistory = {
-    chatID: string
-    messages: Message[]
-}
 
 type StoreContextType = {
     messageStore: Message[]

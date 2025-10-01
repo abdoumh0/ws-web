@@ -90,7 +90,7 @@ export default function ChatBox({ChatID, ChatName, ChatMembers, ChatHistory: ini
         e.preventDefault();
         if (input.trim() === "") return;
         // Send message through websocket using WSMessage type
-        if (socket && status === "connected") {
+        if (socket && status === "CONNECTED" && session) {
           const msg = {
             chat_id: ChatID,
             content: input,

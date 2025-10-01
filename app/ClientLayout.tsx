@@ -17,16 +17,16 @@ export default function ClientLayout({
   const { session } = useSession(); // Get token from context
 
   return (
+    <MessageProvider>
     <WebSocketProvider session={session}>
     <StoreProvider>
-    <MessageProvider>
       
       <Navbar />
       <Toaster />
       <NProgressProvider />
       {children}
-    </MessageProvider>
     </StoreProvider>
     </WebSocketProvider>
+    </MessageProvider>
   );
 } 

@@ -800,30 +800,32 @@ export async function searchItems(
 
 
 export async function getChats(username:string, skip: number) {
+  //TODO: might consider using a better skip method (or not)
   try {
+  const chatIDs = await prisma.message.findMany({
+    where: {
+      SenderUsername: username
+    },
+    select: { ChatID: true },
+    distinct: "ChatID",
+    orderBy: { CreatedAt: "desc" },
+    skip: skip,
+    take: 10,
+  })
+
   const chats = await prisma.chat.findMany({
     where: {
-      Members: {
-        some: {
-          Username: username
-        }
-      }
+      OR: chatIDs.map(c => ({ ChatID: c.ChatID }))
     },
     include: {
-      Members: true, 
       Messages: {
+        orderBy: { CreatedAt: "desc" },
         take: 20,
-        orderBy: {
-          CreatedAt: "asc"
-        },
-        include: {
-          MessageContent: {
-            orderBy: {Index: "asc"}
-          }
+        include: { MessageContent: { orderBy: { Index: "asc" } }
         }
-      }
+      },
+      Members: true
     },
-    skip: skip
   })
 
   return chats

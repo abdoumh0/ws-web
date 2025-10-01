@@ -1,18 +1,18 @@
-// context/WebSocketContext.tsx
 'use client';
 
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { getOrCreateClientId } from './utils';
 import { Session } from './SessionContext';
+import { ChatType, useMessage } from './MessageContext';
 
 type WebSocketContextType = {
   socket: WebSocket | null;
-  status: "connected" | "disconnected" | "connecting";
+  status: "CONNECTED" | "DISCONNECTED" | "CONNECTING";
 };
 
 const WebSocketContext = createContext<WebSocketContextType>({
   socket: null,
-  status: "disconnected",
+  status: "DISCONNECTED",
 });
 
 export const useWebSocket = () => useContext(WebSocketContext);
@@ -24,8 +24,10 @@ export const WebSocketProvider = ({
   session: Session;
   children: React.ReactNode;
 }) => {
+
+  const { ChatStoreDispatch, ChatBoxDispatch } = useMessage();
   const socketRef = useRef<WebSocket | null>(null);
-  const [status, setStatus] = useState<"connected" | "disconnected" | "connecting">("disconnected");
+  const [status, setStatus] = useState<"CONNECTED" | "DISCONNECTED" | "CONNECTING">("DISCONNECTED");
   
   useEffect(() => {
     console.log(status);
@@ -38,15 +40,15 @@ export const WebSocketProvider = ({
     }
 
     const clientId = getOrCreateClientId();
-    setStatus("connecting");
+    setStatus("CONNECTING");
     const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}?client_id=${clientId}`, "ww-msg-protocol");
 
     ws.onopen = () => {
-      setStatus("connected");
+      setStatus("CONNECTED");
     };
 
     ws.onclose = (e) => {
-      setStatus("disconnected");
+      setStatus("DISCONNECTED");
       console.log('WS disconnected:', e.code, " - ", e.reason);
     };
 
@@ -54,11 +56,78 @@ export const WebSocketProvider = ({
       console.error('WS error:', err);
     };
 
-    //TODO: remove this
+
+    type WS_Notification =  {
+  type: string;
+  receiver_id: string;
+  content: string;
+  chat_object?: {
+    chat_id: string;
+    name: string;
+    type: string;
+    members: {
+      chat_id: string;
+      username: string;
+    }[],
+    new_message: {
+      message_id: string;
+      chat_id: string;
+      sender_username: string;
+      created_at: string; 
+      contents: {
+        message_content_id: number;
+        message_id: string;
+        index: number;
+        text?: string;
+        filename?: string;
+        mime_type?: string;
+        data?: Uint8Array | null;
+      }[];
+    };
+  };
+  timestamp: string;
+};
+
+
     ws.onmessage = (event) => {
-      const msg = JSON.parse(event.data);
-      console.log('Received:', msg);
-      // You can handle global messages here
+      const msg = JSON.parse(event.data) as WS_Notification;
+      console.log('Received:', msg.chat_object);
+      if(!msg.chat_object) return
+      else {
+        const chat = msg.chat_object
+        let c:ChatType ={
+        ChatID: chat.chat_id,
+            Name: chat.name,
+            Type: chat.type,
+            Members: chat.members.map(m => {
+              return {ChatID: m.chat_id, Username: m.username}
+            }),
+            Messages: [{
+              ChatID: chat.new_message.chat_id,
+              MessageID: chat.new_message.message_id,
+              SenderUsername: chat.new_message.sender_username,
+              CreatedAt: new Date(chat.new_message.created_at),
+              MessageContent: chat.new_message.contents.map(c => {
+                return {
+                  MessageContentID: c.message_content_id,
+                  MessageID: c.message_id,
+                  Index: c.index,
+                  Text: c.text || null,
+                  Filename: c.filename || null,
+                  MimeType: c.mime_type || null,
+                  Data: c.data || null,
+                }
+              })
+            }],
+          }
+
+        ChatStoreDispatch({
+          type: "ADD_MESSAGE",
+          chat: c  
+        })
+        ChatBoxDispatch({type: "UPDATE", newChat:c})
+      }
+
     };
 
     socketRef.current = ws;
