@@ -14,6 +14,37 @@ const WebSocketContext = createContext<WebSocketContextType>({
   socket: null,
   status: "DISCONNECTED",
 });
+export type WS_Notification =  {
+  type: string;
+  receiver_id: string;
+  content: string;
+  chat_object?: {
+    chat_id: string;
+    name: string;
+    type: string;
+    members: {
+      chat_id: string;
+      username: string;
+    }[],
+    new_message: {
+      message_id: string;
+      chat_id: string;
+      sender_username: string;
+      created_at: string; 
+      status: string;
+      contents: {
+        message_content_id: number;
+        message_id: string;
+        index: number;
+        text?: string;
+        filename?: string;
+        mime_type?: string;
+        data?: Uint8Array | null;
+      }[];
+    };
+  };
+  timestamp: string;
+};
 
 export const useWebSocket = () => useContext(WebSocketContext);
 
@@ -25,7 +56,7 @@ export const WebSocketProvider = ({
   children: React.ReactNode;
 }) => {
 
-  const { ChatStoreDispatch, ChatBoxDispatch } = useMessage();
+  const { ChatStoreDispatch } = useMessage();
   const socketRef = useRef<WebSocket | null>(null);
   const [status, setStatus] = useState<"CONNECTED" | "DISCONNECTED" | "CONNECTING">("DISCONNECTED");
   
@@ -57,36 +88,7 @@ export const WebSocketProvider = ({
     };
 
 
-    type WS_Notification =  {
-  type: string;
-  receiver_id: string;
-  content: string;
-  chat_object?: {
-    chat_id: string;
-    name: string;
-    type: string;
-    members: {
-      chat_id: string;
-      username: string;
-    }[],
-    new_message: {
-      message_id: string;
-      chat_id: string;
-      sender_username: string;
-      created_at: string; 
-      contents: {
-        message_content_id: number;
-        message_id: string;
-        index: number;
-        text?: string;
-        filename?: string;
-        mime_type?: string;
-        data?: Uint8Array | null;
-      }[];
-    };
-  };
-  timestamp: string;
-};
+  
 
 
     ws.onmessage = (event) => {
@@ -95,7 +97,7 @@ export const WebSocketProvider = ({
       if(!msg.chat_object) return
       else {
         const chat = msg.chat_object
-        let c:ChatType ={
+        let c:ChatType = {
         ChatID: chat.chat_id,
             Name: chat.name,
             Type: chat.type,
@@ -107,6 +109,7 @@ export const WebSocketProvider = ({
               MessageID: chat.new_message.message_id,
               SenderUsername: chat.new_message.sender_username,
               CreatedAt: new Date(chat.new_message.created_at),
+              Status: chat.new_message.status,
               MessageContent: chat.new_message.contents.map(c => {
                 return {
                   MessageContentID: c.message_content_id,
@@ -119,13 +122,13 @@ export const WebSocketProvider = ({
                 }
               })
             }],
+             ChatBox: 'CLOSED'
           }
 
         ChatStoreDispatch({
-          type: "ADD_MESSAGE",
+          type: "ADD_MESSAGES",
           chat: c  
         })
-        ChatBoxDispatch({type: "UPDATE", newChat:c})
       }
 
     };

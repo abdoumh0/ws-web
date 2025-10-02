@@ -1,6 +1,7 @@
 "use client"
 import { getChatsType } from '@/lib/actions'
 import { useMessage } from '@/lib/MessageContext'
+import { uniqBy } from 'lodash'
 import React, { useEffect, useState } from 'react'
 
 type Props = {}
@@ -8,29 +9,6 @@ type Props = {}
 
 export default function ChatHistory({}: Props) {
     const {ChatStore, ChatStoreDispatch} = useMessage()
-
-    useEffect(() => {
-        console.log('fetched data')
-        const fetchData = async () => {
-            try {
-                const res = await fetch('/api/chats/get?skip=0')
-                const data = await res.json() as {ok: boolean, data: getChatsType}
-                if (data.ok) {
-                   data.data.toReversed().forEach(chat => {
-                    ChatStoreDispatch({type:"ADD", chat:{...chat, ChatBox:'CLOSED'} })
-                   })
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);    
-            }
-        }
-        fetchData()
-
-      return () => {
-        
-      }
-    }, [])
-
 
     useEffect(() => {
       console.log('changed')

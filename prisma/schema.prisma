@@ -75,6 +75,7 @@ model Message {
   Chat           Chat             @relation("ChatToMessages", fields: [ChatID], references: [ChatID])
   Sender         Accounts         @relation(fields: [SenderUsername], references: [Username])
   MessageContent MessageContent[]
+  Status         String           @default("SENT")
   CreatedAt      DateTime         @default(now())
 }
 

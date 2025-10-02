@@ -2,31 +2,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "./ui/button";
 import { InboxIcon, BellIcon, MenuIcon } from "lucide-react";
-import { logoutUser } from "@/lib/actions";
+import { getChatsType, logoutUser } from "@/lib/actions";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useSession } from "@/lib/SessionContext";
+import { useMessage } from "@/lib/MessageContext";
+import { uniqBy } from "lodash";
 
-const messages = [
-  {
-    id: 1,
-    sender: "user1",
-    content: "Hello, how are you?",
-    timestamp: "2024-05-06T10:00:00Z",
-  },
-  {
-    id: 2,
-    sender: "assistant",
-    content: "you need some milk?",
-    timestamp: "2024-05-06T10:01:00Z",
-  },
-  {
-    id: 3,
-    sender: "user2",
-    content: "yes, please",
-    timestamp: "2024-05-06T10:02:00Z",
-  },
-];
+
 
 const notifications = [
   { id: 1, text: "Order #1234 has shipped.", timestamp: "2024-05-06T09:30:00Z" },
@@ -71,7 +54,30 @@ export default function Controls() {
   const [open, setOpen] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  const { refreshSession } = useSession();
+  const { session, refreshSession } = useSession();
+  const {ChatStore, ChatStoreDispatch} = useMessage()
+
+    useEffect(() => {
+        console.log('fetched data')
+        const fetchData = async () => {
+            try {
+                const res = await fetch('/api/chats/get?skip=0')
+                const data = await res.json() as {ok: boolean, data: getChatsType}
+                if (data.ok) {
+                  uniqBy(data.data, 'ChatID').toReversed().forEach(chat => {
+                    ChatStoreDispatch({type:"ADD", chat:{...chat, ChatBox:'CLOSED'} })
+                   })
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);    
+            }
+        }
+        fetchData()
+
+      return () => {
+        
+      }
+    }, [])
 
   useEffect(() => {
     if (!open) return;
@@ -97,21 +103,23 @@ export default function Controls() {
   let content: React.ReactNode = null;
   if (open === "messages") {
     content = (
-      <div className="w-fit h-fit bg-white border border-gray-200 rounded-lg flex flex-col gap-2 [&>*]:odd:bg-gray-100 [&>*]:even:bg-white p-2 min-w-[220px] px-2">
-        {messages.map((message) => (
-          <div className="flex items-center gap-3 border-b border-gray-200 pb-2" key={message.id}>
-            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-700 text-sm">
-              {getInitials(message.sender)}
-            </div>
-            <div className="flex-1 flex flex-col gap-0.5">
-              <div className="flex items-center gap-2">
-                <p className="text-sm font-medium">{message.sender}</p>
-                <span className="text-xs text-gray-400">{formatTimestamp(message.timestamp)}</span>
-              </div>
-              <p className="text-sm">{message.content}</p>
-            </div>
+      <div className="w-fit h-fit bg-white border border-gray-200 rounded-lg flex flex-col gap-2 [&>*]:odd:bg-gray-100 [&>*]:even:bg-white p-1 min-w-[220px]">
+      {ChatStore.map((chat, i) => {
+        const name = `@${chat.Members.find(c => c.Username != session?.Username)?.Username}`
+        const lastMessage = chat.Messages.at(0)
+        return (
+          <div key={chat.ChatID} className="cursor-pointer hover:brightness-105 p-2 active:brightness-95"
+          onClick={() => ChatStoreDispatch({type: "SET_CHATBOX", chat, ChatBox:'OPEN'})}
+          >
+            <h2 className="font-bold mb-1">{chat.Type == "DM" ? name ?? chat.Name : chat.Name }</h2>
+            <span className="flex">
+            <p className="font-semibold italic">{lastMessage?.SenderUsername == session?.Username ? `You:`: `${lastMessage?.SenderUsername}:`}</p>
+            &nbsp;&nbsp;
+            <p className="text-ellipsis">{lastMessage?.MessageContent.at(0)?.Text}</p>
+            </span>
           </div>
-        ))}
+        )
+      })}
       </div>
     );
   } else if (open === "notifications") {

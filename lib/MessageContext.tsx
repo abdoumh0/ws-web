@@ -24,7 +24,7 @@ const MessageContext = createContext<MessageContextType | undefined>(undefined)
    switch (action.type) {
 
      case 'ADD':
-       return [...state, {...action.chat, ChatBox: action.ChatBox || 'CLOSED'}]
+       return uniqBy([...state, {...action.chat, ChatBox: action.ChatBox || 'CLOSED'}], 'ChatID')
 
      case 'REMOVE':
        return state.filter(chat => chat.ChatID !== action.chat.ChatID)
@@ -34,9 +34,10 @@ const MessageContext = createContext<MessageContextType | undefined>(undefined)
 
       case 'ADD_MESSAGES':
         const chat = state.find(c => c.ChatID === action.chat.ChatID)
-        if (!chat) return chatStoreReducer(state, {type: 'ADD', chat: action.chat})
+        if (!chat) return chatStoreReducer(state, {type: 'ADD', chat: action.chat, ChatBox: 'OPEN'})
         else {
-            return state.map(c => c.ChatID === chat.ChatID ? {...c, Messages: uniqBy([...chat.Messages, ...c.Messages], 'ChatID')} : c)
+          console.log("doing it")
+          return state.map(c => c.ChatID === action.chat.ChatID ? {...c, Messages: uniqBy([...action.chat.Messages, ...c.Messages], 'MessageID'), ChatBox: c.ChatBox == 'CLOSED' ? 'OPEN' : c.ChatBox} : c)
         }
 
         case 'SET_CHATBOX':

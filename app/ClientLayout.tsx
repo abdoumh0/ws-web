@@ -14,17 +14,18 @@ export default function ClientLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { session } = useSession(); // Get token from context
+  const { session } = useSession();
 
   return (
     <MessageProvider>
     <WebSocketProvider session={session}>
     <StoreProvider>
       
-      <Navbar />
       <Toaster />
       <NProgressProvider />
+      <Navbar >
       {children}
+      </Navbar>
     </StoreProvider>
     </WebSocketProvider>
     </MessageProvider>

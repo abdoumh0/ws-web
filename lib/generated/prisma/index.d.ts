@@ -7158,6 +7158,7 @@ export namespace Prisma {
     MessageID: string | null
     ChatID: string | null
     SenderUsername: string | null
+    Status: string | null
     CreatedAt: Date | null
   }
 
@@ -7165,6 +7166,7 @@ export namespace Prisma {
     MessageID: string | null
     ChatID: string | null
     SenderUsername: string | null
+    Status: string | null
     CreatedAt: Date | null
   }
 
@@ -7172,6 +7174,7 @@ export namespace Prisma {
     MessageID: number
     ChatID: number
     SenderUsername: number
+    Status: number
     CreatedAt: number
     _all: number
   }
@@ -7181,6 +7184,7 @@ export namespace Prisma {
     MessageID?: true
     ChatID?: true
     SenderUsername?: true
+    Status?: true
     CreatedAt?: true
   }
 
@@ -7188,6 +7192,7 @@ export namespace Prisma {
     MessageID?: true
     ChatID?: true
     SenderUsername?: true
+    Status?: true
     CreatedAt?: true
   }
 
@@ -7195,6 +7200,7 @@ export namespace Prisma {
     MessageID?: true
     ChatID?: true
     SenderUsername?: true
+    Status?: true
     CreatedAt?: true
     _all?: true
   }
@@ -7275,6 +7281,7 @@ export namespace Prisma {
     MessageID: string
     ChatID: string
     SenderUsername: string
+    Status: string
     CreatedAt: Date
     _count: MessageCountAggregateOutputType | null
     _min: MessageMinAggregateOutputType | null
@@ -7299,6 +7306,7 @@ export namespace Prisma {
     MessageID?: boolean
     ChatID?: boolean
     SenderUsername?: boolean
+    Status?: boolean
     CreatedAt?: boolean
     Chat?: boolean | ChatDefaultArgs<ExtArgs>
     Sender?: boolean | AccountsDefaultArgs<ExtArgs>
@@ -7310,6 +7318,7 @@ export namespace Prisma {
     MessageID?: boolean
     ChatID?: boolean
     SenderUsername?: boolean
+    Status?: boolean
     CreatedAt?: boolean
     Chat?: boolean | ChatDefaultArgs<ExtArgs>
     Sender?: boolean | AccountsDefaultArgs<ExtArgs>
@@ -7319,6 +7328,7 @@ export namespace Prisma {
     MessageID?: boolean
     ChatID?: boolean
     SenderUsername?: boolean
+    Status?: boolean
     CreatedAt?: boolean
     Chat?: boolean | ChatDefaultArgs<ExtArgs>
     Sender?: boolean | AccountsDefaultArgs<ExtArgs>
@@ -7328,10 +7338,11 @@ export namespace Prisma {
     MessageID?: boolean
     ChatID?: boolean
     SenderUsername?: boolean
+    Status?: boolean
     CreatedAt?: boolean
   }
 
-  export type MessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"MessageID" | "ChatID" | "SenderUsername" | "CreatedAt", ExtArgs["result"]["message"]>
+  export type MessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"MessageID" | "ChatID" | "SenderUsername" | "Status" | "CreatedAt", ExtArgs["result"]["message"]>
   export type MessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Chat?: boolean | ChatDefaultArgs<ExtArgs>
     Sender?: boolean | AccountsDefaultArgs<ExtArgs>
@@ -7358,6 +7369,7 @@ export namespace Prisma {
       MessageID: string
       ChatID: string
       SenderUsername: string
+      Status: string
       CreatedAt: Date
     }, ExtArgs["result"]["message"]>
     composites: {}
@@ -7788,6 +7800,7 @@ export namespace Prisma {
     readonly MessageID: FieldRef<"Message", 'String'>
     readonly ChatID: FieldRef<"Message", 'String'>
     readonly SenderUsername: FieldRef<"Message", 'String'>
+    readonly Status: FieldRef<"Message", 'String'>
     readonly CreatedAt: FieldRef<"Message", 'DateTime'>
   }
     
@@ -9425,6 +9438,7 @@ export namespace Prisma {
     MessageID: 'MessageID',
     ChatID: 'ChatID',
     SenderUsername: 'SenderUsername',
+    Status: 'Status',
     CreatedAt: 'CreatedAt'
   };
 
@@ -9911,6 +9925,7 @@ export namespace Prisma {
     MessageID?: StringFilter<"Message"> | string
     ChatID?: StringFilter<"Message"> | string
     SenderUsername?: StringFilter<"Message"> | string
+    Status?: StringFilter<"Message"> | string
     CreatedAt?: DateTimeFilter<"Message"> | Date | string
     Chat?: XOR<ChatScalarRelationFilter, ChatWhereInput>
     Sender?: XOR<AccountsScalarRelationFilter, AccountsWhereInput>
@@ -9921,6 +9936,7 @@ export namespace Prisma {
     MessageID?: SortOrder
     ChatID?: SortOrder
     SenderUsername?: SortOrder
+    Status?: SortOrder
     CreatedAt?: SortOrder
     Chat?: ChatOrderByWithRelationInput
     Sender?: AccountsOrderByWithRelationInput
@@ -9934,6 +9950,7 @@ export namespace Prisma {
     NOT?: MessageWhereInput | MessageWhereInput[]
     ChatID?: StringFilter<"Message"> | string
     SenderUsername?: StringFilter<"Message"> | string
+    Status?: StringFilter<"Message"> | string
     CreatedAt?: DateTimeFilter<"Message"> | Date | string
     Chat?: XOR<ChatScalarRelationFilter, ChatWhereInput>
     Sender?: XOR<AccountsScalarRelationFilter, AccountsWhereInput>
@@ -9944,6 +9961,7 @@ export namespace Prisma {
     MessageID?: SortOrder
     ChatID?: SortOrder
     SenderUsername?: SortOrder
+    Status?: SortOrder
     CreatedAt?: SortOrder
     _count?: MessageCountOrderByAggregateInput
     _max?: MessageMaxOrderByAggregateInput
@@ -9957,6 +9975,7 @@ export namespace Prisma {
     MessageID?: StringWithAggregatesFilter<"Message"> | string
     ChatID?: StringWithAggregatesFilter<"Message"> | string
     SenderUsername?: StringWithAggregatesFilter<"Message"> | string
+    Status?: StringWithAggregatesFilter<"Message"> | string
     CreatedAt?: DateTimeWithAggregatesFilter<"Message"> | Date | string
   }
 
@@ -10351,6 +10370,7 @@ export namespace Prisma {
 
   export type MessageCreateInput = {
     MessageID?: string
+    Status?: string
     CreatedAt?: Date | string
     Chat: ChatCreateNestedOneWithoutMessagesInput
     Sender: AccountsCreateNestedOneWithoutMessageInput
@@ -10361,12 +10381,14 @@ export namespace Prisma {
     MessageID?: string
     ChatID: string
     SenderUsername: string
+    Status?: string
     CreatedAt?: Date | string
     MessageContent?: MessageContentUncheckedCreateNestedManyWithoutMessageInput
   }
 
   export type MessageUpdateInput = {
     MessageID?: StringFieldUpdateOperationsInput | string
+    Status?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Chat?: ChatUpdateOneRequiredWithoutMessagesNestedInput
     Sender?: AccountsUpdateOneRequiredWithoutMessageNestedInput
@@ -10377,6 +10399,7 @@ export namespace Prisma {
     MessageID?: StringFieldUpdateOperationsInput | string
     ChatID?: StringFieldUpdateOperationsInput | string
     SenderUsername?: StringFieldUpdateOperationsInput | string
+    Status?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     MessageContent?: MessageContentUncheckedUpdateManyWithoutMessageNestedInput
   }
@@ -10385,11 +10408,13 @@ export namespace Prisma {
     MessageID?: string
     ChatID: string
     SenderUsername: string
+    Status?: string
     CreatedAt?: Date | string
   }
 
   export type MessageUpdateManyMutationInput = {
     MessageID?: StringFieldUpdateOperationsInput | string
+    Status?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -10397,6 +10422,7 @@ export namespace Prisma {
     MessageID?: StringFieldUpdateOperationsInput | string
     ChatID?: StringFieldUpdateOperationsInput | string
     SenderUsername?: StringFieldUpdateOperationsInput | string
+    Status?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -10904,6 +10930,7 @@ export namespace Prisma {
     MessageID?: SortOrder
     ChatID?: SortOrder
     SenderUsername?: SortOrder
+    Status?: SortOrder
     CreatedAt?: SortOrder
   }
 
@@ -10911,6 +10938,7 @@ export namespace Prisma {
     MessageID?: SortOrder
     ChatID?: SortOrder
     SenderUsername?: SortOrder
+    Status?: SortOrder
     CreatedAt?: SortOrder
   }
 
@@ -10918,6 +10946,7 @@ export namespace Prisma {
     MessageID?: SortOrder
     ChatID?: SortOrder
     SenderUsername?: SortOrder
+    Status?: SortOrder
     CreatedAt?: SortOrder
   }
 
@@ -11884,6 +11913,7 @@ export namespace Prisma {
 
   export type MessageCreateWithoutSenderInput = {
     MessageID?: string
+    Status?: string
     CreatedAt?: Date | string
     Chat: ChatCreateNestedOneWithoutMessagesInput
     MessageContent?: MessageContentCreateNestedManyWithoutMessageInput
@@ -11892,6 +11922,7 @@ export namespace Prisma {
   export type MessageUncheckedCreateWithoutSenderInput = {
     MessageID?: string
     ChatID: string
+    Status?: string
     CreatedAt?: Date | string
     MessageContent?: MessageContentUncheckedCreateNestedManyWithoutMessageInput
   }
@@ -11981,6 +12012,7 @@ export namespace Prisma {
     MessageID?: StringFilter<"Message"> | string
     ChatID?: StringFilter<"Message"> | string
     SenderUsername?: StringFilter<"Message"> | string
+    Status?: StringFilter<"Message"> | string
     CreatedAt?: DateTimeFilter<"Message"> | Date | string
   }
 
@@ -12028,6 +12060,7 @@ export namespace Prisma {
 
   export type MessageCreateWithoutChatInput = {
     MessageID?: string
+    Status?: string
     CreatedAt?: Date | string
     Sender: AccountsCreateNestedOneWithoutMessageInput
     MessageContent?: MessageContentCreateNestedManyWithoutMessageInput
@@ -12036,6 +12069,7 @@ export namespace Prisma {
   export type MessageUncheckedCreateWithoutChatInput = {
     MessageID?: string
     SenderUsername: string
+    Status?: string
     CreatedAt?: Date | string
     MessageContent?: MessageContentUncheckedCreateNestedManyWithoutMessageInput
   }
@@ -12398,6 +12432,7 @@ export namespace Prisma {
 
   export type MessageCreateWithoutMessageContentInput = {
     MessageID?: string
+    Status?: string
     CreatedAt?: Date | string
     Chat: ChatCreateNestedOneWithoutMessagesInput
     Sender: AccountsCreateNestedOneWithoutMessageInput
@@ -12407,6 +12442,7 @@ export namespace Prisma {
     MessageID?: string
     ChatID: string
     SenderUsername: string
+    Status?: string
     CreatedAt?: Date | string
   }
 
@@ -12428,6 +12464,7 @@ export namespace Prisma {
 
   export type MessageUpdateWithoutMessageContentInput = {
     MessageID?: StringFieldUpdateOperationsInput | string
+    Status?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Chat?: ChatUpdateOneRequiredWithoutMessagesNestedInput
     Sender?: AccountsUpdateOneRequiredWithoutMessageNestedInput
@@ -12437,6 +12474,7 @@ export namespace Prisma {
     MessageID?: StringFieldUpdateOperationsInput | string
     ChatID?: StringFieldUpdateOperationsInput | string
     SenderUsername?: StringFieldUpdateOperationsInput | string
+    Status?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -12455,6 +12493,7 @@ export namespace Prisma {
   export type MessageCreateManySenderInput = {
     MessageID?: string
     ChatID: string
+    Status?: string
     CreatedAt?: Date | string
   }
 
@@ -12496,6 +12535,7 @@ export namespace Prisma {
 
   export type MessageUpdateWithoutSenderInput = {
     MessageID?: StringFieldUpdateOperationsInput | string
+    Status?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Chat?: ChatUpdateOneRequiredWithoutMessagesNestedInput
     MessageContent?: MessageContentUpdateManyWithoutMessageNestedInput
@@ -12504,6 +12544,7 @@ export namespace Prisma {
   export type MessageUncheckedUpdateWithoutSenderInput = {
     MessageID?: StringFieldUpdateOperationsInput | string
     ChatID?: StringFieldUpdateOperationsInput | string
+    Status?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     MessageContent?: MessageContentUncheckedUpdateManyWithoutMessageNestedInput
   }
@@ -12511,6 +12552,7 @@ export namespace Prisma {
   export type MessageUncheckedUpdateManyWithoutSenderInput = {
     MessageID?: StringFieldUpdateOperationsInput | string
     ChatID?: StringFieldUpdateOperationsInput | string
+    Status?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -12549,6 +12591,7 @@ export namespace Prisma {
   export type MessageCreateManyChatInput = {
     MessageID?: string
     SenderUsername: string
+    Status?: string
     CreatedAt?: Date | string
   }
 
@@ -12558,6 +12601,7 @@ export namespace Prisma {
 
   export type MessageUpdateWithoutChatInput = {
     MessageID?: StringFieldUpdateOperationsInput | string
+    Status?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Sender?: AccountsUpdateOneRequiredWithoutMessageNestedInput
     MessageContent?: MessageContentUpdateManyWithoutMessageNestedInput
@@ -12566,6 +12610,7 @@ export namespace Prisma {
   export type MessageUncheckedUpdateWithoutChatInput = {
     MessageID?: StringFieldUpdateOperationsInput | string
     SenderUsername?: StringFieldUpdateOperationsInput | string
+    Status?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     MessageContent?: MessageContentUncheckedUpdateManyWithoutMessageNestedInput
   }
@@ -12573,6 +12618,7 @@ export namespace Prisma {
   export type MessageUncheckedUpdateManyWithoutChatInput = {
     MessageID?: StringFieldUpdateOperationsInput | string
     SenderUsername?: StringFieldUpdateOperationsInput | string
+    Status?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
