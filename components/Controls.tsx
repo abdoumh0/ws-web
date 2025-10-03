@@ -103,15 +103,15 @@ export default function Controls() {
   let content: React.ReactNode = null;
   if (open === "messages") {
     content = (
-      <div className="w-fit h-fit bg-white border border-gray-200 rounded-lg flex flex-col gap-2 [&>*]:odd:bg-gray-100 [&>*]:even:bg-white p-1 min-w-[220px]">
-      {ChatStore.map((chat, i) => {
+      <div className="w-fit h-fit bg-white border border-gray-200 rounded-lg flex flex-col gap-2 [&>*]:odd:bg-gray-100 [&>*]:even:bg-white p-1 min-w-[220px] text-ellipsis">
+      {ChatStore.filter(c => c.Messages.length > 0).map((chat, i) => {
         const name = `@${chat.Members.find(c => c.Username != session?.Username)?.Username}`
         const lastMessage = chat.Messages.at(0)
         return (
-          <div key={chat.ChatID} className="cursor-pointer hover:brightness-105 p-2 active:brightness-95"
+          <div key={chat.ChatID} className="cursor-pointer hover:brightness-105 p-2 active:brightness-95 overflow-ellipsis"
           onClick={() => ChatStoreDispatch({type: "SET_CHATBOX", chat, ChatBox:'OPEN'})}
           >
-            <h2 className="font-bold mb-1">{chat.Type == "DM" ? name ?? chat.Name : chat.Name }</h2>
+            <h2 className="font-bold mb-1 overflow-ellipsis">{chat.Type == "DM" ? name ?? chat.Name : chat.Name }</h2>
             <span className="flex">
             <p className="font-semibold italic">{lastMessage?.SenderUsername == session?.Username ? `You:`: `${lastMessage?.SenderUsername}:`}</p>
             &nbsp;&nbsp;

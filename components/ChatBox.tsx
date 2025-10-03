@@ -47,15 +47,30 @@ export default function ChatBox({chat}: Props) {
     }, [chat])
     
 
-    const handleMessageSend = (chatID: string, text: string) :boolean => { //for now only text messages 
+    const handleMessageSend = (chatID: string, text: string, new_chat?: boolean, members?:string[]) :boolean => { //for now only text messages 
         if (!session) return false;
         if (!socket) {
             console.error("WebSocket is not connected.");
             return false;
         }
-        const msg = {
-            chat_id: chatID,
-            content: text,
+        let msg: {
+            chat_id?: string
+            content: string
+            members?: string[]
+            first_message?: boolean
+        }
+
+        if (new_chat) {
+            msg = {
+                content: text,
+                first_message: true,
+                members
+            }
+        } else {
+            msg = {
+                chat_id: chatID,
+                content: text,
+            }
         }
         socket.send(JSON.stringify(msg));
         return true;
@@ -96,7 +111,11 @@ export default function ChatBox({chat}: Props) {
                 if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
                     if (e.currentTarget.value.trim() === "") return;
-                    const sent = handleMessageSend(ChatID, e.currentTarget.value)
+                    let new_chat = false
+                    if (ChatID.endsWith(session?.Username!)) {
+                        new_chat = true
+                    }
+                    const sent = handleMessageSend(ChatID, e.currentTarget.value, new_chat, Members.map(m => m.Username))
                     if (sent) e.currentTarget.value = ""
                     //TODO: check message status on the backend 
                     //should recieve an echo
