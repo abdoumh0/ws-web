@@ -104,8 +104,8 @@ useEffect(() => {
       {ChatStore.map((chat) => {
         if (chat.ChatBox != "CLOSED")
         return  <ChatBox key={chat.ChatID} chat={chat} />
-})}
-    </div>
-                  </div>
+      })}
+      </div>
+  </div>
   );
 }

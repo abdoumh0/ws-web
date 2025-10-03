@@ -109,7 +109,7 @@ export default function Controls() {
         const lastMessage = chat.Messages.at(0)
         return (
           <div key={chat.ChatID} className="cursor-pointer hover:brightness-105 p-2 active:brightness-95 overflow-ellipsis"
-          onClick={() => ChatStoreDispatch({type: "SET_CHATBOX", chat, ChatBox:'OPEN'})}
+          onClick={() => ChatStoreDispatch({type: "SET_CHATBOX", chat: {...chat, ChatBox: 'OPEN'},})}
           >
             <h2 className="font-bold mb-1 overflow-ellipsis">{chat.Type == "DM" ? name ?? chat.Name : chat.Name }</h2>
             <span className="flex">

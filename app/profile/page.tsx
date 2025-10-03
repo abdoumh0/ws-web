@@ -9,5 +9,5 @@ export default async function page({}: Props) {
   if (!session) {
     redirect("/auth");
   }
-  return <div>page</div>;
+  return <div>{session.Username}</div>;
 }

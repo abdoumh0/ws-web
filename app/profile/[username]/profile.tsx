@@ -2,9 +2,10 @@
 import React, { useState } from 'react';
 import { MessageCircle, ShoppingCart, Package, Mail, MapPin, DollarSign, Image as ImageIcon, User } from 'lucide-react';
 import {type Accounts} from '@/lib/generated/prisma'
-import { useMessage } from '@/lib/MessageContext';
+import { ChatType, useMessage } from '@/lib/MessageContext';
 import { useSession } from '@/lib/SessionContext';
 import { NewChat } from '@/app/api/chats/create/route';
+import {v4 as uuidv4 } from 'uuid'
 
 
 const mockUserItems = [
@@ -27,48 +28,19 @@ const mockUserItems = [
     Price: 8999,
     Qty: 8,
     ImageLink: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400'
-  },
-  {
-    ItemID: 1003,
-    Name: 'USB-C Hub',
-    Code: 78903,
-    Brand: 'Anker',
-    Type: 'Accessories',
-    Price: 4599,
-    Qty: 23,
-    ImageLink: 'https://images.unsplash.com/photo-1625948515291-69613efd103f?w=400'
-  },
-  {
-    ItemID: 1004,
-    Name: 'Laptop Stand',
-    Code: 78904,
-    Brand: 'Rain Design',
-    Type: 'Accessories',
-    Price: 5999,
-    Qty: 12,
-    ImageLink: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400'
-  },
-  {
-    ItemID: 1005,
-    Name: 'Webcam HD',
-    Code: 78905,
-    Brand: 'Logitech',
-    Type: 'Electronics',
-    Price: 7999,
-    Qty: 6,
-    ImageLink: 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400'
-  },
-  {
-    ItemID: 1006,
-    Name: 'Monitor 27"',
-    Code: 78906,
-    Brand: 'Dell',
-    Type: 'Electronics',
-    Price: 29999,
-    Qty: 4,
-    ImageLink: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400'
   }
 ];
+
+function mockChat(id: string, name: string) :ChatType {
+  return {
+    ChatID: id,
+    ChatBox: 'OPEN',
+    Members:[],
+    Messages: [],
+    Name: name,
+    Type: 'GROUP'
+  }
+}
 
 export default function Profile({FirstName, LastName, Username, Email, WorkArea}: Omit<Accounts, "Password">) {
 
@@ -122,14 +94,17 @@ export default function Profile({FirstName, LastName, Username, Email, WorkArea}
                       return type == 'DM' && members.length == 2 && members.includes(session.Username!) && members.includes(Username!)
                     })
                     if (chat) {
-                      ChatStoreDispatch({type:"SET_CHATBOX", chat:chat, ChatBox:'OPEN'})
+                      ChatStoreDispatch({type:"SET_CHATBOX", chat:{...chat, ChatBox: 'OPEN'}})
                       return
                     } else {
+                      let mockid = uuidv4()
+                      const mockchat = mockChat(mockid, Username ?? '')
+                      ChatStoreDispatch({type:'ADD', chat:{...mockchat, ChatBox:'OPEN'}})
                       try { 
                         let res = await fetch(`/api/chats/get_dm?target=${Username}`)
                         const dm = await res.json() as {ok: boolean, DM:NewChat}
                         if (dm.ok && dm.DM) {
-                          ChatStoreDispatch({type:"ADD", chat:{...dm.DM, ChatBox:'OPEN'}, ChatBox:'OPEN'})
+                          ChatStoreDispatch({type:'UPDATE', chatID:mockid, chat:{...dm.DM, ChatBox:'OPEN'}})
                           return
                         }
                         res = await fetch('/api/chats/create', {
@@ -141,7 +116,7 @@ export default function Profile({FirstName, LastName, Username, Email, WorkArea}
                         })
                         const {ok, newChat} = await res.json() as {ok: boolean, newChat: NewChat}
                         if (ok && newChat) {
-                          ChatStoreDispatch({type:"ADD", chat:{...newChat, ChatBox:'OPEN'}, ChatBox:'OPEN'})
+                          ChatStoreDispatch({type:'UPDATE', chatID:mockid, chat:{...newChat, ChatBox:'OPEN'}})
                           return
                         }
                       } catch (error) {
