@@ -9,10 +9,12 @@ import { useSession } from "@/lib/SessionContext";
 import { useMessage } from "@/lib/MessageContext";
 import { uniqBy } from "lodash";
 
-
-
 const notifications = [
-  { id: 1, text: "Order #1234 has shipped.", timestamp: "2024-05-06T09:30:00Z" },
+  {
+    id: 1,
+    text: "Order #1234 has shipped.",
+    timestamp: "2024-05-06T09:30:00Z",
+  },
   { id: 2, text: "New user registered.", timestamp: "2024-05-06T09:45:00Z" },
 ];
 
@@ -35,49 +37,62 @@ function formatTimestamp(ts: string) {
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
-function ControlButton({ className,icon, onClick }: React.ComponentProps<"button"> &
-    {
-    asChild?: boolean
-    icon: React.ReactNode, onClick: () => void }) {
+function ControlButton({
+  className,
+  icon,
+  onClick,
+}: React.ComponentProps<"button"> & {
+  asChild?: boolean;
+  icon: React.ReactNode;
+  onClick: () => void;
+}) {
   return (
     <div className="relative">
-      <Button variant="outline" className={cn("rounded-full w-10 h-10 hover:bg-gray-100 hover:text-indigo-500 cursor-pointer", className)} onClick={onClick}>
+      <Button
+        variant="outline"
+        className={cn(
+          "rounded-full w-10 h-10 hover:bg-gray-100 hover:text-indigo-500 cursor-pointer",
+          className
+        )}
+        onClick={onClick}
+      >
         {icon}
       </Button>
     </div>
   );
 }
 
-
-
 export default function Controls() {
   const [open, setOpen] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const { session, refreshSession } = useSession();
-  const {ChatStore, ChatStoreDispatch} = useMessage()
+  const { ChatStore, ChatStoreDispatch } = useMessage();
 
-    useEffect(() => {
-        console.log('fetched data')
-        const fetchData = async () => {
-            try {
-                const res = await fetch('/api/chats/get?skip=0')
-                const data = await res.json() as {ok: boolean, data: getChatsType}
-                if (data.ok) {
-                  uniqBy(data.data, 'ChatID').toReversed().forEach(chat => {
-                    ChatStoreDispatch({type:"ADD", chat:{...chat, ChatBox:'CLOSED'} })
-                   })
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);    
-            }
+  useEffect(() => {
+    console.log("fetched data");
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/chats/get?skip=0");
+        const data = (await res.json()) as { ok: boolean; data: getChatsType };
+        if (data.ok) {
+          uniqBy(data.data, "ChatID")
+            .toReversed()
+            .forEach((chat) => {
+              ChatStoreDispatch({
+                type: "ADD",
+                chat: { ...chat, ChatBox: "CLOSED" },
+              });
+            });
         }
-        fetchData()
-
-      return () => {
-        
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
-    }, [])
+    };
+    fetchData();
+
+    return () => {};
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -96,6 +111,7 @@ export default function Controls() {
   }, [open]);
 
   const handleLogout = async () => {
+    ChatStoreDispatch({ type: "NUKE", chat: ChatStore.at(0)! });
     await logoutUser();
     await refreshSession();
   };
@@ -104,22 +120,39 @@ export default function Controls() {
   if (open === "messages") {
     content = (
       <div className="w-fit h-fit bg-white border border-gray-200 rounded-lg flex flex-col gap-2 [&>*]:odd:bg-gray-100 [&>*]:even:bg-white p-1 min-w-[220px] text-ellipsis">
-      {ChatStore.filter(c => c.Messages.length > 0).map((chat, i) => {
-        const name = `@${chat.Members.find(c => c.Username != session?.Username)?.Username}`
-        const lastMessage = chat.Messages.at(0)
-        return (
-          <div key={chat.ChatID} className="cursor-pointer hover:brightness-105 p-2 active:brightness-95 overflow-ellipsis"
-          onClick={() => ChatStoreDispatch({type: "SET_CHATBOX", chat: {...chat, ChatBox: 'OPEN'},})}
-          >
-            <h2 className="font-bold mb-1 overflow-ellipsis">{chat.Type == "DM" ? name ?? chat.Name : chat.Name }</h2>
-            <span className="flex">
-            <p className="font-semibold italic">{lastMessage?.SenderUsername == session?.Username ? `You:`: `${lastMessage?.SenderUsername}:`}</p>
-            &nbsp;&nbsp;
-            <p className="text-ellipsis">{lastMessage?.MessageContent.at(0)?.Text}</p>
-            </span>
-          </div>
-        )
-      })}
+        {ChatStore.filter((c) => c.Messages.length > 0).map((chat, i) => {
+          const name = `@${
+            chat.Members.find((c) => c.Username != session?.Username)?.Username
+          }`;
+          const lastMessage = chat.Messages.at(0);
+          return (
+            <div
+              key={chat.ChatID}
+              className="cursor-pointer hover:brightness-105 p-2 active:brightness-95 overflow-ellipsis"
+              onClick={() =>
+                ChatStoreDispatch({
+                  type: "SET_CHATBOX",
+                  chat: { ...chat, ChatBox: "OPEN" },
+                })
+              }
+            >
+              <h2 className="font-bold mb-1 overflow-ellipsis">
+                {chat.Type == "DM" ? name ?? chat.Name : chat.Name}
+              </h2>
+              <span className="flex">
+                <p className="font-semibold italic">
+                  {lastMessage?.SenderUsername == session?.Username
+                    ? `You:`
+                    : `${lastMessage?.SenderUsername}:`}
+                </p>
+                &nbsp;&nbsp;
+                <p className="text-ellipsis">
+                  {lastMessage?.MessageContent.at(0)?.Text}
+                </p>
+              </span>
+            </div>
+          );
+        })}
       </div>
     );
   } else if (open === "notifications") {
@@ -129,8 +162,13 @@ export default function Controls() {
           <div className="text-sm text-gray-500">No notifications</div>
         ) : (
           notifications.map((n) => (
-            <div className="flex items-center gap-2 border-b border-gray-200 pb-2 last:border-b-0 last:pb-0" key={n.id}>
-              <span className="text-xs text-gray-400">{formatTimestamp(n.timestamp)}</span>
+            <div
+              className="flex items-center gap-2 border-b border-gray-200 pb-2 last:border-b-0 last:pb-0"
+              key={n.id}
+            >
+              <span className="text-xs text-gray-400">
+                {formatTimestamp(n.timestamp)}
+              </span>
               <span className="text-sm">{n.text}</span>
             </div>
           ))
@@ -140,16 +178,25 @@ export default function Controls() {
   } else if (open === "menu") {
     content = (
       <div className="w-fit h-fit bg-white border border-gray-200 rounded-lg flex flex-col gap-1 p-2 min-w-[140px] px-2">
-          <Link href="/profile" className="text-sm px-2 py-1 rounded hover:bg-gray-100 transition-colors">
-            Profile
-          </Link>
-          <Link href="/store" className="text-sm px-2 py-1 rounded hover:bg-gray-100 transition-colors">
-            My Store
-          </Link>
-          <Link href="/settings" className="text-sm px-2 py-1 rounded hover:bg-gray-100 transition-colors">
-            Settings
-          </Link>
-        <button 
+        <Link
+          href="/profile"
+          className="text-sm px-2 py-1 rounded hover:bg-gray-100 transition-colors"
+        >
+          Profile
+        </Link>
+        <Link
+          href="/listings"
+          className="text-sm px-2 py-1 rounded hover:bg-gray-100 transition-colors"
+        >
+          My Listings
+        </Link>
+        <Link
+          href="/settings"
+          className="text-sm px-2 py-1 rounded hover:bg-gray-100 transition-colors"
+        >
+          Settings
+        </Link>
+        <button
           onClick={handleLogout}
           className="text-sm px-2 py-1 rounded hover:bg-gray-100 transition-colors w-full text-left text-red-600 font-medium"
         >
@@ -159,7 +206,10 @@ export default function Controls() {
     );
   }
   return (
-    <div className="flex justify-between items-center relative" ref={containerRef}>
+    <div
+      className="flex justify-between items-center relative"
+      ref={containerRef}
+    >
       <div className="flex items-center gap-2">
         <ControlButton
           icon={<InboxIcon className="w-4 h-4" />}
@@ -168,8 +218,12 @@ export default function Controls() {
         />
         <ControlButton
           icon={<BellIcon className="w-4 h-4" />}
-          className={open === "notifications" ? "bg-blue-100 text-indigo-500" : ""}
-          onClick={() => setOpen(open === "notifications" ? null : "notifications")}
+          className={
+            open === "notifications" ? "bg-blue-100 text-indigo-500" : ""
+          }
+          onClick={() =>
+            setOpen(open === "notifications" ? null : "notifications")
+          }
         />
         <ControlButton
           icon={<MenuIcon className="w-4 h-4" />}

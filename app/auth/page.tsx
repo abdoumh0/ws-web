@@ -64,18 +64,24 @@ export default function AuthPage() {
     }
 
     try {
-      const { ok, message, redirect } = await registerUser(formData);
+      const { ok, message, redirect } = await registerUser(
+        formData,
+        "WHOLESALER"
+      );
       if (ok) {
         await refreshSession();
         toast.success("Your account has been created!", {
           description: "Registration Successful",
         });
-          router.push(redirect ?? "/");
+        router.push(redirect ?? "/");
         setIsLoading(false);
       } else {
-        toast.error(message || "Could not create your account. Please try again.", {
-          description: "Registration Failed",
-        });
+        toast.error(
+          message || "Could not create your account. Please try again.",
+          {
+            description: "Registration Failed",
+          }
+        );
         setIsLoading(false);
       }
     } catch (error) {

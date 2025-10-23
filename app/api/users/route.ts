@@ -1,130 +1,49 @@
-import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { NextRequest, NextResponse } from "next/server";
+import { corsHeaders } from "../app/auth/register/route";
 
-// CORS headers configuration
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization",
-  "Access-Control-Max-Age": "86400",
-};
+export async function GET(req: NextRequest) {
+  const area = req.nextUrl.searchParams.getAll("area");
+  const username_ = req.nextUrl.searchParams.get("username");
+  const name = req.nextUrl.searchParams.get("name");
+  const take = parseInt(req.nextUrl.searchParams.get("take") || "10");
+  const skip = parseInt(req.nextUrl.searchParams.get("skip") || "0");
 
-// Handle OPTIONS request for CORS preflight
-export async function OPTIONS() {
-  return NextResponse.json({}, { headers: corsHeaders });
-}
-
-export async function GET(request: NextRequest) {
   try {
-    // Get query parameters
-    const searchParams = request.nextUrl.searchParams;
-    const username = searchParams.get("username");
-    const firstName = searchParams.get("firstName");
-    const lastName = searchParams.get("lastName");
-    const page = parseInt(searchParams.get("page") || "1");
-    const limit = parseInt(searchParams.get("limit") || "24");
+    const workAreas = area
+      ?.map((a) => {
+        const parsed = parseInt(a);
+        return isNaN(parsed) ? -1 : parsed;
+      })
+      .filter((a) => a !== -1);
 
-    // Validate pagination parameters
-    if (page < 1 || limit < 1 || limit > 100) {
-      return NextResponse.json(
-        { error: "Invalid pagination parameters" },
-        { status: 400, headers: corsHeaders }
-      );
-    }
-
-    // Calculate skip value for pagination
-    const skip = (page - 1) * limit;
-
-    // Build the where clause
-    const where: any = {};
-
-    if (username) {
-      // Exact username match
-      where.Username = username;
-    } else {
-      // Name search
-      if (firstName || lastName) {
-        where.AND = [];
-        if (firstName) {
-          where.AND.push({
-            FirstName: { contains: firstName, mode: "insensitive" },
-          });
-        }
-        if (lastName) {
-          where.AND.push({
-            LastName: { contains: lastName, mode: "insensitive" },
-          });
-        }
-      }
-    }
-
-    // Get total count for pagination
-    const totalCount = await prisma.accounts.count({ where });
-
-    // Get paginated users
-    const users = await prisma.accounts.findMany({
-      where,
-      skip,
-      take: limit,
-      select: {
-        Username: true,
-        FirstName: true,
-        LastName: true,
-        _count: {
-          select: {
-            Account_Items: true,
-          },
+    const users = (
+      await prisma.accounts.findMany({
+        where: {
+          Type: "WHOLESALER",
+          ...(username_
+            ? { Username: { equals: username_, mode: "insensitive" } }
+            : {}),
+          ...(name
+            ? {
+                OR: [
+                  { FirstName: { contains: name, mode: "insensitive" } },
+                  { LastName: { contains: name, mode: "insensitive" } },
+                ],
+              }
+            : {}),
+          ...(workAreas?.length ? { WorkAreaIDs: { hasSome: workAreas } } : {}),
         },
-      },
-    });
+        take,
+        skip,
+      })
+    ).map(({ Password, ...rest }) => rest);
 
-    // Format the response
-    const formattedUsers = users.map((user) => ({
-      username: user.Username,
-      firstName: user.FirstName,
-      lastName: user.LastName,
-      itemCount: user._count.Account_Items,
-    }));
-
-    // Calculate total pages
-    const totalPages = Math.ceil(totalCount / limit);
-
-    // Build pagination URLs
-    const baseUrl = request.nextUrl.origin + request.nextUrl.pathname;
-    const params = new URLSearchParams(searchParams);
-
-    const prevPage =
-      page > 1
-        ? `${baseUrl}?${params
-            .toString()
-            .replace(/page=\d+/, `page=${page - 1}`)}`
-        : null;
-
-    const nextPage =
-      page < totalPages
-        ? `${baseUrl}?${params
-            .toString()
-            .replace(/page=\d+/, `page=${page + 1}`)}`
-        : null;
-
-    return NextResponse.json(
-      {
-        users: formattedUsers,
-        pagination: {
-          total: totalCount,
-          page,
-          limit,
-          totalPages,
-          prevPage,
-          nextPage,
-        },
-      },
-      { headers: corsHeaders }
-    );
+    return NextResponse.json({ users }, { status: 200, headers: corsHeaders });
   } catch (error) {
-    console.error("API Error:", error);
+    console.error("Prisma error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { users: [] },
       { status: 500, headers: corsHeaders }
     );
   }

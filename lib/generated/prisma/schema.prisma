@@ -28,6 +28,7 @@ model Accounts {
   FirstName     String          @db.VarChar(64)
   LastName      String          @db.VarChar(64)
   Password      Bytes
+  Type          String
   Username      String?         @unique(map: "accounts_username_unique") @db.VarChar(255)
   FacebookID    String?         @unique(map: "accounts_facebookid_unique") @db.VarChar(255)
   GoogleID      String?         @unique(map: "accounts_googleid_unique") @db.VarChar(255)
@@ -37,6 +38,9 @@ model Accounts {
   ChatMember    ChatMember[]
 
   Message Message[]
+
+  SentOrders     Orders[] @relation("SentOrders")
+  ReceivedOrders Orders[] @relation("ReceivedOrders")
 }
 
 model Items {
@@ -48,15 +52,18 @@ model Items {
   Type             String          @db.VarChar(32)
   DefaultImageLink String
   Account_Items    Account_Items[]
+  OrderItem        OrderItem[]
 
   @@index([Code], map: "items_code_index")
 }
 
 model Chat {
-  ChatID   String       @id @default(uuid())
-  Name     String?
-  Messages Message[]    @relation("ChatToMessages")
-  Members  ChatMember[]
+  ChatID        String       @id @default(uuid())
+  Name          String       @default("")
+  Type          String       @default("")
+  lastMessageAt DateTime     @default(now())
+  Messages      Message[]    @relation("ChatToMessages")
+  Members       ChatMember[]
 }
 
 model ChatMember {
@@ -75,6 +82,7 @@ model Message {
   Chat           Chat             @relation("ChatToMessages", fields: [ChatID], references: [ChatID])
   Sender         Accounts         @relation(fields: [SenderUsername], references: [Username])
   MessageContent MessageContent[]
+  Status         String           @default("SENT")
   CreatedAt      DateTime         @default(now())
 }
 
@@ -87,4 +95,37 @@ model MessageContent {
   Filename         String?
   MimeType         String?
   Data             Bytes?
+}
+
+model Orders {
+  OrderID    String      @id @default(uuid())
+  SenderID   String      @db.Uuid // references Accounts.AccountID
+  ReceiverID String      @db.Uuid // references Accounts.AccountID
+  Items      OrderItem[] // relation to order items
+  CreatedAt  DateTime    @default(now())
+
+  Sender   Accounts @relation("SentOrders", fields: [SenderID], references: [AccountID])
+  Receiver Accounts @relation("ReceivedOrders", fields: [ReceiverID], references: [AccountID])
+
+  OrderHistory OrderHistory[]
+}
+
+model OrderItem {
+  id       Int    @id @default(autoincrement())
+  orderId  String
+  itemId   BigInt
+  quantity BigInt
+
+  order Orders @relation(fields: [orderId], references: [OrderID], onDelete: Cascade)
+  item  Items  @relation(fields: [itemId], references: [ItemID])
+
+  @@index([orderId])
+}
+
+model OrderHistory {
+  OrderHistoryID String @id @default(uuid())
+  OrderID        String // references Orders.OrderID
+  Record         Json // immutable JSON snapshot of order
+
+  Order Orders @relation(fields: [OrderID], references: [OrderID], onDelete: Cascade)
 }

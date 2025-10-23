@@ -8,6 +8,7 @@ import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
 import { cookies } from "next/headers";
 import { AccountInfo } from "./types";
+import { Session } from "./SessionContext";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -285,29 +286,29 @@ export const handleItemSubmit = async (formData: FormData) => {
 const getPrivateKey = async () => {
   const privateKeyPem = process.env.JWT_PRIVATE_KEY;
   if (!privateKeyPem) {
-    throw new Error('JWT_PRIVATE_KEY environment variable is not set');
+    throw new Error("JWT_PRIVATE_KEY environment variable is not set");
   }
-  
+
   // If the key is base64 encoded, decode it
-  const key = privateKeyPem.includes('-----BEGIN') 
-    ? privateKeyPem 
-    : Buffer.from(privateKeyPem, 'base64').toString();
-    
-  return await importPKCS8(key, 'RS256');
+  const key = privateKeyPem.includes("-----BEGIN")
+    ? privateKeyPem
+    : Buffer.from(privateKeyPem, "base64").toString();
+
+  return await importPKCS8(key, "RS256");
 };
 
 const getPublicKey = async () => {
   const publicKeyPem = process.env.JWT_PUBLIC_KEY;
   if (!publicKeyPem) {
-    throw new Error('JWT_PUBLIC_KEY environment variable is not set');
+    throw new Error("JWT_PUBLIC_KEY environment variable is not set");
   }
-  
+
   // If the key is base64 encoded, decode it
-  const key = publicKeyPem.includes('-----BEGIN') 
-    ? publicKeyPem 
-    : Buffer.from(publicKeyPem, 'base64').toString();
-    
-  return await importSPKI(key, 'RS256');
+  const key = publicKeyPem.includes("-----BEGIN")
+    ? publicKeyPem
+    : Buffer.from(publicKeyPem, "base64").toString();
+
+  return await importSPKI(key, "RS256");
 };
 
 export async function sign(payload: any) {
@@ -339,25 +340,40 @@ function extractUserData(userData: any) {
 }
 
 // Helper function to create session and set cookie
-async function createUserSession(userData: any, expires?: Date) {
+async function createUserSession(
+  userData: any,
+  foreign?: boolean,
+  expires?: Date
+) {
   const userWithoutPassword = extractUserData(userData);
-  const sessionExpires = expires || new Date(Date.now() + 60 * 1000 * 60 * 24 * 7);
-  
-  const session = await sign({ user: userWithoutPassword, expires: sessionExpires });
-  
-  const cookieStore = await cookies();
-  cookieStore.set("session", session, {
-    httpOnly: true,
+  const sessionExpires =
+    expires || new Date(Date.now() + 60 * 1000 * 60 * 24 * 7);
+
+  const session = await sign({
+    user: userWithoutPassword,
     expires: sessionExpires,
-    domain: "localhost" //TODO: change to env var
   });
-  
+  if (!foreign) {
+    const cookieStore = await cookies();
+    cookieStore.set("session", session, {
+      httpOnly: true,
+      expires: sessionExpires,
+      domain: "localhost", //TODO: change to env var
+    });
+  }
+
   return session;
 }
 
 export async function registerUser(
-  formData: FormData
-): Promise<{ ok: boolean; message?: string; redirect?: string }> {
+  formData: FormData,
+  type: string
+): Promise<{
+  ok: boolean;
+  message?: string;
+  redirect?: string;
+  session?: string;
+}> {
   const { email, password, confirmPassword, firstName, lastName, username } = {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
@@ -404,6 +420,7 @@ export async function registerUser(
         Email: email,
         Password: Buffer.from(hashedPassword),
         AccountID: randomUUID(),
+        Type: type,
         FirstName: firstName || "User",
         LastName: lastName || "",
         Username: username,
@@ -411,10 +428,11 @@ export async function registerUser(
     });
 
     if (!userData) return { ok: false, message: "Failed to create account" };
+    const foreign = type === "RETAILER";
+    const nextMonth = new Date();
+    const sess = await createUserSession(userData, foreign);
 
-    await createUserSession(userData);
-
-    return { ok: true, redirect: "/" };
+    return { ok: true, redirect: "/", session: sess };
   } catch (error) {
     if (error instanceof Error) {
       return { ok: false, message: `Error: ${error.message}` };
@@ -424,8 +442,14 @@ export async function registerUser(
 }
 
 export async function loginUser(
-  formData: FormData
-): Promise<{ ok: boolean; message?: string; redirect?: string }> {
+  formData: FormData,
+  type: string
+): Promise<{
+  ok: boolean;
+  message?: string;
+  redirect?: string;
+  session?: string;
+}> {
   const { email, password } = {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
@@ -437,7 +461,7 @@ export async function loginUser(
 
   try {
     const userData = await prisma.accounts.findFirst({
-      where: { Email: email },
+      where: { Email: email, Type: type },
     });
 
     if (!userData) return { ok: false, message: "Account not found" };
@@ -449,9 +473,10 @@ export async function loginUser(
 
     if (!match) return { ok: false, message: "Invalid password" };
 
-    await createUserSession(userData);
+    const foreign = type === "RETAILER";
+    const sess = await createUserSession(userData, foreign);
 
-    return { ok: true, redirect: "/" };
+    return { ok: true, redirect: "/", session: sess };
   } catch (error) {
     if (error instanceof Error) {
       return { ok: false, message: `Error: ${error.message}` };
@@ -465,14 +490,14 @@ export async function logoutUser() {
   cookieStore.delete("session");
 }
 
-
-export async function getSession(): Promise<AccountInfo | null> {
+export async function getSession(): Promise<Session> {
   const session = (await cookies()).get("session")?.value;
   if (!session) return null;
   try {
     const userInfo = (await verify(session)) as { user: AccountInfo };
     return {
       AccountID: userInfo.user.AccountID,
+      Type: userInfo.user.Type,
       Email: userInfo.user.Email,
       FirstName: userInfo.user.FirstName,
       LastName: userInfo.user.LastName,
@@ -480,7 +505,7 @@ export async function getSession(): Promise<AccountInfo | null> {
       FacebookID: userInfo.user.FacebookID,
       GoogleID: userInfo.user.GoogleID,
       WorkArea: {},
-      WorkAreaIDs: []
+      WorkAreaIDs: [],
     };
   } catch (error) {
     // If verify fails, return null (invalid/expired session)
@@ -619,8 +644,8 @@ export async function updateItem(formData: FormData) {
     }
 
     // Convert price values to cents for storage
-    const priceInCents = Math.round(parseFloat(price) );
-    const purchasePriceInCents = Math.round(parseFloat(purchasePrice) );
+    const priceInCents = Math.round(parseFloat(price));
+    const purchasePriceInCents = Math.round(parseFloat(purchasePrice));
 
     // Handle image upload if a new image is provided
     let finalImageUrl = imageLink;
@@ -798,40 +823,31 @@ export async function searchItems(
   });
 } */
 
-
-export async function getChats(username:string, skip: number) {
+export async function getChats(username: string, skip: number) {
   //TODO: might consider using a better skip method (or not)
   try {
-  const chatIDs = await prisma.message.findMany({
-    where: {
-      SenderUsername: username
-    },
-    select: { ChatID: true },
-    distinct: "ChatID",
-    orderBy: { CreatedAt: "desc" },
-    skip: skip,
-    take: 10,
-  })
-
-  const chats = await prisma.chat.findMany({
-    where: {
-      OR: chatIDs.map(c => ({ ChatID: c.ChatID }))
-    },
-    include: {
-      Messages: {
-        orderBy: { CreatedAt: "desc" },
-        take: 20,
-        include: { MessageContent: { orderBy: { Index: "asc" } }
-        }
+    const chats = await prisma.chat.findMany({
+      where: {
+        Members: {
+          some: { Username: username },
+        },
       },
-      Members: true
-    },
-  })
-
-  return chats
+      include: {
+        Messages: {
+          orderBy: { CreatedAt: "desc" },
+          take: 20,
+          include: { MessageContent: { orderBy: { Index: "asc" } } },
+        },
+        Members: true,
+      },
+      orderBy: { lastMessageAt: "desc" },
+      skip: skip,
+      take: 10,
+    });
+    return chats;
   } catch (error) {
-    console.log("error in getChats()", error)
-    throw error
+    console.log("error in getChats()", error);
+    throw error;
   }
 }
 
@@ -843,8 +859,8 @@ export async function getMessages(chatID: string, skip: number) {
       take: 20,
       orderBy: { CreatedAt: "asc" },
       include: {
-        MessageContent: { orderBy: { Index: "asc" } }
-      }
+        MessageContent: { orderBy: { Index: "asc" } },
+      },
     });
     return messages;
   } catch (error) {
@@ -866,9 +882,21 @@ export type Wilaya = {
       name_ln: string;
     }[];
   }[];
-}
+};
 
-export async function updateUser({ username, email, workarea, oldPassword, newPassword }: { username: string; email: string; workarea?: Wilaya[]; oldPassword?: string; newPassword?: string }) {
+export async function updateUser({
+  username,
+  email,
+  workarea,
+  oldPassword,
+  newPassword,
+}: {
+  username: string;
+  email: string;
+  workarea?: Wilaya[];
+  oldPassword?: string;
+  newPassword?: string;
+}) {
   const session = await getSession();
   if (!session) throw new Error("Not authenticated");
   const data: any = {
@@ -877,24 +905,30 @@ export async function updateUser({ username, email, workarea, oldPassword, newPa
   };
   if (workarea !== undefined && workarea.length !== 0) {
     data.WorkArea = workarea;
-    let workareaids: Number[] = []
+    let workareaids: Number[] = [];
     for (const wilaya of workarea) {
       for (const daira of wilaya.dairas) {
         for (const baladiya of daira.baladiyas) {
-          workareaids.push(baladiya.baladiya_id)
+          workareaids.push(baladiya.baladiya_id);
         }
       }
     }
-    data.WorkAreaIDs = workareaids
-    data.WorkArea = workarea
+    data.WorkAreaIDs = workareaids;
+    data.WorkArea = workarea;
   }
   // Only update password if newPassword is provided
   if (newPassword && newPassword.trim() !== "") {
-    if (!oldPassword) throw new Error("Old password is required to change password");
+    if (!oldPassword)
+      throw new Error("Old password is required to change password");
     // Fetch current user from DB
-    const user = await prisma.accounts.findUnique({ where: { AccountID: session.AccountID } });
+    const user = await prisma.accounts.findUnique({
+      where: { AccountID: session.AccountID },
+    });
     if (!user) throw new Error("User not found");
-    const match = await compare(oldPassword, Buffer.from(user.Password).toString());
+    const match = await compare(
+      oldPassword,
+      Buffer.from(user.Password).toString()
+    );
     if (!match) throw new Error("Old password is incorrect");
     const hashed = await hash(newPassword, 10);
     data.Password = Buffer.from(hashed);
@@ -914,5 +948,5 @@ export async function deleteUser() {
   });
 }
 
-export type getChatsType = Awaited<ReturnType<typeof getChats>>
-export type MessageType = Awaited<ReturnType<typeof getMessages>>
+export type getChatsType = Awaited<ReturnType<typeof getChats>>;
+export type MessageType = Awaited<ReturnType<typeof getMessages>>;
