@@ -1,9 +1,15 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { getOrCreateClientId } from './utils';
-import { Session } from './SessionContext';
-import { ChatType, useMessage } from './MessageContext';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { getOrCreateClientId } from "./utils";
+import { Session } from "./SessionContext";
+import { ChatType, useMessage } from "./MessageContext";
 
 type WebSocketContextType = {
   socket: WebSocket | null;
@@ -14,7 +20,7 @@ const WebSocketContext = createContext<WebSocketContextType>({
   socket: null,
   status: "DISCONNECTED",
 });
-export type WS_Notification =  {
+export type WS_Notification = {
   type: string;
   receiver_id: string;
   content: string;
@@ -25,12 +31,12 @@ export type WS_Notification =  {
     members: {
       chat_id: string;
       username: string;
-    }[],
+    }[];
     new_message: {
       message_id: string;
       chat_id: string;
       sender_username: string;
-      created_at: string; 
+      created_at: string;
       status: string;
       contents: {
         message_content_id: number;
@@ -50,29 +56,33 @@ export const useWebSocket = () => useContext(WebSocketContext);
 
 export const WebSocketProvider = ({
   session,
-  children
+  children,
 }: {
   session: Session;
   children: React.ReactNode;
 }) => {
-
   const { ChatStoreDispatch } = useMessage();
   const socketRef = useRef<WebSocket | null>(null);
-  const [status, setStatus] = useState<"CONNECTED" | "DISCONNECTED" | "CONNECTING">("DISCONNECTED");
-  
+  const [status, setStatus] = useState<
+    "CONNECTED" | "DISCONNECTED" | "CONNECTING"
+  >("DISCONNECTED");
+
   useEffect(() => {
     console.log(status);
   }, [status]);
-  
+
   useEffect(() => {
     if (!session) {
-        socketRef.current?.close();
-        return;
+      socketRef.current?.close();
+      return;
     }
 
     const clientId = getOrCreateClientId();
     setStatus("CONNECTING");
-    const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}?client_id=${clientId}`, "ww-msg-protocol");
+    const ws = new WebSocket(
+      `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}?client_id=${clientId}`,
+      "ww-msg-protocol"
+    );
 
     ws.onopen = () => {
       setStatus("CONNECTED");
@@ -80,37 +90,38 @@ export const WebSocketProvider = ({
 
     ws.onclose = (e) => {
       setStatus("DISCONNECTED");
-      console.log('WS disconnected:', e.code, " - ", e.reason);
+      console.log("WS disconnected:", e.code, " - ", e.reason);
     };
 
     ws.onerror = (err) => {
-      console.error('WS error:', err);
+      console.error("WS error:", err);
     };
-
-
-  
-
 
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data) as WS_Notification;
-      console.log('Received:', msg.chat_object);
-      if(!msg.chat_object) return
-      else {
-        const chat = msg.chat_object
-        let c:ChatType = {
-        ChatID: chat.chat_id,
-            Name: chat.name,
-            Type: chat.type,
-            Members: chat.members.map(m => {
-              return {ChatID: m.chat_id, Username: m.username}
-            }),
-            Messages: [{
+      if (msg.type == "ORDER_EVENT") {
+        console.log("check orders");
+      } else {
+        const chat = msg.chat_object;
+        if (!chat) {
+          return;
+        }
+        let c: ChatType = {
+          ChatID: chat.chat_id,
+          Name: chat.name,
+          Type: chat.type,
+          lastMessageAt: new Date(chat.new_message.created_at),
+          Members: chat.members.map((m) => {
+            return { ChatID: m.chat_id, Username: m.username };
+          }),
+          Messages: [
+            {
               ChatID: chat.new_message.chat_id,
               MessageID: chat.new_message.message_id,
               SenderUsername: chat.new_message.sender_username,
               CreatedAt: new Date(chat.new_message.created_at),
               Status: chat.new_message.status,
-              MessageContent: chat.new_message.contents.map(c => {
+              MessageContent: chat.new_message.contents.map((c) => {
                 return {
                   MessageContentID: c.message_content_id,
                   MessageID: c.message_id,
@@ -119,18 +130,18 @@ export const WebSocketProvider = ({
                   Filename: c.filename || null,
                   MimeType: c.mime_type || null,
                   Data: c.data || null,
-                }
-              })
-            }],
-             ChatBox: 'CLOSED'
-          }
+                };
+              }),
+            },
+          ],
+          ChatBox: "CLOSED",
+        };
 
         ChatStoreDispatch({
           type: "ADD_MESSAGES",
-          chat: c  
-        })
+          chat: c,
+        });
       }
-
     };
 
     socketRef.current = ws;
@@ -141,9 +152,7 @@ export const WebSocketProvider = ({
   }, [session]);
 
   return (
-    <WebSocketContext.Provider
-      value={{ socket: socketRef.current, status }}
-    >
+    <WebSocketContext.Provider value={{ socket: socketRef.current, status }}>
       {children}
     </WebSocketContext.Provider>
   );

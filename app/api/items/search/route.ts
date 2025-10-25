@@ -7,7 +7,6 @@ import data from "@/app/muni_flat.json"
 
 export async function GET(request: NextRequest) {
   try {
-    // Check if user is authenticated
     const session = await getSession();
     if (!session) {
       return NextResponse.json(
@@ -16,7 +15,6 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get query parameters
     const url = new URL(request.url);
     const searchQuery = url.searchParams.get("query") || "";
     const categoryId = url.searchParams.get("category");
@@ -24,12 +22,10 @@ export async function GET(request: NextRequest) {
     const minPrice = url.searchParams.get("min_price");
     const maxPrice = url.searchParams.get("max_price");
     const sortBy = url.searchParams.get("sort") || "newest";
-    const regionSortStyle = url.searchParams.get("region_sort") ?? "OR"
     const wilaya = url.searchParams.getAll("wilaya")
     const daira = url.searchParams.getAll("daira")
     const baladiya= url.searchParams.getAll("commune")
 
-    console.log("wowie:", baladiya)
 
     type regionDataType = typeof data
 

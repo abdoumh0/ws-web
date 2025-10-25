@@ -11,7 +11,6 @@ export async function GET(req: NextRequest) {
     const minPrice = searchParams.get("minPrice");
     const maxPrice = searchParams.get("maxPrice");
 
-    // Build where clause for search and price range
     const where: any = {};
     if (search) {
       where.OR = [

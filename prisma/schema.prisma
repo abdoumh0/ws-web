@@ -17,6 +17,7 @@ model Account_Items {
   ImageLink     String
   Accounts      Accounts @relation(fields: [AccountID], references: [AccountID], onDelete: NoAction, onUpdate: NoAction, map: "account_items_accountid_foreign")
   Items         Items    @relation(fields: [ItemID], references: [ItemID], onDelete: NoAction, onUpdate: NoAction, map: "account_items_itemid_foreign")
+  orderItems    OrderItem[]
 
   @@id([AccountID, ItemID]) // Composite primary key
   @@index([AccountID, ItemID], map: "account_items_accountid_itemid_index")
@@ -54,7 +55,6 @@ model Items {
   Account_Items    Account_Items[]
 
   @@index([Code], map: "items_code_index")
-  OrderItem OrderItem[]
 }
 model Chat {
   ChatID   String        @id @default(uuid())
@@ -102,6 +102,7 @@ model Orders {
   ReceiverID   String       @db.Uuid // references Accounts.AccountID
   Items        OrderItem[]  // relation to order items
   CreatedAt    DateTime     @default(now())
+  Status       String       @default("PENDING")
 
   Sender       Accounts     @relation("SentOrders", fields: [SenderID], references: [AccountID])
   Receiver     Accounts     @relation("ReceivedOrders", fields: [ReceiverID], references: [AccountID])
@@ -109,17 +110,20 @@ model Orders {
   OrderHistory OrderHistory[]
 }
 
+
 model OrderItem {
-  id        Int      @id @default(autoincrement())
-  orderId   String
+  id        Int          @id @default(autoincrement())
+  accountId String       @db.Uuid
   itemId    BigInt
   quantity  BigInt
 
+  accountItem Account_Items @relation(fields: [accountId, itemId], references: [AccountID, ItemID])
+
   order     Orders   @relation(fields: [orderId], references: [OrderID], onDelete: Cascade)
-  item      Items    @relation(fields: [itemId], references: [ItemID])
-  
-  @@index([orderId])
+  orderId   String
 }
+
+
 
 model OrderHistory {
   OrderHistoryID String   @id @default(uuid())
