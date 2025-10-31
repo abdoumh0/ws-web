@@ -10,10 +10,10 @@ datasource db {
 
 model Account_Items {
   AccountID     String      @db.Uuid
-  ItemID        BigInt
-  Price         BigInt
-  PurchasePrice BigInt
-  Qty           BigInt
+  ItemID        Int
+  Price         Int
+  PurchasePrice Int
+  Qty           Int
   ImageLink     String
   Accounts      Accounts    @relation(fields: [AccountID], references: [AccountID], onDelete: NoAction, onUpdate: NoAction, map: "account_items_accountid_foreign")
   Items         Items       @relation(fields: [ItemID], references: [ItemID], onDelete: NoAction, onUpdate: NoAction, map: "account_items_itemid_foreign")
@@ -45,10 +45,10 @@ model Accounts {
 }
 
 model Items {
-  ItemID           BigInt          @id @default(autoincrement()) @db.BigInt
+  ItemID           Int             @id @default(autoincrement())
   Name             String          @db.VarChar(64)
-  Code             BigInt          @unique(map: "items_code_unique") @db.BigInt
-  CategoryID       BigInt
+  Code             Int             @unique(map: "items_code_unique")
+  CategoryID       Int
   Brand            String          @db.VarChar(64)
   Type             String          @db.VarChar(32)
   DefaultImageLink String
@@ -108,25 +108,17 @@ model Orders {
   Sender   Accounts @relation("SentOrders", fields: [SenderID], references: [AccountID])
   Receiver Accounts @relation("ReceivedOrders", fields: [ReceiverID], references: [AccountID])
 
-  OrderHistory OrderHistory[]
+  OrderHistory Json
 }
 
 model OrderItem {
   id        Int    @id @default(autoincrement())
   accountId String @db.Uuid
-  itemId    BigInt
-  quantity  BigInt
+  itemId    Int
+  quantity  Int
 
   accountItem Account_Items @relation(fields: [accountId, itemId], references: [AccountID, ItemID])
 
   order   Orders @relation(fields: [orderId], references: [OrderID], onDelete: Cascade)
   orderId String
-}
-
-model OrderHistory {
-  OrderHistoryID String @id @default(uuid())
-  OrderID        String // references Orders.OrderID
-  Record         Json // immutable JSON snapshot of order
-
-  Order Orders @relation(fields: [OrderID], references: [OrderID], onDelete: Cascade)
 }

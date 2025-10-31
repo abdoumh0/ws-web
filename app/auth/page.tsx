@@ -27,7 +27,7 @@ export default function AuthPage() {
     const formData = new FormData(e.currentTarget as HTMLFormElement);
 
     try {
-      const { ok, message, redirect } = await loginUser(formData);
+      const { ok, message, redirect } = await loginUser(formData, "WHOLESALER");
       if (!ok) {
         toast.error(message || "Invalid credentials. Please try again.", {
           description: "Login Failed",

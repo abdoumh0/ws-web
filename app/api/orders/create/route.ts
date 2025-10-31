@@ -24,15 +24,16 @@ export async function POST(req: NextRequest) {
       { status: 400, headers: corsHeaders }
     );
   }
+  console.log(session.AccountID, owner.AccountID);
   const items = (
     await prisma.account_Items.findMany({
-      where: { ItemID: { in: body.items.map((i) => BigInt(i.id)) } },
+      where: { ItemID: { in: body.items.map((i) => parseInt(i.id)) } },
       include: { Items: true },
     })
   ).map((item) => {
     return {
       ...item,
-      qty: body.items.find((i) => BigInt(i.id) === item.ItemID)?.qty || 0,
+      qty: body.items.find((i) => parseInt(i.id) === item.ItemID)?.qty || 0,
     };
   });
 
@@ -42,20 +43,23 @@ export async function POST(req: NextRequest) {
       { status: 400, headers: corsHeaders }
     );
   }
-
+  try {
+  } catch (error) {}
+  const itemData = items.map((item) => ({
+    itemId: item.ItemID,
+    quantity: item.qty,
+    accountId: item.AccountID,
+  }));
   const order = await prisma.orders.create({
     data: {
       SenderID: session.AccountID,
       ReceiverID: owner.AccountID,
       Items: {
         createMany: {
-          data: items.map((item) => ({
-            itemId: item.ItemID,
-            quantity: BigInt(item.qty),
-            accountId: item.AccountID,
-          })),
+          data: itemData,
         },
       },
+      OrderHistory: JSON.stringify(itemData),
     },
   });
 

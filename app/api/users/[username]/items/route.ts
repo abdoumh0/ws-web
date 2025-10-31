@@ -28,8 +28,8 @@ export async function GET(
   const minPriceParam = req.nextUrl.searchParams.get("min_price");
   const maxPriceParam = req.nextUrl.searchParams.get("max_price");
 
-  const minPrice = minPriceParam ? BigInt(minPriceParam) : undefined;
-  const maxPrice = maxPriceParam ? BigInt(maxPriceParam) : undefined;
+  const minPrice = minPriceParam ? parseInt(minPriceParam) : undefined;
+  const maxPrice = maxPriceParam ? parseInt(maxPriceParam) : undefined;
 
   try {
     const items = await prisma.account_Items.findMany({
@@ -37,7 +37,7 @@ export async function GET(
         Accounts: {
           Username: username,
         },
-        ...(category ? { Items: { CategoryID: BigInt(category) } } : {}),
+        ...(category ? { Items: { CategoryID: parseInt(category) } } : {}),
         ...(name
           ? {
               Items: {

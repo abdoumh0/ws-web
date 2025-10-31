@@ -547,7 +547,7 @@ export async function deleteItem(itemId: string, accountId: string) {
       where: {
         AccountID_ItemID: {
           AccountID: accountId,
-          ItemID: BigInt(itemId),
+          ItemID: parseInt(itemId),
         },
       },
     });
@@ -630,7 +630,7 @@ export async function updateItem(formData: FormData) {
       where: {
         AccountID_ItemID: {
           AccountID: session.AccountID,
-          ItemID: BigInt(itemId),
+          ItemID: parseInt(itemId),
         },
       },
     });
@@ -660,7 +660,7 @@ export async function updateItem(formData: FormData) {
     // Update the item in the database
     // First, update the Items table
     await prisma.items.update({
-      where: { ItemID: BigInt(itemId) },
+      where: { ItemID: parseInt(itemId) },
       data: {
         Name: name,
         Brand: brand,
@@ -677,7 +677,7 @@ export async function updateItem(formData: FormData) {
       where: {
         AccountID_ItemID: {
           AccountID: session.AccountID,
-          ItemID: BigInt(itemId),
+          ItemID: parseInt(itemId),
         },
       },
       data: {
@@ -883,6 +883,39 @@ export type Wilaya = {
     }[];
   }[];
 };
+
+export async function getOrders(take?: number, skip?: number) {
+  try {
+    const session = await getSession();
+    if (!session) throw new Error("Not authenticated");
+    const orders = await prisma.orders.findMany({
+      where: {
+        OR: [
+          { ReceiverID: session.AccountID },
+          { SenderID: session.AccountID },
+        ],
+      },
+      include: {
+        Sender: { select: { Username: true, AccountID: true } },
+        Items: {
+          select: { accountItem: { include: { Items: true } }, quantity: true },
+        },
+      },
+      take: take ?? 20,
+      skip: skip ?? 0,
+      orderBy: {
+        CreatedAt: "desc",
+      },
+    });
+
+    return orders;
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    return [];
+  }
+}
+
+export type OrderType = Awaited<ReturnType<typeof getOrders>>[number];
 
 export async function updateUser({
   username,

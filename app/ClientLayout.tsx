@@ -6,8 +6,8 @@ import { Toaster } from "@/components/ui/sonner";
 import NProgressProvider from "@/components/NProgressProvider";
 import { WebSocketProvider } from "@/lib/WSContext";
 import { useSession } from "@/lib/SessionContext";
-import StoreProvider from "@/lib/StoreContext";
 import MessageProvider from "@/lib/MessageContext";
+import OrderProvider from "@/lib/OrderStore";
 
 export default function ClientLayout({
   children,
@@ -18,16 +18,13 @@ export default function ClientLayout({
 
   return (
     <MessageProvider>
-    <WebSocketProvider session={session}>
-    <StoreProvider>
-      
-      <Toaster />
-      <NProgressProvider />
-      <Navbar >
-      {children}
-      </Navbar>
-    </StoreProvider>
-    </WebSocketProvider>
+      <OrderProvider>
+        <WebSocketProvider session={session}>
+          <Toaster />
+          <NProgressProvider />
+          <Navbar>{children}</Navbar>
+        </WebSocketProvider>
+      </OrderProvider>
     </MessageProvider>
   );
-} 
+}

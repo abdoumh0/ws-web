@@ -1,7 +1,16 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "./ui/button";
-import { InboxIcon, BellIcon, MenuIcon } from "lucide-react";
+import {
+  InboxIcon,
+  BellIcon,
+  MenuIcon,
+  Boxes,
+  BoxesIcon,
+  Package,
+  PackageIcon,
+  MailIcon,
+} from "lucide-react";
 import { getChatsType, logoutUser } from "@/lib/actions";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -9,7 +18,7 @@ import { useSession } from "@/lib/SessionContext";
 import { useMessage } from "@/lib/MessageContext";
 import { uniqBy } from "lodash";
 
-const notifications = [
+const orders = [
   {
     id: 1,
     text: "Order #1234 has shipped.",
@@ -155,13 +164,13 @@ export default function Controls() {
         })}
       </div>
     );
-  } else if (open === "notifications") {
+  } else if (open === "orders") {
     content = (
       <div className="w-fit h-fit bg-white border border-gray-200 rounded-lg flex flex-col gap-2 p-2 min-w-[220px] px-2">
-        {notifications.length === 0 ? (
-          <div className="text-sm text-gray-500">No notifications</div>
+        {orders.length === 0 ? (
+          <div className="text-sm text-gray-500">No orders</div>
         ) : (
-          notifications.map((n) => (
+          orders.map((n) => (
             <div
               className="flex items-center gap-2 border-b border-gray-200 pb-2 last:border-b-0 last:pb-0"
               key={n.id}
@@ -183,6 +192,12 @@ export default function Controls() {
           className="text-sm px-2 py-1 rounded hover:bg-gray-100 transition-colors"
         >
           Profile
+        </Link>
+        <Link
+          href="/orders"
+          className="text-sm px-2 py-1 rounded hover:bg-gray-100 transition-colors"
+        >
+          Orders
         </Link>
         <Link
           href="/listings"
@@ -212,18 +227,14 @@ export default function Controls() {
     >
       <div className="flex items-center gap-2">
         <ControlButton
-          icon={<InboxIcon className="w-4 h-4" />}
+          icon={<MailIcon className="w-4 h-4" />}
           className={open === "messages" ? "bg-blue-100 text-indigo-500" : ""}
           onClick={() => setOpen(open === "messages" ? null : "messages")}
         />
         <ControlButton
-          icon={<BellIcon className="w-4 h-4" />}
-          className={
-            open === "notifications" ? "bg-blue-100 text-indigo-500" : ""
-          }
-          onClick={() =>
-            setOpen(open === "notifications" ? null : "notifications")
-          }
+          icon={<PackageIcon className="w-4 h-4" />}
+          className={open === "orders" ? "bg-blue-100 text-indigo-500" : ""}
+          onClick={() => setOpen(open === "orders" ? null : "orders")}
         />
         <ControlButton
           icon={<MenuIcon className="w-4 h-4" />}

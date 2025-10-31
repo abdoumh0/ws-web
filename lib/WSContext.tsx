@@ -10,6 +10,8 @@ import React, {
 import { getOrCreateClientId } from "./utils";
 import { Session } from "./SessionContext";
 import { ChatType, useMessage } from "./MessageContext";
+import { OrderType } from "./actions";
+import { useOrders } from "./OrderStore";
 
 type WebSocketContextType = {
   socket: WebSocket | null;
@@ -62,6 +64,7 @@ export const WebSocketProvider = ({
   children: React.ReactNode;
 }) => {
   const { ChatStoreDispatch } = useMessage();
+  const { OrderStoreDispatch } = useOrders();
   const socketRef = useRef<WebSocket | null>(null);
   const [status, setStatus] = useState<
     "CONNECTED" | "DISCONNECTED" | "CONNECTING"
@@ -97,10 +100,12 @@ export const WebSocketProvider = ({
       console.error("WS error:", err);
     };
 
-    ws.onmessage = (event) => {
+    ws.onmessage = async (event) => {
       const msg = JSON.parse(event.data) as WS_Notification;
       if (msg.type == "ORDER_EVENT") {
-        console.log("check orders");
+        const res = await fetch("/api/orders/get");
+        const { orders } = (await res.json()) as { orders: OrderType[] };
+        orders.forEach((order) => OrderStoreDispatch({ type: "ADD", order }));
       } else {
         const chat = msg.chat_object;
         if (!chat) {
