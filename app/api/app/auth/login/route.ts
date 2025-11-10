@@ -12,6 +12,8 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const { ok, message, session } = await loginUser(formData, "RETAILER");
+    console.log(message);
+
     const res = NextResponse.json(
       { success: ok, message },
       { status: ok ? 200 : 400, headers: corsHeaders }

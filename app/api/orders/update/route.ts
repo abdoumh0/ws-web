@@ -12,7 +12,11 @@ export async function POST(request: NextRequest) {
         { status: 401, headers: corsHeaders }
       );
     }
-    const { orderId, status } = await request.json();
+    // status: "PENDING" | "ACCEPTED" | "DELIVERED" | "DECLINED";
+    const { orderId, status } = (await request.json()) as {
+      orderId: string;
+      status: string;
+    };
 
     const order = await prisma.orders.update({
       where: {

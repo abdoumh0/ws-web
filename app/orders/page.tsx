@@ -1,10 +1,24 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 import { OrderType } from "@/lib/actions";
+import { Orders } from "@/lib/generated/prisma";
 import { useOrders } from "@/lib/OrderStore";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { redirect, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { json } from "stream/consumers";
 
 type Props = {};
 
@@ -148,6 +162,9 @@ function OrderDetails() {
   const { OrderStore, OrderStoreDispatch } = useOrders();
   const order = OrderStore.find((order) => order.OrderID === target);
 
+  const [acceptIsLoading, setAcceptLoading] = useState(false);
+  const [declineIsLoading, setDeclineLoading] = useState(false);
+
   useEffect(() => {
     async function fetchOrder() {
       try {
@@ -200,7 +217,9 @@ function OrderDetails() {
                   : "text-green-500"
               }`}
             >
-              {order.Status}
+              {order.Status === "ACCEPTED"
+                ? `${order.Status} - waiting delivery`
+                : order.Status}
             </span>
           </div>
           <div className="text-sm text-muted-foreground mt-1">
@@ -218,12 +237,7 @@ function OrderDetails() {
           </div>
         </div>
         <div className="p-4 border-t border-border flex gap-3 justify-end shrink-0">
-          <button className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 active:bg-red-700 transition-colors font-medium">
-            Decline
-          </button>
-          <button className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 active:bg-green-700 transition-colors font-medium">
-            Accept
-          </button>
+          <OrderControls {...order} />
         </div>
       </div>
     );
@@ -269,5 +283,109 @@ function ItemCard({ quantity, accountItem }: OrderType["Items"][number]) {
         </div>
       </div>
     </div>
+  );
+}
+
+function OrderControls(order: OrderType) {
+  const { OrderStoreDispatch } = useOrders();
+  const [acceptIsLoading, setAcceptLoading] = useState(false);
+
+  return order.Status === "PENDING" ? (
+    <>
+      <DeclineModal {...order} />
+      <Button
+        onClick={async () => {
+          try {
+            setAcceptLoading(true);
+            const res = await fetch(`http://localhost:3000/api/orders/update`, {
+              method: "POST",
+              credentials: "include",
+              body: JSON.stringify({
+                orderId: order?.OrderID,
+                status: "ACCEPTED",
+              }),
+            });
+            const data = (await res.json()) as {
+              order: Orders | null;
+            };
+            if (!data.order) {
+              setAcceptLoading(false);
+              return;
+            }
+            OrderStoreDispatch({
+              type: "UPDATE",
+              orderID: order.OrderID,
+              order: { ...order, Status: "ACCEPTED" },
+            });
+            setAcceptLoading(false);
+          } catch (error) {
+            setAcceptLoading(false);
+            console.log(error);
+          }
+        }}
+        className="w-24 py-2 flex justify-center bg-green-500 text-white rounded-md hover:bg-green-600 active:bg-green-700 transition-colors font-medium"
+      >
+        {acceptIsLoading ? <Loader2 className="animate-spin" /> : "Accept"}
+      </Button>
+    </>
+  ) : order.Status === "ACCEPTED" ? (
+    <Button>Check Location</Button>
+  ) : null;
+}
+
+function DeclineModal(order: OrderType) {
+  const [declineIsLoading, setDeclineLoading] = useState(false);
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 active:bg-red-700 transition-colors font-medium">
+          Decline
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Decline order?</DialogTitle>
+          <DialogDescription>
+            <span>Sender: @{order.Sender.Username}</span>
+            <span>Order ID: {order.OrderID}</span>
+            <span className="flex gap-x-3.5">
+              <span>
+                {order.Items.reduce((acc, item) => {
+                  acc += item.quantity;
+                  return acc;
+                }, 0)}{" "}
+                items
+              </span>
+              --
+              <span>
+                Total:{" "}
+                {order.Items.reduce((acc, item) => {
+                  acc += item.quantity * item.accountItem.Price;
+                  return acc;
+                }, 0)}{" "}
+                DZD
+              </span>
+            </span>
+          </DialogDescription>
+          <Textarea className="resize-none" placeholder="Notes"></Textarea>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button>Cancel</Button>
+          </DialogClose>
+          <Button
+            className="w-20"
+            variant={"destructive"}
+            onClick={() => setDeclineLoading((prev) => !prev)}
+          >
+            {declineIsLoading ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "Decline"
+            )}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
